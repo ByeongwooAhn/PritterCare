@@ -16,16 +16,16 @@
             android:name=".view.MainActivity2"
             android:exported="false" />
         <activity
-            android:name=".view.MainActivity"
+            android:name="com.prittercare.view.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SignUpActivity"
+            android:name="com.prittercare.view.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".view.FindAccountActivity"
+            android:name="com.prittercare.view.FindAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name="com.prittercare.view.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

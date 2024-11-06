@@ -1,20 +1,20 @@
-package com.example.prittercare.view;
+package com.prittercare.view;
 
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.prittercare.databinding.ActivityFindAccountBinding;
+import com.example.prittercare.databinding.ActivitySignupBinding;
 
-public class FindAccountActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
-    private ActivityFindAccountBinding binding;
+    private ActivitySignupBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityFindAccountBinding.inflate(getLayoutInflater());
+        binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {

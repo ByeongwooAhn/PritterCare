@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_main"
     android:orientation="vertical"
-    tools:context=".view.LoginActivity">
+    tools:context="com.prittercare.view.LoginActivity">
 
     <include
         android:id="@+id/layout_toolbar"
@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="5dp"
-        android:background="@color/backgroundColor"
         android:orientation="vertical">
 
         <FrameLayout
@@ -97,6 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:paddingTop="2dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
