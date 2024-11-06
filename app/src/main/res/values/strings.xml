@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PritterCare</string>
+
+    <string name="btn_back">뒤로 가기</string>
+</resources>

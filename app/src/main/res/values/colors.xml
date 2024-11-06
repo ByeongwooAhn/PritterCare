@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- normal color -->
+    <color name="colorPrimary">#d0caef</color>
+    <color name="colorPrimaryDark">#7b70e6</color>
+
+    <color name="backgroundColor">#dfe0e3</color>
+
+    <color name="colorAccent">#ffffff</color>
+
+    <color name="borderColor">#d0caef</color>
+    
+    <color name="tvBackgroundColor"></color>
+
+    <color name="controlButtonTextColor">#281c9f</color>
+    <color name="controlButtonBorderColor">#7b70e6</color>
+
+</resources>
