@@ -39,10 +39,10 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/lilitaone_regular"
+                android:fontFamily="@font/jua_regular"
                 android:gravity="center"
-                android:text="Pritter CARE"
-                android:textColor="#221784"
+                android:text="프리터 케어"
+                android:textColor="#ffffff"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -59,8 +59,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lilitaone_regular"
-                android:text="Login"
+                android:fontFamily="@font/jua_regular"
+                android:text="로그인"
                 android:textSize="25sp" />
 
 
@@ -84,7 +84,7 @@
                     android:layout_height="match_parent"
                     android:background="#cccccc"
                     android:gravity="center_vertical"
-                    android:hint="Username"
+                    android:hint="아이디"
                     android:maxLines="1"
                     android:paddingStart="10dp" />
             </LinearLayout>
@@ -109,7 +109,7 @@
                     android:layout_height="match_parent"
                     android:background="#cccccc"
                     android:gravity="center_vertical"
-                    android:hint="Password"
+                    android:hint="비밀번호"
                     android:maxLines="1"
                     android:paddingStart="10dp" />
 
@@ -125,7 +125,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Remember me"
+                    android:text="아이디 기억하기"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="12sp" />
 
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorAccent"
                     android:padding="5dp"
-                    android:text="Forgot ID/Password?"
+                    android:text="아이디 / 비밀번호 찾기"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
@@ -158,7 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#7B61FF"
-                    android:text="Login"
+                    android:text="로그인"
                     android:textColor="#FFF" />
 
                 <!-- Sign Up 버튼 -->
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="@color/colorAccent"
-                    android:text="Sign Up"
+                    android:text="회원가입"
                     android:textColor="#7B61FF" />
             </LinearLayout>
         </LinearLayout>
