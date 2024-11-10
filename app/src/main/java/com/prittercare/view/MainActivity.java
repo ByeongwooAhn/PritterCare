@@ -3,6 +3,7 @@ package com.prittercare.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         animalType = 1; // 동물 타입 설정 (예시로 1을 사용)
-
         selectedTab = TAB_INDEX_TEMPERATURE_AND_HUMIDITY; // 초기 탭 선택 (온도/습도 탭)
 
         // 탭 초기화
@@ -64,10 +64,23 @@ public class MainActivity extends AppCompatActivity {
         tabReservation = new CustomTab(this, "예약", R.drawable.ic_control_reservation);
 
         setupTabs();
-        selectTab(TAB_INDEX_TEMPERATURE_AND_HUMIDITY); // 첫 번째 탭을 선택
+
+        Fragment initialFragment = new TemperatureAndHumidtyFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(binding.fragmentContainer.getId(), initialFragment);
+        transaction.commit();
 
         // 첫 번째 탭의 스타일을 업데이트
         updateTabStyle(selectedTab);
+
+        // 뒤로가기 버튼
+        binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_scale));
+                finish(); // 현재 Activity 종료
+            }
+        });
     }
 
 
