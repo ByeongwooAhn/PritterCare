@@ -1,16 +1,9 @@
-package com.prittercare.view.findaccount;
-
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+package com.example.prittercare.view.findaccount;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-
-import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 

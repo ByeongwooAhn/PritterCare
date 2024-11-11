@@ -1,7 +1,6 @@
-package com.prittercare.view.main;
+package com.example.prittercare.view.main;
 
 import static android.view.Gravity.CENTER;
-import static android.view.Gravity.CENTER_HORIZONTAL;
 
 import android.content.Context;
 import android.widget.FrameLayout;

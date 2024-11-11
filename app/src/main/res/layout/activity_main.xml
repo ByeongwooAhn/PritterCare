@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_main"
     android:orientation="vertical"
-    tools:context="com.prittercare.view.MainActivity">
+    tools:context=".view.MainActivity">
 
     <include
         android:id="@+id/layout_toolbar"

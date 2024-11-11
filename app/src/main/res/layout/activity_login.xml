@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
     android:orientation="vertical"
-    tools:context="com.prittercare.view.LoginActivity">
+    tools:context=".view.LoginActivity">
 
     <View
         android:layout_width="match_parent"
@@ -86,10 +86,13 @@
                     android:background="#cccccc"
                     android:gravity="center_vertical"
                     android:hint="아이디"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:paddingStart="10dp"
-                    android:textColor="@color/etTextColor1"
-                    android:textColorHint="@color/etTextColor2" />
+                    android:textColor="@color/etTextColor"
+                    android:textColorHint="@color/etTextHintColor"
+                    android:textCursorDrawable="@color/etCursorColor"
+                    android:textSelectHandle="@color/etHandleColor" />
             </LinearLayout>
 
             <LinearLayout
@@ -113,10 +116,13 @@
                     android:background="#cccccc"
                     android:gravity="center_vertical"
                     android:hint="비밀번호"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:paddingStart="10dp"
-                    android:textColor="@color/etTextColor1"
-                    android:textColorHint="@color/etTextColor2" />
+                    android:textColor="@color/etTextColor"
+                    android:textColorHint="@color/etTextHintColor"
+                    android:textCursorDrawable="@color/etCursorColor"
+                    android:textSelectHandle="@color/etHandleColor" />
 
             </LinearLayout>
 

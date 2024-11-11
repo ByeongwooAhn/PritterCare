@@ -23,8 +23,11 @@
     <!-- 기본 텍스트 색상 -->
     <color name="primaryTextColor">#333333</color>
     <color name="secondaryTextColor">#666666</color>
-    <color name="etTextColor1">#7a797b</color>
-    <color name="etTextColor2">#aaa9ab</color>
+
+    <color name="etTextColor">#7a797b</color>
+    <color name="etTextHintColor">#aaa9ab</color>
+    <color name="etCursorColor">#aaa9ab</color>
+    <color name="etHandleColor">#838383</color>
 
     <!-- 메인 색상 -->
     <color name="primaryColor">#3F51B5</color> <!-- 보라색 톤의 기본 색상 -->

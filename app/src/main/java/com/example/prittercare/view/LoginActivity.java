@@ -1,4 +1,4 @@
-package com.prittercare.view;
+package com.example.prittercare.view;
 
 import android.content.Intent;
 import android.os.Bundle;

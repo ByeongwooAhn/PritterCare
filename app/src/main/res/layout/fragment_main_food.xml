@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.prittercare.view.main.FoodFragment">
+    tools:context=".view.main.FoodFragment">
 
     <TextView
         android:layout_width="match_parent"

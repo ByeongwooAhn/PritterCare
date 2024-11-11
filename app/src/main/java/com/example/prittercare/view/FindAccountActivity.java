@@ -1,4 +1,4 @@
-package com.prittercare.view;
+package com.example.prittercare.view;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityFindAccountBinding;
 import com.google.android.material.tabs.TabLayout;
-import com.prittercare.view.findaccount.ViewPagerAdapter;
+import com.example.prittercare.view.findaccount.ViewPagerAdapter;
 
 public class FindAccountActivity extends AppCompatActivity {
 
@@ -22,6 +22,7 @@ public class FindAccountActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         binding = ActivityFindAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

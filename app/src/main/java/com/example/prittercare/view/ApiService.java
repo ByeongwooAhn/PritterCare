@@ -1,4 +1,4 @@
-package com.prittercare.view;
+package com.example.prittercare.view;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

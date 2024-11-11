@@ -1,4 +1,4 @@
-package com.prittercare.view.main;
+package com.example.prittercare.view.main;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.example.prittercare.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FoodFragment#newInstance} factory method to
+ * Use the {@link TemperatureAndHumidtyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FoodFragment extends Fragment {
+public class TemperatureAndHumidtyFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class FoodFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FoodFragment() {
+    public TemperatureAndHumidtyFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class FoodFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FoodFragment.
+     * @return A new instance of fragment ControlTemperatureAndHumidtyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FoodFragment newInstance(String param1, String param2) {
-        FoodFragment fragment = new FoodFragment();
+    public static TemperatureAndHumidtyFragment newInstance(String param1, String param2) {
+        TemperatureAndHumidtyFragment fragment = new TemperatureAndHumidtyFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class FoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_food, container, false);
+        return inflater.inflate(R.layout.fragment_main_temperature_and_humidty, container, false);
     }
 }

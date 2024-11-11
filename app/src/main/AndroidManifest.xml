@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,23 +18,19 @@
 
         <!-- ReservationActivity 추가 -->
         <activity
-            android:name="com.prittercare.view.main.ReservationActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".view.MainActivity2"
+            android:name=".view.main.ReservationActivity"
             android:exported="false" />
         <activity
-            android:name="com.prittercare.view.MainActivity"
+            android:name=".view.MainActivity"
             android:exported="false" />
         <activity
-            android:name="com.prittercare.view.SignUpActivity"
+            android:name=".view.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name="com.prittercare.view.FindAccountActivity"
+            android:name=".view.FindAccountActivity"
             android:exported="false" />
         <activity
-            android:name="com.prittercare.view.LoginActivity"
+            android:name=".view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

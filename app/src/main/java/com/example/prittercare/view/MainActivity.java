@@ -1,25 +1,23 @@
-package com.prittercare.view;
-
-//import static android.os.Build.VERSION_CODES.R;
+package com.example.prittercare.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityMainBinding;
-import com.prittercare.view.main.CustomTab;
-import com.prittercare.view.main.FoodFragment;
-import com.prittercare.view.main.LightFragment;
-import com.prittercare.view.main.ReservationActivity;
-import com.prittercare.view.main.TemperatureAndHumidtyFragment;
+import com.example.prittercare.view.main.CustomTab;
+import com.example.prittercare.view.main.FoodFragment;
+import com.example.prittercare.view.main.LightFragment;
+import com.example.prittercare.view.main.ReservationActivity;
+import com.example.prittercare.view.main.TemperatureAndHumidtyFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         selectedTab = TAB_INDEX_TEMPERATURE_AND_HUMIDITY; // 초기 탭 선택 (온도/습도 탭)
 
         // 탭 초기화
-        /*tabTemperatureAndHumidity = new CustomTab(this, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity);
+        tabTemperatureAndHumidity = new CustomTab(this, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity);
         tabFoodAndWater = new CustomTab(this, "먹이 / 물", R.drawable.ic_control_food_and_water);
         tabLight = new CustomTab(this, "조명", R.drawable.ic_control_light);
-        tabReservation = new CustomTab(this, "예약", R.drawable.ic_control_reservation);*/
+        tabReservation = new CustomTab(this, "예약", R.drawable.ic_control_reservation);
 
         setupTabs();
 
@@ -76,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
         updateTabStyle(selectedTab);
 
         // 뒤로가기 버튼
-        /*binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
+        binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_scale));
                 finish(); // 현재 Activity 종료
             }
-        });*/
+        });
     }
 
     private void setupTabs() {

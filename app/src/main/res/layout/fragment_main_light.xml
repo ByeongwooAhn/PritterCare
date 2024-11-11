@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context="com.prittercare.view.main.LightFragment">
+    tools:context=".view.main.LightFragment">
 
     <!-- Title -->
     <TextView

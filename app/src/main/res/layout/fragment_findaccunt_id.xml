@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="80dp"
-    tools:context="com.prittercare.view.findaccount.PasswordFragment">
+    tools:context=".view.findaccount.PasswordFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,10 +36,13 @@
             android:background="#cccccc"
             android:gravity="center_vertical"
             android:hint="가입한 이메일 주소"
+            android:inputType="text"
             android:maxLines="1"
             android:paddingStart="10dp"
-            android:textColor="@color/etTextColor1"
-            android:textColorHint="@color/etTextColor2" />
+            android:textColor="@color/etTextColor"
+            android:textColorHint="@color/etTextHintColor"
+            android:textCursorDrawable="@color/etCursorColor"
+            android:textSelectHandle="@color/etHandleColor" />
     </LinearLayout>
 
     <LinearLayout

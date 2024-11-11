@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="borderRounded">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">5dp</item>
+
+    <style name="EditTextLogin">
+        <item name="android:textColor">@color/etTextColor</item>
+        <item name="android:textSelectHandle">@color/etHandleColor</item>
+        <item name="android:textColorHint">@color/etTextHintColor</item>
+        <item name="android:textCursorDrawable">@color/etCursorColor</item>
     </style>
 
 </resources>

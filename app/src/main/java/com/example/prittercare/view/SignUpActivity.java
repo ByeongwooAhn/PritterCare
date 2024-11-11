@@ -1,14 +1,15 @@
-package com.prittercare.view;
+package com.example.prittercare.view;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;  // Toast 추가
-import android.view.animation.AnimationUtils;  // AnimationUtils 추가
 
 import androidx.appcompat.app.AppCompatActivity;
 
 //import com.example.prittercare.R;
+import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivitySignupBinding;
 
 import java.io.IOException;
@@ -33,13 +34,13 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // Back 버튼 클릭 시 현재 Activity 종료
-        /*binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
+        binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.startAnimation(AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.button_scale));
                 finish(); // 현재 Activity 종료
             }
-        });*/
+        });
 
         // Sign Up 버튼 클릭 시
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
