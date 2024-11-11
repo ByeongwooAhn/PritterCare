@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="80dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.prittercare.view.findaccount.PasswordFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/jua_regular"
+        android:text="아이디 찾기"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="40dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="#e6e6e6"
+            android:scaleType="center"
+            android:src="@drawable/ic_account_email" />
+
+        <EditText
+            android:id="@+id/tv_find_id_by_email"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#cccccc"
+            android:gravity="center_vertical"
+            android:hint="가입한 이메일 주소"
+            android:maxLines="1"
+            android:paddingStart="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+
+        <!-- Sign Up 버튼 -->
+        <Button
+            android:id="@+id/btn_find_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#7B61FF"
+            android:text="아이디 찾기" />
+    </LinearLayout>
+
+</LinearLayout>
