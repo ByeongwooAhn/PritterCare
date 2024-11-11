@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/jua_regular"
                 android:text="로그인"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="25sp" />
 
 
@@ -86,7 +87,9 @@
                     android:gravity="center_vertical"
                     android:hint="아이디"
                     android:maxLines="1"
-                    android:paddingStart="10dp" />
+                    android:paddingStart="10dp"
+                    android:textColor="@color/etTextColor1"
+                    android:textColorHint="@color/etTextColor2" />
             </LinearLayout>
 
             <LinearLayout
@@ -111,7 +114,9 @@
                     android:gravity="center_vertical"
                     android:hint="비밀번호"
                     android:maxLines="1"
-                    android:paddingStart="10dp" />
+                    android:paddingStart="10dp"
+                    android:textColor="@color/etTextColor1"
+                    android:textColorHint="@color/etTextColor2" />
 
             </LinearLayout>
 

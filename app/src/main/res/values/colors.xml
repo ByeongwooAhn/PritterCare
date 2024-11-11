@@ -4,6 +4,7 @@
     <color name="colorPrimary">#d0caef</color>
     <color name="colorPrimaryDark">#6f62e3</color>
 
+
     <color name="backgroundColor">#dfe0e3</color>
 
     <color name="colorAccent">#ffffff</color>
@@ -17,5 +18,24 @@
     <color name="controlButtonSelectedColor">#7b70e6</color>
     <color name="controlButtonSelectedIconColor">#21167c</color>
     <color name="controlButtonSelectedTextColor">#d8d3f5</color>
+
+
+    <!-- 기본 텍스트 색상 -->
+    <color name="primaryTextColor">#333333</color>
+    <color name="secondaryTextColor">#666666</color>
+    <color name="etTextColor1">#7a797b</color>
+    <color name="etTextColor2">#aaa9ab</color>
+
+    <!-- 메인 색상 -->
+    <color name="primaryColor">#3F51B5</color> <!-- 보라색 톤의 기본 색상 -->
+    <color name="secondaryColor">#E0E0E0</color> <!-- 슬라이더의 배경 색상 (연회색) -->
+
+    <!-- 포인트 색상 -->
+    <color name="pointColor5">#ffe13c</color>
+    <color name="pointColor4">#ecc900</color>
+    <color name="pointColor3">#bfa300</color>
+    <color name="pointColor2">#8c7700</color>
+    <color name="pointColor1">#514500</color>
+    <color name="lineColor">#ffee91</color><!-- 원 포인트의 색상 (금색) -->
 
 </resources>
