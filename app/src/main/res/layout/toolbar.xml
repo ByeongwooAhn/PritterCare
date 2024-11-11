@@ -9,7 +9,7 @@
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:background="@drawable/effect_ripple"
         android:contentDescription="@string/btn_back"
         android:padding="0dp"
         android:src="@drawable/ic_arrow_back" />

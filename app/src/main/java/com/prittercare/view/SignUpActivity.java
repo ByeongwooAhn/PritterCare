@@ -3,10 +3,15 @@ package com.prittercare.view;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+<<<<<<< HEAD
 import android.widget.Toast;
+=======
+import android.view.animation.AnimationUtils;
+>>>>>>> b7e469d7ef12973d155aa5f93ed51468f028aa8e
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivitySignupBinding;
 
 import java.io.IOException;
@@ -34,6 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.button_scale));
                 finish(); // 현재 Activity 종료
             }
         });

@@ -96,14 +96,46 @@
                 android:layout_height="wrap_content"
                 android:fillViewport="true">
 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/tab_container"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:orientation="horizontal">
 
-                </LinearLayout>
+                    <FrameLayout
+                        android:layout_gravity="center"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/shape_button_control"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp">
+
+                        <!-- ImageView 설정 -->
+                        <ImageView
+                            android:id="@+id/tab_icon"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_control_temperature_and_humidity"
+                            android:scaleType="fitCenter"
+                            android:layout_marginBottom="12dp" />
+
+                        <!-- TextView 설정 -->
+                        <TextView
+                            android:id="@+id/tab_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="온도 / 습도"
+                            android:textColor="@color/controlButtonTextColor"
+                            android:textSize="12sp"
+                            android:layout_marginTop="22dp" />
+
+                    </FrameLayout>
+
+                </FrameLayout>
 
             </HorizontalScrollView>
 

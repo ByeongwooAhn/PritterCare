@@ -3,5 +3,5 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/lilitaone_regular"/>
+        android:font="@font/jua_regular"/>
 </font-family>

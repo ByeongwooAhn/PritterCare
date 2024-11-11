@@ -23,46 +23,86 @@
             layout="@layout/toolbar" />
 
         <LinearLayout
+            android:paddingTop="80dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="20dp"
             android:layout_weight="2"
-            android:background="@drawable/shape_card"
-            android:gravity="center"
+            android:background="@drawable/shape_card_white"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
+                android:textColor="@color/primaryTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lilitaone_regular"
-                android:text="Sign up"
+                android:fontFamily="@font/jua_regular"
+                android:text="회원 가입"
                 android:textSize="25sp" />
 
 
-            <LinearLayout
+            <EditText
+                android:textColor="@color/etTextColor1"
+                android:textColorHint="@color/etTextColor2"
+                android:id="@+id/tv_signup_id"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginTop="40dp"
-                android:orientation="horizontal">
+                android:background="#cccccc"
+                android:gravity="center_vertical"
+                android:hint="@string/id_hint"
+                android:maxLines="1"
+                android:paddingStart="10dp" />
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:background="#e6e6e6"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_account_id" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="60dp"
+                android:text="사용할 수 없는 아이디 입니다."
+                android:textColor="#ff8080" />
 
-                <EditText
-                    android:id="@+id/tv_login_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#cccccc"
-                    android:gravity="center_vertical"
-                    android:hint="Username"
-                    android:maxLines="1"
-                    android:paddingStart="10dp" />
-            </LinearLayout>
+            <EditText
+                android:textColor="@color/etTextColor1"
+                android:textColorHint="@color/etTextColor2"
+                android:id="@+id/tv_signup_pw"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc"
+                android:gravity="center_vertical"
+                android:hint="@string/password_hint"
+                android:maxLines="1"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="60dp"
+                android:text="20자 이내의 비밀번호를 입력해 주세요."
+                android:textColor="#ff8080" />
+
+            <EditText
+                android:textColor="@color/etTextColor1"
+                android:textColorHint="@color/etTextColor2"
+                android:id="@+id/tv_signup_pw_check"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc"
+                android:gravity="center_vertical"
+                android:hint="@string/password_check_hint"
+                android:maxLines="1"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="60dp"
+                android:text="비밀번호가 일치하지 않습니다."
+                android:textColor="#ff8080" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,24 +111,43 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:background="#e6e6e6"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_account_pw" />
-
                 <EditText
-                    android:id="@+id/tv_login_pw"
-                    android:layout_width="match_parent"
+                    android:textColor="@color/etTextColor1"
+                    android:textColorHint="@color/etTextColor2"
+                    android:id="@+id/tv_signup_email"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="#cccccc"
                     android:gravity="center_vertical"
-                    android:hint="Password"
+                    android:hint="@string/email_hint"
                     android:maxLines="1"
                     android:paddingStart="10dp" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="\@"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="none"
+                        android:text="" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="60dp"
+                android:text="비밀번호가 일치하지 않습니다."
+                android:textColor="#ff8080" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -103,7 +162,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#7B61FF"
-                    android:text="Sign Up" />
+                    android:text="가입하기" />
             </LinearLayout>
         </LinearLayout>
 

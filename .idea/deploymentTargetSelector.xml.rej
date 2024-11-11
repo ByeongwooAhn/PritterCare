@@ -1,0 +1,14 @@
+diff a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml	(rejected hunks)
+@@ -4,10 +4,10 @@
+     <selectionStates>
+       <SelectionState runConfigName="app">
+         <option name="selectionMode" value="DROPDOWN" />
+-        <DropdownSelection timestamp="2024-11-06T14:59:19.428204800Z">
++        <DropdownSelection timestamp="2024-11-10T16:07:35.480491600Z">
+           <Target type="DEFAULT_BOOT">
+             <handle>
+-              <DeviceId pluginId="PhysicalDevice" identifier="serial=R3CT40T822Y" />
++              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\am608\.android\avd\Pixel_3_API_27.avd" />
+             </handle>
+           </Target>
+         </DropdownSelection>
