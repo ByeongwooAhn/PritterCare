@@ -13,15 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PritterCare"
-<<<<<<< HEAD
-        tools:targetApi="31" >
-
-=======
         tools:targetApi="31">
+
+        <!-- ReservationActivity 추가 -->
         <activity
             android:name="com.prittercare.view.main.ReservationActivity"
             android:exported="false" />
->>>>>>> b7e469d7ef12973d155aa5f93ed51468f028aa8e
+
         <activity
             android:name=".view.MainActivity2"
             android:exported="false" />
@@ -39,7 +37,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

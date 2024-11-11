@@ -3,15 +3,12 @@ package com.prittercare.view;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-<<<<<<< HEAD
-import android.widget.Toast;
-=======
-import android.view.animation.AnimationUtils;
->>>>>>> b7e469d7ef12973d155aa5f93ed51468f028aa8e
+import android.widget.Toast;  // Toast 추가
+import android.view.animation.AnimationUtils;  // AnimationUtils 추가
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.prittercare.R;
+//import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivitySignupBinding;
 
 import java.io.IOException;
@@ -36,20 +33,20 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // Back 버튼 클릭 시 현재 Activity 종료
-        binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
+        /*binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.startAnimation(AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.button_scale));
                 finish(); // 현재 Activity 종료
             }
-        });
+        });*/
 
         // Sign Up 버튼 클릭 시
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = binding.tvLoginId.getText().toString();
-                String password = binding.tvLoginPw.getText().toString();
+                String username = binding.tvSignupId.getText().toString();
+                String password = binding.tvSignupPw.getText().toString();
 
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(SignUpActivity.this, "Please fill out both fields", Toast.LENGTH_SHORT).show();
@@ -97,7 +94,6 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 }
             }
-
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {

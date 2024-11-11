@@ -1,5 +1,7 @@
 package com.prittercare.view;
 
+//import static android.os.Build.VERSION_CODES.R;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.prittercare.R;
+
 import com.example.prittercare.databinding.ActivityMainBinding;
 import com.prittercare.view.main.CustomTab;
 import com.prittercare.view.main.FoodFragment;
@@ -28,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-<<<<<<< HEAD
-=======
     // 탭 정의
     CustomTab tabTemperatureAndHumidity;
     CustomTab tabFoodAndWater;
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private Map<Integer, Class<? extends Fragment>> tabFragments;
 
     private int animalType; // 이 값은 나중에 동적으로 설정될 수 있음.
->>>>>>> b7e469d7ef12973d155aa5f93ed51468f028aa8e
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
         selectedTab = TAB_INDEX_TEMPERATURE_AND_HUMIDITY; // 초기 탭 선택 (온도/습도 탭)
 
         // 탭 초기화
-        tabTemperatureAndHumidity = new CustomTab(this, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity);
+        /*tabTemperatureAndHumidity = new CustomTab(this, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity);
         tabFoodAndWater = new CustomTab(this, "먹이 / 물", R.drawable.ic_control_food_and_water);
         tabLight = new CustomTab(this, "조명", R.drawable.ic_control_light);
-        tabReservation = new CustomTab(this, "예약", R.drawable.ic_control_reservation);
+        tabReservation = new CustomTab(this, "예약", R.drawable.ic_control_reservation);*/
 
         setupTabs();
 
@@ -77,15 +76,14 @@ public class MainActivity extends AppCompatActivity {
         updateTabStyle(selectedTab);
 
         // 뒤로가기 버튼
-        binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
+        /*binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_scale));
                 finish(); // 현재 Activity 종료
             }
-        });
+        });*/
     }
-
 
     private void setupTabs() {
         tabFragments = new HashMap<>();
@@ -146,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTabStyle(int tabNumber) {
-        //기본 스타일로 설정
+        // 기본 스타일로 설정
         for (int i = 0; i < tabViews.size(); i++) {
             View tab = tabViews.get(i);
             if (i == tabNumber) {
