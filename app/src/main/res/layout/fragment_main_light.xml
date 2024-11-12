@@ -3,21 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".view.main.LightFragment">
 
     <!-- Title -->
     <TextView
-        android:id="@+id/lightTitle"
+        android:id="@+id/tv_light_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="조명 관리"
+        android:fontFamily="@font/jua"
+        android:text="조명 설정"
         android:textColor="#333333"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,30 +26,22 @@
         android:orientation="horizontal">
 
         <Button
-            android:layout_margin="10dp"
+            android:id="@+id/btn_light_on"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:text="ON" />
 
 
         <Button
-            android:layout_margin="10dp"
+            android:id="@+id/btn_light_off"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:text="OFF" />
     </LinearLayout>
-
-    <!-- Light Level Display -->
-    <TextView
-        android:id="@+id/lightLevel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="Level 1"
-        android:textColor="#666666"
-        android:textSize="16sp" />
 
     <!-- Lighting Control Buttons and Points -->
     <LinearLayout
@@ -60,7 +52,7 @@
 
         <!-- Left Button -->
         <ImageButton
-            android:id="@+id/btnLeft"
+            android:id="@+id/btn_left"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
@@ -69,77 +61,26 @@
             android:src="@drawable/ic_left_arrow"
             app:tint="@color/primaryColor" />
 
-        <!-- Points -->
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/container_light_level"
+            android:padding="5dp"
+            android:background="@drawable/shape_card_light_level1"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:gravity="center">
 
-            <!-- Point Indicators -->
-            <!-- Line connecting points -->
-            <View
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/darker_gray" />
-
-            <!-- Point 1 -->
-            <ImageView
-                android:id="@+id/point1"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="start|center_vertical"
-                android:src="@drawable/circle_point"
-                android:visibility="invisible"
-                app:tint="@color/pointColor1" />
-
-            <!-- Point 2 -->
-            <ImageView
-                android:id="@+id/point2"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="45dp"
-                android:src="@drawable/circle_point"
-                android:visibility="invisible"
-                app:tint="@color/pointColor2" />
-
-            <!-- Point 3 -->
-            <ImageView
-                android:id="@+id/point3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:src="@drawable/circle_point"
-                android:visibility="invisible"
-                app:tint="@color/pointColor3" />
-
-            <!-- Point 4 -->
-            <ImageView
-                android:id="@+id/point4"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="135dp"
-                android:src="@drawable/circle_point"
-                android:visibility="invisible"
-                app:tint="@color/pointColor4" />
-
-            <!-- Point 5 -->
-            <ImageView
-                android:id="@+id/point5"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="end|center_vertical"
-                android:src="@drawable/circle_point"
-                android:visibility="invisible"
-                app:tint="@color/pointColor5" />
-        </FrameLayout>
+            <TextView
+                android:id="@+id/tv_light_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 단계"
+                android:textColor="@color/lightLevelText1"
+                android:textSize="18sp" />
+        </LinearLayout>
 
         <!-- Right Button -->
         <ImageButton
-            android:id="@+id/btnRight"
+            android:id="@+id/btn_right"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"

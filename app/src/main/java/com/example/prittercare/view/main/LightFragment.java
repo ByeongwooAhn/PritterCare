@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
@@ -25,11 +26,18 @@ public class LightFragment extends Fragment {
     private TextView lightLevelText;
     private ImageButton btnLeft;
     private ImageButton btnRight;
-    private ImageView point1, point2, point3, point4, point5;
+    private Button btnOn;
+    private Button btnOff;
 
     // Light level variables
     private int currentLightLevel = 1; // Start from Level 1 (1-5)
     private int maxLightLevel = 5; // 5 steps
+
+    // Container for light level
+    private View containerLightLevel;
+
+    // Boolean to track if the light is on or off
+    private boolean isLightOn = true;
 
     public LightFragment() {
         // Required empty public constructor
@@ -60,24 +68,37 @@ public class LightFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main_light, container, false);
 
         // Initialize the views
-        lightLevelText = rootView.findViewById(R.id.lightLevel);
-        btnLeft = rootView.findViewById(R.id.btnLeft);
-        btnRight = rootView.findViewById(R.id.btnRight);
-        point1 = rootView.findViewById(R.id.point1);
-        point2 = rootView.findViewById(R.id.point2);
-        point3 = rootView.findViewById(R.id.point3);
-        point4 = rootView.findViewById(R.id.point4);
-        point5 = rootView.findViewById(R.id.point5);
+        lightLevelText = rootView.findViewById(R.id.tv_light_level);
+        btnLeft = rootView.findViewById(R.id.btn_left);
+        btnRight = rootView.findViewById(R.id.btn_right);
+        btnOn = rootView.findViewById(R.id.btn_light_on);  // ON button
+        btnOff = rootView.findViewById(R.id.btn_light_off);  // OFF button
+        containerLightLevel = rootView.findViewById(R.id.container_light_level); // Initialize the container
 
         // Update initial level and visibility of points and line
         updateLightLevel();
 
-        // Set click listeners for buttons
+        // Set click listeners for light control buttons (ON/OFF)
+        btnOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                turnLightOn();  // Turn light on
+            }
+        });
+
+        btnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                turnLightOff();  // Turn light off
+            }
+        });
+
+        // Set click listeners for navigation buttons (Left/Right)
         btnLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Decrease light level when left button is clicked
-                if (currentLightLevel > 1) {
+                if (isLightOn && currentLightLevel > 1) {
                     currentLightLevel--;
                     updateLightLevel();
                 }
@@ -88,7 +109,7 @@ public class LightFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Increase light level when right button is clicked
-                if (currentLightLevel < maxLightLevel) {
+                if (isLightOn && currentLightLevel < maxLightLevel) {
                     currentLightLevel++;
                     updateLightLevel();
                 }
@@ -100,33 +121,70 @@ public class LightFragment extends Fragment {
 
     // Update the light level on the UI
     private void updateLightLevel() {
-        // Update light level text
-        lightLevelText.setText("Level: " + currentLightLevel);
+        if (isLightOn) {
+            // Update light level text
+            lightLevelText.setText(currentLightLevel + " 단계");
 
-        // Reset visibility of all points and the line
-        point1.setVisibility(View.INVISIBLE);
-        point2.setVisibility(View.INVISIBLE);
-        point3.setVisibility(View.INVISIBLE);
-        point4.setVisibility(View.INVISIBLE);
-        point5.setVisibility(View.INVISIBLE);
+            // Dynamically change the text color based on the current light level
+            int colorResId = getColorForLightLevel(currentLightLevel);
+            lightLevelText.setTextColor(getResources().getColor(colorResId));
 
-        // Show points and line based on the current level
-        switch (currentLightLevel) {
-            case 1:
-                point1.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                point2.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                point3.setVisibility(View.VISIBLE);
-                break;
-            case 4:
-                point4.setVisibility(View.VISIBLE);
-                break;
-            case 5:
-                point5.setVisibility(View.VISIBLE);
-                break;
+            // Dynamically change the background color of the container
+            int containerColorResId = getContainerColorForLightLevel(currentLightLevel);
+            containerLightLevel.setBackgroundResource(containerColorResId);
+        } else {
+            // If light is off, disable controls
+            lightLevelText.setText("조명 꺼짐");
+            lightLevelText.setTextColor(getResources().getColor(R.color.lightOFFText));
+            containerLightLevel.setBackgroundResource(R.drawable.shape_card_light_off);
         }
+    }
+
+    // Get color resource ID based on light level
+    private int getColorForLightLevel(int level) {
+        switch (level) {
+            case 1:
+                return R.color.lightLevelText1; // Color for level 1
+            case 2:
+                return R.color.lightLevelText2; // Color for level 2
+            case 3:
+                return R.color.lightLevelText3; // Color for level 3
+            case 4:
+                return R.color.lightLevelText4; // Color for level 4
+            case 5:
+                return R.color.lightLevelText5; // Color for level 5
+            default:
+                return R.color.lightLevelText1; // Default color if level is invalid
+        }
+    }
+
+    // Get background color resource ID for the container based on light level
+    private int getContainerColorForLightLevel(int level) {
+        switch (level) {
+            case 1:
+                return R.drawable.shape_card_light_level1; // Background for level 1
+            case 2:
+                return R.drawable.shape_card_light_level2; // Background for level 2
+            case 3:
+                return R.drawable.shape_card_light_level3; // Background for level 3
+            case 4:
+                return R.drawable.shape_card_light_level4; // Background for level 4
+            case 5:
+                return R.drawable.shape_card_light_level5; // Background for level 5
+            default:
+                return R.drawable.shape_card_light_level1; // Default background if level is invalid
+        }
+    }
+
+    // Method to turn the light ON
+    private void turnLightOn() {
+        isLightOn = true;
+        updateLightLevel();
+    }
+
+    // Method to turn the light OFF
+    private void turnLightOff() {
+        isLightOn = false;
+        updateLightLevel();
     }
 }

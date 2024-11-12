@@ -81,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
                 finish(); // 현재 Activity 종료
             }
         });
+
+        binding.ivFullScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void setupTabs() {

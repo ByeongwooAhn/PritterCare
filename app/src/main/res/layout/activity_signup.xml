@@ -42,6 +42,7 @@
 
 
             <EditText
+                android:textSize="18sp"
                 android:id="@+id/tv_signup_id"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -66,6 +67,7 @@
                 android:textColor="#ff8080" />
 
             <EditText
+                android:textSize="18sp"
                 android:id="@+id/tv_signup_pw"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -90,6 +92,7 @@
                 android:textColor="#ff8080" />
 
             <EditText
+                android:textSize="18sp"
                 android:id="@+id/tv_signup_pw_check"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -121,6 +124,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:textSize="18sp"
                     android:id="@+id/tv_signup_email"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

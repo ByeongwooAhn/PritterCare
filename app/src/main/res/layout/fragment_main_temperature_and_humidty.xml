@@ -2,12 +2,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".view.main.TemperatureAndHumidtyFragment">
 
+    <!-- Title -->
     <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/jua"
+        android:text="온도 습도 설정"
+        android:textColor="#333333"
+        android:textSize="24sp" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="온도 습도" />
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_te"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="설정된 온도 : "
+            android:textColor="#9486e3"
+            android:textSize="18sp"
+            android:layout_marginBottom="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_setting_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="설정 :"
+                android:textSize="18sp"
+                android:textColor="#333333" />
+
+            <EditText
+                android:id="@+id/et_set_temperature"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="온도 값"
+                android:textColor="@color/etTextColor"
+                android:textColorHint="@color/etTextHintColor"
+                android:textCursorDrawable="@color/etCursorColor"
+                android:textSelectHandle="@color/etHandleColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:hint="10"
+                android:text="°C"
+                android:textColor="#333333"
+                android:textSize="18sp" />
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="확인" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
