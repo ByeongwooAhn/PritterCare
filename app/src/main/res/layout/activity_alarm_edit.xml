@@ -134,7 +134,7 @@
         android:id="@+id/dailyCycleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="    일 주기  :"
+        android:text="    일 주기 :"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:paddingTop="16dp"
@@ -156,28 +156,30 @@
     <!-- 시간 주기 설정 라벨 -->
     <TextView
         android:id="@+id/hourlyCycleLabel"
-        android:layout_width="79dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingTop="16dp"
-        android:text="시간 주기  :"
+        android:text="시간 주기 :"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dailyCycleSpinner" />
 
     <!-- 시간 주기 스피너 -->
+
+    <!-- 취소 버튼 -->
+
     <Spinner
         android:id="@+id/hourlyCycleSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/hourlyCycleLabel"
         app:layout_constraintTop_toBottomOf="@id/dailyCycleSpinner" />
 
-    <!-- 취소 버튼 -->
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="0dp"

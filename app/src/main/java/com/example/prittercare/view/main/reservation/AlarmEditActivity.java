@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -63,7 +64,7 @@ public class AlarmEditActivity extends AppCompatActivity {
                 Log.e("AlarmEditActivity", "Received null alarm data");
             }
         } else {
-            alarm = new Alarm("", "", false, "");
+            alarm = new Alarm("", "", false, "", ""); // 예약 종류 초기값 포함
         }
 
         saveButton.setOnClickListener(v -> saveAlarm());
@@ -122,9 +123,6 @@ public class AlarmEditActivity extends AppCompatActivity {
         int month = selectedDate.get(Calendar.MONTH);
         int day = selectedDate.get(Calendar.DAY_OF_MONTH);
 
-        Locale locale = new Locale("ko", "KR");
-        Locale.setDefault(locale);
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
@@ -139,8 +137,7 @@ public class AlarmEditActivity extends AppCompatActivity {
 
     private void updateDateText() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 (E)", Locale.KOREAN);
-        String formattedDate = dateFormat.format(selectedDate.getTime());
-        alarmDate.setText(formattedDate);
+        alarmDate.setText(dateFormat.format(selectedDate.getTime()));
     }
 
     private void setExistingAlarmData() {
@@ -161,10 +158,9 @@ public class AlarmEditActivity extends AppCompatActivity {
             } else {
                 hour = 0;
                 minute = 0;
-                Log.e("AlarmEditActivity", "Unexpected time format: " + time);
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 timePicker.setHour(hour);
                 timePicker.setMinute(minute);
             } else {
@@ -173,13 +169,6 @@ public class AlarmEditActivity extends AppCompatActivity {
             }
         } catch (NumberFormatException e) {
             Log.e("AlarmEditActivity", "Invalid time format", e);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                timePicker.setHour(0);
-                timePicker.setMinute(0);
-            } else {
-                timePicker.setCurrentHour(0);
-                timePicker.setCurrentMinute(0);
-            }
         }
     }
 
@@ -187,9 +176,29 @@ public class AlarmEditActivity extends AppCompatActivity {
         EditText alarmNameInput = findViewById(R.id.alarmNameInput);
         String alarmName = alarmNameInput.getText().toString();
 
-        int hour, minute;
-        boolean isAM;
+        RadioGroup typeSelectionGroup = findViewById(R.id.typeSelectionGroup);
+        int selectedTypeId = typeSelectionGroup.getCheckedRadioButtonId();
+        String type = "";
 
+        if (selectedTypeId == R.id.radioWater) {
+            type = "water";
+        } else if (selectedTypeId == R.id.radioFood) {
+            type = "food";
+        } else if (selectedTypeId == R.id.radioLight) {
+            type = "light";
+        }
+
+        alarm.setName(alarmName);
+        alarm.setType(type);
+
+        // 주기 설정 저장
+        int dailyCycle = (int) dailyCycleSpinner.getSelectedItem();
+        int hourlyCycle = (int) hourlyCycleSpinner.getSelectedItem();
+        alarm.setDailyCycle(dailyCycle);
+        alarm.setHourlyCycle(hourlyCycle);
+
+        // 시간 설정
+        int hour, minute;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             hour = timePicker.getHour();
             minute = timePicker.getMinute();
@@ -198,18 +207,13 @@ public class AlarmEditActivity extends AppCompatActivity {
             minute = timePicker.getCurrentMinute();
         }
 
-        isAM = hour < 12;
-        String amPm = isAM ? "오전" : "오후";
+        String amPm = hour < 12 ? "오전" : "오후";
         int displayHour = hour % 12 == 0 ? 12 : hour % 12;
 
-        String formattedTime = String.format("%s %02d:%02d", amPm, displayHour, minute);
-        alarm.setTime(formattedTime);
+        alarm.setTime(String.format("%s %02d:%02d", amPm, displayHour, minute));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 (E)", Locale.KOREAN);
-        String formattedDate = dateFormat.format(selectedDate.getTime());
-        alarm.setDate(formattedDate);
-
-        alarm.setName(alarmName);
+        alarm.setDate(dateFormat.format(selectedDate.getTime()));
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra("updated_alarm", alarm);

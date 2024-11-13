@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.view.MainActivity;
 import com.example.prittercare.view.main.reservation.Alarm;
 import com.example.prittercare.view.main.reservation.AlarmAdapter;
 import com.example.prittercare.view.main.reservation.AlarmEditActivity;
