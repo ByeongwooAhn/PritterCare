@@ -8,7 +8,6 @@ import android.widget.Toast;  // Toast 추가
 
 import androidx.appcompat.app.AppCompatActivity;
 
-//import com.example.prittercare.R;
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivitySignupBinding;
 
@@ -25,7 +24,7 @@ public class SignUpActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
 
     // Retrofit 초기화
-    private static final String BASE_URL = "http://medicine.p-e.kr:80"; // Spring Boot 서버 URL
+    private static final String BASE_URL = "http://medicine.p-e.kr"; // Spring Boot 서버 URL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
