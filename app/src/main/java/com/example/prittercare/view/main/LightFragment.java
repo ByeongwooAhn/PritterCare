@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
@@ -82,6 +81,7 @@ public class LightFragment extends Fragment {
         btnOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                toggleButtonState(btnOn,btnOff);
                 turnLightOn();  // Turn light on
             }
         });
@@ -89,6 +89,7 @@ public class LightFragment extends Fragment {
         btnOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                toggleButtonState(btnOff,btnOn);
                 turnLightOff();  // Turn light off
             }
         });
@@ -136,7 +137,7 @@ public class LightFragment extends Fragment {
             // If light is off, disable controls
             lightLevelText.setText("조명 꺼짐");
             lightLevelText.setTextColor(getResources().getColor(R.color.lightOFFText));
-            containerLightLevel.setBackgroundResource(R.drawable.shape_card_light_off);
+            containerLightLevel.setBackgroundResource(R.drawable.shape_card_main_light_off);
         }
     }
 
@@ -162,17 +163,17 @@ public class LightFragment extends Fragment {
     private int getContainerColorForLightLevel(int level) {
         switch (level) {
             case 1:
-                return R.drawable.shape_card_light_level1; // Background for level 1
+                return R.drawable.shape_card_main_light_level1; // Background for level 1
             case 2:
-                return R.drawable.shape_card_light_level2; // Background for level 2
+                return R.drawable.shape_card_main_light_level2; // Background for level 2
             case 3:
-                return R.drawable.shape_card_light_level3; // Background for level 3
+                return R.drawable.shape_card_main_light_level3; // Background for level 3
             case 4:
-                return R.drawable.shape_card_light_level4; // Background for level 4
+                return R.drawable.shape_card_main_light_level4; // Background for level 4
             case 5:
-                return R.drawable.shape_card_light_level5; // Background for level 5
+                return R.drawable.shape_card_main_light_level5; // Background for level 5
             default:
-                return R.drawable.shape_card_light_level1; // Default background if level is invalid
+                return R.drawable.shape_card_main_light_level1; // Default background if level is invalid
         }
     }
 
@@ -186,5 +187,15 @@ public class LightFragment extends Fragment {
     private void turnLightOff() {
         isLightOn = false;
         updateLightLevel();
+    }
+
+    private void toggleButtonState(Button activeButton, Button inactiveButton) {
+        // 활성 버튼을 primaryStyle 로 수정
+        activeButton.setBackgroundResource(R.drawable.shape_button_main_light_active);
+        activeButton.setTextColor(getResources().getColor(R.color.mainLightActiveBtnTextColor));
+
+        // 비활성 버튼을 inactiveStyle 로 수정
+        inactiveButton.setBackgroundResource(R.drawable.shape_button_main_primary);
+        inactiveButton.setTextColor(getResources().getColor(R.color.mainPrimaryBtnTextColor));
     }
 }

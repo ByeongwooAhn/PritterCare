@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // 로그인 버튼 클릭 시 MainActivity로 이동
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -97,9 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void logIn(String username, String password) {
         // Retrofit 설정
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create()) // GsonConverterFactory 추가
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()) // GsonConverterFactory 추가
                 .build();
 
         // API 인터페이스 생성

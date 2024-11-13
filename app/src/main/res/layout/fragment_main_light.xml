@@ -25,8 +25,9 @@
         android:layout_marginBottom="16dp"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_light_on"
+            style="@style/MainLightActiveButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -34,8 +35,9 @@
             android:text="ON" />
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_light_off"
+            style="@style/MainPrimaryButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -59,15 +61,15 @@
             android:background="?android:selectableItemBackground"
             android:contentDescription="Move Left"
             android:src="@drawable/ic_left_arrow"
-            app:tint="@color/primaryColor" />
+            app:tint="@color/mainLeftArrowBtnColor" />
 
         <LinearLayout
             android:id="@+id/container_light_level"
-            android:padding="5dp"
-            android:background="@drawable/shape_card_light_level1"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:background="@drawable/shape_card_main_light_level1"
+            android:gravity="center"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tv_light_level"
