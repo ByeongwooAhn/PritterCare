@@ -1,0 +1,49 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_background"
+    android:padding="16dp"
+    android:layout_marginBottom="8dp">
+
+    <!-- 알람 이름 텍스트 (왼쪽 위에 표시) -->
+    <TextView
+        android:id="@+id/alarmName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알람 이름"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/alarmTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="오전 1:48"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/alarmDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11월 11일 (월)"
+            android:textColor="#888888"
+            android:textSize="16sp"/>
+
+        <Switch
+            android:id="@+id/alarmToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"/>
+    </LinearLayout>
+</LinearLayout>

@@ -8,4 +8,10 @@
         <item name="android:textCursorDrawable">@color/etCursorColor</item>
     </style>
 
+    <!-- Custom TimePicker Style -->
+    <style name="CustomTimePickerStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:timePickerMode">spinner</item>
+        <item name="android:background">#000000</item> <!-- 배경색 설정 -->
+    </style>
+
 </resources>
