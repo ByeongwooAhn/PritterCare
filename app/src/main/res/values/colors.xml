@@ -29,9 +29,27 @@
     <color name="etCursorColor">#aaa9ab</color>
     <color name="etHandleColor">#838383</color>
 
-    <!-- 메인 색상 -->
-    <color name="primaryColor">#3F51B5</color> <!-- 보라색 톤의 기본 색상 -->
-    <color name="secondaryColor">#E0E0E0</color> <!-- 슬라이더의 배경 색상 (연회색) -->
+    <!-- 로그인 화면 -->
+    <color name="loginPrimaryBtnColor">#7b61ff</color>
+    <color name="loginPrimaryBtnTextColor">#fcfbff</color>
+    <color name="loginPrimaryBtnRippleColor">#160082</color>
+
+    <color name="loginSecondaryBtnColor">#fcfbff</color>
+    <color name="loginSecondaryBtnTextColor">#7b61ff</color>
+    <color name="loginSecondaryBtnBorderColor">#ece6ff</color>
+    <color name="loginSecondaryBtnRippleColor">#535353</color>
+
+
+    <!-- 메인 화면 -->
+    <color name="mainLeftArrowBtnColor">#3F51B5</color>
+    <color name="mainPrimaryBtnColor">#7b70e6</color>
+    <color name="mainPrimaryBtnTextColor">#ffffff</color>
+    <color name="mainPrimaryBtnRippleColor">#d9d9d9</color>
+
+    <color name="mainLightActiveBtnColor">#fcfbff</color>
+    <color name="mainLightActiveBtnTextColor">#7b61ff</color>
+    <color name="mainLightActiveBtnBorderColor">#7b61ff</color>
+    <color name="mainLightActiveBtnRippleColor">#7b61ff</color>
 
     <!-- 조명 조절 색상 -->
     <color name="lightLevel5">#ffe13c</color>

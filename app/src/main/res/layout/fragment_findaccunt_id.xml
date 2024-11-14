@@ -52,13 +52,12 @@
         android:layout_marginTop="40dp"
         android:orientation="vertical">
 
-        <!-- Sign Up 버튼 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_find_id"
+            style="@style/LoginPrimaryButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#7B61FF"
-            android:text="아이디 찾기" />
+            android:text="이메일로 전송" />
     </LinearLayout>
 
 </LinearLayout>
