@@ -40,6 +40,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.main.register.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.main.register.CageListActivity"
+            android:exported="false" />
+
+        <receiver android:name=".view.main.reservation.AlarmReceiver" />
+
+
     </application>
 
 </manifest>
