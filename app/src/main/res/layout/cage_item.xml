@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@android:color/white"
+    android:layout_marginBottom="8dp"
+    android:elevation="2dp">
+
+    <!-- 케이지 이름 -->
+    <TextView
+        android:id="@+id/tvCageName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="케이지 이름"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:gravity="center_vertical" />
+
+    <!-- 동물 이미지 -->
+    <ImageView
+        android:id="@+id/ivAnimalImage"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_turtle"
+        android:contentDescription="케이지 동물 이미지"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp" />
+</LinearLayout>
