@@ -38,7 +38,7 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
     @NonNull
     @Override
     public CageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cage_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cage_list_item, parent, false);
         return new CageViewHolder(view);
     }
 

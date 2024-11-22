@@ -16,7 +16,7 @@ import com.example.prittercare.R;
  * 백엔드에서는 건드릴 것이 없을 것으로 예상됨.
  */
 
-public class CustomTab extends FrameLayout {
+public class MainTab extends FrameLayout {
 
     // 탭 아이콘과 텍스트를 보여줄 ImageView와 TextView 선언
     private ImageView imageView;
@@ -28,7 +28,7 @@ public class CustomTab extends FrameLayout {
      * @param tabLabel 탭에 표시할 텍스트 (탭 라벨)
      * @param iconResId 탭에 사용할 아이콘 리소스 ID
      */
-    public CustomTab(Context context, String tabLabel, int iconResId) {
+    public MainTab(Context context, String tabLabel, int iconResId) {
         super(context);
         if (context == null) {
             throw new IllegalArgumentException("Context cannot be null");

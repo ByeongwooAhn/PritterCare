@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.Alarm;
-import com.example.prittercare.view.adapters.AlarmAdapter;
+import com.example.prittercare.model.ReservationModel;
+import com.example.prittercare.view.adapters.ReservationAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class ReservationActivity extends AppCompatActivity {
 
     // RecyclerView 및 어댑터
     private RecyclerView recyclerView;
-    private AlarmAdapter adapter;
-    private List<Alarm> alarmList;
+    private ReservationAdapter adapter;
+    private List<ReservationModel> alarmList;
 
     // 삭제 레이아웃 및 선택된 알람 위치
     private LinearLayout deleteLayout;
@@ -51,7 +51,7 @@ public class ReservationActivity extends AppCompatActivity {
         alarmList = new ArrayList<>();
 
         // 어댑터 초기화 및 설정
-        adapter = new AlarmAdapter(alarmList, this::editAlarm, position -> {
+        adapter = new ReservationAdapter(alarmList, this::editAlarm, position -> {
             selectedPosition = position;
             deleteLayout.setVisibility(View.VISIBLE); // 롱 클릭 시 삭제 레이아웃 표시
         });
@@ -96,7 +96,7 @@ public class ReservationActivity extends AppCompatActivity {
 
         // 알람 추가 또는 수정 시 처리
         if (resultCode == RESULT_OK) {
-            Alarm updatedAlarm = (Alarm) data.getSerializableExtra("updated_alarm");
+            ReservationModel updatedAlarm = (ReservationModel) data.getSerializableExtra("updated_alarm");
             if (requestCode == REQUEST_CODE_ADD_ALARM) {
                 alarmList.add(updatedAlarm); // 새 알람 추가
             } else if (requestCode == REQUEST_CODE_EDIT_ALARM) {

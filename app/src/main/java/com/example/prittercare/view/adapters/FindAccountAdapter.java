@@ -18,10 +18,10 @@ import com.example.prittercare.view.fragments.PasswordFragment;
  *   각 페이지에 표시할 Fragment를 생성하고 관리하는 기능을 제공함.
  */
 
-public class ViewPagerAdapter extends FragmentStateAdapter {
+public class FindAccountAdapter extends FragmentStateAdapter {
 
     // 생성자 : ViewPagerAdapter의 인스턴스를 생성하고 FragmentActivity를 설정함.
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public FindAccountAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 

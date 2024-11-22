@@ -9,13 +9,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.Alarm;
+import com.example.prittercare.model.ReservationModel;
 
 import java.util.List;
 
-public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder> {
+public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.AlarmViewHolder> {
 
-    private List<Alarm> alarmList;
+    private List<ReservationModel> alarmList;
     private OnAlarmClickListener clickListener;
     private OnAlarmLongClickListener longClickListener;
 
@@ -27,7 +27,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         void onAlarmLongClick(int position);
     }
 
-    public AlarmAdapter(List<Alarm> alarmList, OnAlarmClickListener clickListener, OnAlarmLongClickListener longClickListener) {
+    public ReservationAdapter(List<ReservationModel> alarmList, OnAlarmClickListener clickListener, OnAlarmLongClickListener longClickListener) {
         this.alarmList = alarmList;
         this.clickListener = clickListener;
         this.longClickListener = longClickListener;
@@ -35,13 +35,13 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
     @Override
     public AlarmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.alarm_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reservation_list_item, parent, false);
         return new AlarmViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(AlarmViewHolder holder, int position) {
-        Alarm alarm = alarmList.get(position);
+        ReservationModel alarm = alarmList.get(position);
 
         holder.alarmTime.setText(alarm.getTime());
         holder.alarmDate.setText(alarm.getDate());
@@ -97,9 +97,9 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
         public AlarmViewHolder(View itemView) {
             super(itemView);
-            alarmTime = itemView.findViewById(R.id.alarmTime);
+            alarmTime = itemView.findViewById(R.id.reservationTime);
             alarmDate = itemView.findViewById(R.id.alarmDate);
-            alarmName = itemView.findViewById(R.id.alarmName);
+            alarmName = itemView.findViewById(R.id.reservationName);
             alarmCycle = itemView.findViewById(R.id.alarmCycle); // 추가된 주기 텍스트
             alarmTypeIcon = itemView.findViewById(R.id.alarmTypeIcon);
         }

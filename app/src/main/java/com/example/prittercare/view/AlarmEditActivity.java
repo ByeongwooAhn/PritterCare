@@ -19,7 +19,7 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.Alarm;
+import com.example.prittercare.model.ReservationModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,20 +29,20 @@ public class AlarmEditActivity extends AppCompatActivity {
 
     private TimePicker timePicker;
     private Button saveButton, cancelButton;
-    private TextView alarmDate;
+    private TextView reservationDate;
     private ImageView calendarIcon;
     private Spinner dailyCycleSpinner, hourlyCycleSpinner;
     private Calendar selectedDate;
-    private Alarm alarm;
+    private ReservationModel alarm;
     private int alarmPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm_edit);
+        setContentView(R.layout.activity_reservation_edit);
 
         timePicker = findViewById(R.id.timePicker);
-        alarmDate = findViewById(R.id.alarmDate);
+        reservationDate = findViewById(R.id.alarmDate);
         calendarIcon = findViewById(R.id.calendarIcon);
         saveButton = findViewById(R.id.saveButton);
         cancelButton = findViewById(R.id.cancelButton);
@@ -57,7 +57,7 @@ public class AlarmEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("alarm_data")) {
-            alarm = (Alarm) intent.getSerializableExtra("alarm_data");
+            alarm = (ReservationModel) intent.getSerializableExtra("alarm_data");
             alarmPosition = intent.getIntExtra("alarm_position", -1);
             if (alarm != null) {
                 setExistingAlarmData();
@@ -65,7 +65,7 @@ public class AlarmEditActivity extends AppCompatActivity {
                 Log.e("AlarmEditActivity", "Received null alarm data");
             }
         } else {
-            alarm = new Alarm("", "", false, "", ""); // 예약 종류 초기값 포함
+            alarm = new ReservationModel("", "", false, "", ""); // 예약 종류 초기값 포함
         }
 
         saveButton.setOnClickListener(v -> saveAlarm());
@@ -138,7 +138,7 @@ public class AlarmEditActivity extends AppCompatActivity {
 
     private void updateDateText() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 (E)", Locale.KOREAN);
-        alarmDate.setText(dateFormat.format(selectedDate.getTime()));
+        reservationDate.setText(dateFormat.format(selectedDate.getTime()));
     }
 
     private void setExistingAlarmData() {

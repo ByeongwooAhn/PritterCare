@@ -83,6 +83,11 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // 로그인 성공
+                Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class); // MainActivity로 이동
+                startActivity(intent);
+
                 String username = binding.tvLoginId.getText().toString(); // 사용자 ID 가져오기
                 String password = binding.tvLoginPw.getText().toString(); // 사용자 PW 가져오기
 

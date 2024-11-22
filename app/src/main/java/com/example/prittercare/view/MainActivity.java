@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding; // UI 요소를 직접 참조하지 않고 사용할 수 있게 해주는 바인딩 객체
 
     // 각 탭을 나타내는 CustomTab 인스턴스
-    CustomTab tabTemperatureAndHumidity;
-    CustomTab tabFoodAndWater;
-    CustomTab tabLight;
-    CustomTab tabReservation;
+    MainTab tabTemperatureAndHumidity;
+    MainTab tabFoodAndWater;
+    MainTab tabLight;
+    MainTab tabReservation;
 
     // 탭 상수 (탭 번호를 구분하는 데 사용)
     private static final int TAB_INDEX_TEMPERATURE_AND_HUMIDITY = 0;
@@ -55,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
         selectedTab = TAB_INDEX_TEMPERATURE_AND_HUMIDITY; // 초기 탭 설정 (온도/습도 탭)
 
         // 각 탭에 대한 정보 초기화
-        tabTemperatureAndHumidity = new CustomTab(this, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity);
-        tabFoodAndWater = new CustomTab(this, "먹이 / 물", R.drawable.ic_control_food_and_water);
-        tabLight = new CustomTab(this, "조명", R.drawable.ic_control_light);
-        tabReservation = new CustomTab(this, "예약", R.drawable.ic_control_reservation);
+        tabTemperatureAndHumidity = new MainTab(this, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity);
+        tabFoodAndWater = new MainTab(this, "먹이 / 물", R.drawable.ic_control_food_and_water);
+        tabLight = new MainTab(this, "조명", R.drawable.ic_control_light);
+        tabReservation = new MainTab(this, "예약", R.drawable.ic_control_reservation);
 
         setupTabs(); // 각 탭과 매핑된 Fragment 초기화
 
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         addTab(TAB_INDEX_RESERVATION, tabReservation, null); // 예약 탭은 Fragment가 아닌 별도의 Activity로 전환
     }
 
-    private void addTab(int newTabNumber, CustomTab newTab, Class<? extends Fragment> newTabFragmentClass) {
+    private void addTab(int newTabNumber, MainTab newTab, Class<? extends Fragment> newTabFragmentClass) {
         if (newTab == null) return; // 탭이 null인 경우 추가하지 않음
         newTab.setOnClickListener(view -> selectTab(newTabNumber)); // 탭 클릭 시 선택된 탭으로 전환
         binding.tabContainer.addView(newTab); // 탭 컨테이너에 탭 추가
@@ -152,10 +152,10 @@ public class MainActivity extends AppCompatActivity {
             View tab = tabViews.get(i);
             if (i == tabNumber) {
                 // 선택된 탭 스타일 설정
-                ((CustomTab) tab).setSelectedStyle(this);
+                ((MainTab) tab).setSelectedStyle(this);
             } else {
                 // 기본 탭 스타일 설정
-                ((CustomTab) tab).setBasicStyle(this);
+                ((MainTab) tab).setBasicStyle(this);
             }
         }
     }

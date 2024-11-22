@@ -10,14 +10,14 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityFindAccountBinding;
 import com.google.android.material.tabs.TabLayout;
-import com.example.prittercare.view.adapters.ViewPagerAdapter;
+import com.example.prittercare.view.adapters.FindAccountAdapter;
 
 public class FindAccountActivity extends AppCompatActivity {
 
     // TabLayout과 ViewPager2를 위한 변수 선언
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    ViewPagerAdapter viewPagerAdapter;
+    FindAccountAdapter findAccountAdapter;
 
     // ViewBinding을 위한 변수 선언
     private ActivityFindAccountBinding binding;
@@ -32,8 +32,8 @@ public class FindAccountActivity extends AppCompatActivity {
         // TabLayout, ViewPager2 초기화 및 어댑터 설정
         tabLayout = findViewById(R.id.tab_layout_findaccount);
         viewPager2 = findViewById(R.id.view_pager2_findaccount);
-        viewPagerAdapter = new ViewPagerAdapter(this);
-        viewPager2.setAdapter(viewPagerAdapter);
+        findAccountAdapter = new FindAccountAdapter(this);
+        viewPager2.setAdapter(findAccountAdapter);
 
         // Tab 선택 시 ViewPager 페이지를 이동시키는 리스너 설정
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
