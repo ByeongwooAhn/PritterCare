@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="80dp"
-    tools:context=".view.findaccount.PasswordFragment">
+    tools:context=".view.fragments.PasswordFragment">
 
     <TextView
         android:layout_width="wrap_content"

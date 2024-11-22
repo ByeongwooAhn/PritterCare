@@ -1,4 +1,4 @@
-package com.example.prittercare.view.main;
+package com.example.prittercare.view;
 
 import static android.view.Gravity.CENTER;
 

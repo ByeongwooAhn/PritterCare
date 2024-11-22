@@ -1,4 +1,4 @@
-package com.example.prittercare.view.main.register;
+package com.example.prittercare.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
+import com.example.prittercare.view.CageListActivity;
 import com.example.prittercare.view.MainActivity;
 
 import java.util.List;

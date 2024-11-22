@@ -1,4 +1,4 @@
-package com.example.prittercare.view.main.register;
+package com.example.prittercare.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
+import com.example.prittercare.view.adapters.CageListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

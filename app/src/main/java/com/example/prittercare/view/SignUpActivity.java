@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivitySignupBinding;
+import com.example.prittercare.model.ApiService;
+import com.example.prittercare.model.SignUpRequest;
 
 import java.io.IOException;
 

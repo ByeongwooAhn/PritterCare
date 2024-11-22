@@ -1,4 +1,4 @@
-package com.example.prittercare.view;
+package com.example.prittercare.model;
 
 public class SignUpRequest {
     private String username;

@@ -1,4 +1,4 @@
-package com.example.prittercare.view.main.reservation;
+package com.example.prittercare.view.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
+import com.example.prittercare.model.Alarm;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.prittercare.view.main.reservation;
+package com.example.prittercare.controller;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

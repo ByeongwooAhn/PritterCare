@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityFindAccountBinding;
 import com.google.android.material.tabs.TabLayout;
-import com.example.prittercare.view.findaccount.ViewPagerAdapter;
+import com.example.prittercare.view.adapters.ViewPagerAdapter;
 
 public class FindAccountActivity extends AppCompatActivity {
 

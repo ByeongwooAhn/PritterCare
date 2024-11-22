@@ -1,4 +1,4 @@
-package com.example.prittercare.view.main;
+package com.example.prittercare.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.view.main.reservation.Alarm;
-import com.example.prittercare.view.main.reservation.AlarmAdapter;
-import com.example.prittercare.view.main.reservation.AlarmEditActivity;
+import com.example.prittercare.model.Alarm;
+import com.example.prittercare.view.adapters.AlarmAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.prittercare.view.main.reservation;
+package com.example.prittercare.view;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
+import com.example.prittercare.model.Alarm;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

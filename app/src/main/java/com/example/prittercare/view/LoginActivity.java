@@ -10,7 +10,8 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.databinding.ActivityLoginBinding;
-import com.example.prittercare.view.main.LoginRequest;
+import com.example.prittercare.model.ApiService;
+import com.example.prittercare.model.LoginRequest;
 
 import java.io.IOException;
 

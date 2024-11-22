@@ -1,4 +1,4 @@
-package com.example.prittercare.view.findaccount;
+package com.example.prittercare.view.fragments;
 
 import android.os.Bundle;
 
@@ -9,15 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.prittercare.databinding.FragmentFindaccountPasswordBinding;
+import com.example.prittercare.databinding.FragmentFindaccuntIdBinding;
 
-public class PasswordFragment extends Fragment {
+public class IdFragment extends Fragment {
 
     // binding 객체 선언 : 이 객체를 통해 XML 레이아웃에 있는 UI 요소에 접근할 수 있음.
-    private FragmentFindaccountPasswordBinding binding;
+    private FragmentFindaccuntIdBinding binding;
 
     // Fragment 기본 생성자
-    public PasswordFragment() {
+    public IdFragment() {
     }
 
     /**
@@ -29,21 +29,21 @@ public class PasswordFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // 'binding' 객체를 초기화 -> XML 레이아웃을 Fragment와 연결함.
-        binding = FragmentFindaccountPasswordBinding.inflate(inflater, container, false);
+        binding = FragmentFindaccuntIdBinding.inflate(inflater, container, false);
 
-        // 'btnFindPassword' 버튼에 클릭 이벤트 리스너 설정
-        binding.btnFindPassword.setOnClickListener(new View.OnClickListener() {
+        // 'btnFindId' 버튼에 클릭 이벤트 리스너 설정
+        binding.btnFindId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Toast 메시지: 안드로이드에서 간단한 텍스트 메시지를 잠시 보여주는 UI 컴포넌트.
-                // 여기서는 새 비밀번호가 이메일로 전송되었음을 알리는 메시지를 길게(LONG) 표시함.
-                Toast toast = Toast.makeText(getContext(), "입력한 이메일로\n새 비밀번호가 전송되었습니다.", Toast.LENGTH_LONG);
+                // 여기서는 이메일이 입력되었음을 알리는 메시지를 길게(LONG) 표시한다.
+                Toast toast = Toast.makeText(getContext(), "입력한 이메일로\n아이디가 전송되었습니다.", Toast.LENGTH_LONG);
                 toast.show(); // 메시지를 화면에 표시
             }
         });
 
         // 'binding.getRoot()'를 통해 Fragment의 최상위 View를 반환함.
-        // 이 View는 Fragment가 Activity에 표시될 때 사용됨.
+        // 이 View는 Fragment가 Activity에 표시될 때 사용된다.
         return binding.getRoot();
     }
 

@@ -12,11 +12,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityMainBinding;
-import com.example.prittercare.view.main.CustomTab;
-import com.example.prittercare.view.main.FoodFragment;
-import com.example.prittercare.view.main.LightFragment;
-import com.example.prittercare.view.main.ReservationActivity;
-import com.example.prittercare.view.main.TemperatureAndHumidtyFragment;
+import com.example.prittercare.view.fragments.FoodFragment;
+import com.example.prittercare.view.fragments.LightFragment;
+import com.example.prittercare.view.fragments.TemperatureAndHumidtyFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;

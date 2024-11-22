@@ -1,4 +1,4 @@
-package com.example.prittercare.view;
+package com.example.prittercare.controller;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

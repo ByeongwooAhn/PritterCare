@@ -18,10 +18,10 @@
 
         <!-- ReservationActivity 추가 -->
         <activity
-            android:name=".view.main.ReservationActivity"
+            android:name=".view.ReservationActivity"
             android:exported="false" />
         <activity
-            android:name=".view.main.reservation.AlarmEditActivity"
+            android:name=".view.AlarmEditActivity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
@@ -42,13 +42,13 @@
         </activity>
 
         <activity
-            android:name=".view.main.register.RegisterActivity"
+            android:name=".view.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".view.main.register.CageListActivity"
+            android:name=".view.CageListActivity"
             android:exported="false" />
 
-        <receiver android:name=".view.main.reservation.AlarmReceiver" />
+        <receiver android:name=".controller.AlarmReceiver" />
 
 
     </application>

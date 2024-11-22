@@ -1,6 +1,4 @@
-package com.example.prittercare.view;
-
-import com.example.prittercare.view.main.LoginRequest;
+package com.example.prittercare.model;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

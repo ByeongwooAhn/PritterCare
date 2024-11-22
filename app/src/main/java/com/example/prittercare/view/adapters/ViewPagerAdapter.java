@@ -1,9 +1,12 @@
-package com.example.prittercare.view.findaccount;
+package com.example.prittercare.view.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.prittercare.view.fragments.IdFragment;
+import com.example.prittercare.view.fragments.PasswordFragment;
 
 
 /**
