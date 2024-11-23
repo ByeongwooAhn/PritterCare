@@ -47,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = binding.tvSignupId.getText().toString();
                 String password = binding.tvSignupPw.getText().toString();
+                String email = binding.tvSignupEmail.getText().toString();
 
                 // 입력값 체크
                 if (username.isEmpty() || password.isEmpty()) {
@@ -54,14 +55,14 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Please fill out both fields", Toast.LENGTH_SHORT).show();
                 } else {
                     // 비어있지 않으면 회원가입 요청 실행
-                    signUp(username, password); // 서버에 요청 보냄
+                    signUp(username, password, email); // 서버에 요청 보냄
                 }
             }
         });
     }
 
     // 회원가입 요청 메서드
-    private void signUp(String username, String password) {
+    private void signUp(String username, String password, String email) {
         // Retrofit 인스턴스 생성 및 설정
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -72,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
         ApiService apiService = retrofit.create(ApiService.class);
 
         // 회원가입 요청 데이터 생성
-        SignUpRequest signUpRequest = new SignUpRequest(username, password);
+        SignUpRequest signUpRequest = new SignUpRequest(username, password, email);
 
         // 비동기식 API 요청
         Call<Void> call = apiService.signUp(signUpRequest);
