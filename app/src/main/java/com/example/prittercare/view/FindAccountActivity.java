@@ -10,13 +10,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityFindAccountBinding;
 import com.google.android.material.tabs.TabLayout;
-import com.example.prittercare.view.findaccount.ViewPagerAdapter;
+import com.example.prittercare.view.adapters.FindAccountAdapter;
 
 public class FindAccountActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    ViewPagerAdapter viewPagerAdapter;
+    FindAccountAdapter findAccountAdapter;
 
     private ActivityFindAccountBinding binding;
 
@@ -29,8 +29,8 @@ public class FindAccountActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tab_layout_findaccount);
         viewPager2 = findViewById(R.id.view_pager2_findaccount);
-        viewPagerAdapter = new ViewPagerAdapter(this);
-        viewPager2.setAdapter(viewPagerAdapter);
+        findAccountAdapter = new FindAccountAdapter(this);
+        viewPager2.setAdapter(findAccountAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

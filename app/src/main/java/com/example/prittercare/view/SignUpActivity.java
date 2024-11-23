@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivitySignupBinding;
+import com.example.prittercare.model.ApiService;
+import com.example.prittercare.model.request.SignUpRequest;
 
 import java.io.IOException;
 
@@ -47,12 +49,11 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = binding.tvSignupId.getText().toString();
                 String password = binding.tvSignupPw.getText().toString();
-                String email = binding.tvSignupEmail.getText().toString();
+                String email = binding.tvSignupEmail.getText().toString() + "@gmail.com";
 
                 // 입력값 체크
                 if (username.isEmpty() || password.isEmpty()) {
-                    // 둘 중 하나라도 비어있으면 Toast 메시지로 알림
-                    Toast.makeText(SignUpActivity.this, "Please fill out both fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, "값을 다 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else {
                     // 비어있지 않으면 회원가입 요청 실행
                     signUp(username, password, email); // 서버에 요청 보냄
