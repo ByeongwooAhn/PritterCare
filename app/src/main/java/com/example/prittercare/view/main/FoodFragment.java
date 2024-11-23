@@ -11,29 +11,56 @@ import android.view.ViewGroup;
 import com.example.prittercare.R;
 
 /**
- * Main 화면의 식수 공급 Fragment
+ * A simple {@link Fragment} subclass.
+ * Use the {@link FoodFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
 public class FoodFragment extends Fragment {
 
-    // 기본 생성자: Fragment는 기본적으로 파라미터가 없는 생성자를 요구함
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
     public FoodFragment() {
         // Required empty public constructor
     }
 
     /**
-     * Fragment의 UI를 구성하는 메서드
-     * 해당 메서드는 onCreateView()에서 레이아웃을 inflate하여 View를 반환함.
-     * 이 메서드는 Fragment가 화면에 표시될 때 호출됨.
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
      *
-     * @param inflater LayoutInflater 객체 (XML 레이아웃을 View 객체로 변환)
-     * @param container Fragment가 속할 ViewGroup (보통 null로 설정됨)
-     * @param savedInstanceState 이전 상태 정보 (복원 용도)
-     * @return 생성된 View 객체 (UI 구성)
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment FoodFragment.
      */
+    // TODO: Rename and change types and number of parameters
+    public static FoodFragment newInstance(String param1, String param2) {
+        FoodFragment fragment = new FoodFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // fragment_main_food 레이아웃을 inflate하여 뷰 객체 생성 후 반환
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_food, container, false);
     }
 }
