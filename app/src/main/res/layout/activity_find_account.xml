@@ -39,8 +39,6 @@
                 android:text="비밀번호 찾기"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
-
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager2.widget.ViewPager2
