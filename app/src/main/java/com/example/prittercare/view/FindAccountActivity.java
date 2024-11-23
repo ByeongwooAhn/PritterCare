@@ -9,53 +9,41 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityFindAccountBinding;
-import com.google.android.material.tabs.TabLayout;
 import com.example.prittercare.view.findaccount.ViewPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class FindAccountActivity extends AppCompatActivity {
 
-    TabLayout tabLayout;
-    ViewPager2 viewPager2;
-    ViewPagerAdapter viewPagerAdapter;
-
     private ActivityFindAccountBinding binding;
+    private ViewPager2 viewPager2;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         binding = ActivityFindAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         tabLayout = findViewById(R.id.tab_layout_findaccount);
         viewPager2 = findViewById(R.id.view_pager2_findaccount);
-        viewPagerAdapter = new ViewPagerAdapter(this);
-        viewPager2.setAdapter(viewPagerAdapter);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager2.setCurrentItem(tab.getPosition());
-            }
+        // ViewPager2 어댑터 설정
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        viewPager2.setAdapter(adapter);
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                tabLayout.getTabAt(position).select();
-            }
-        });
+        // TabLayout과 ViewPager2 연결
+        new TabLayoutMediator(tabLayout, viewPager2,
+                (tab, position) -> {
+                    switch (position) {
+                        case 0:
+                            tab.setText("아이디 찾기");
+                            break;
+                        case 1:
+                            tab.setText("비밀번호 찾기");
+                            break;
+                    }
+                }).attach();
 
         binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +52,5 @@ public class FindAccountActivity extends AppCompatActivity {
                 finish(); // 현재 Activity 종료
             }
         });
-
-
     }
 }

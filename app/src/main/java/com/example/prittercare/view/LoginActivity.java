@@ -20,10 +20,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
     private boolean isBackPressedOnce = false;
+    private static final String TAG = "MQTT";
 
     // Retrofit 초기화
     private static final String BASE_URL = "http://medicine.p-e.kr"; // Spring Boot 서버 URL
@@ -85,6 +93,55 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = binding.tvLoginId.getText().toString();
                 String password = binding.tvLoginPw.getText().toString();
+
+                // MQTT 클라이언트 객체 생성
+                String clientId = "myClienId";
+                MqttClient mqttClient;
+                try {
+                    mqttClient = new MqttClient("tcp://localhost:1883", clientId, null);
+
+                    // 연결 옵션 설정
+                    MqttConnectOptions options = new MqttConnectOptions();
+                    options.setCleanSession(true);
+
+                    // 사용자 이름과 비밀번호 설정
+                    String mqttname = ""; // 여기에 사용자의 MQTT 사용자 이름을 입력하세요.
+                    String mqttpassword = ""; // 여기에 사용자의 MQTT 비밀번호를 입력하세요.
+                    options.setUserName(mqttname);
+                    options.setPassword(mqttpassword.toCharArray());
+
+                    // MQTT 연결
+                    mqttClient.connect(options);
+
+                    // 콜백 설정
+                    mqttClient.setCallback(new MqttCallback() {
+                        @Override
+                        public void connectionLost(Throwable cause) {
+                            Log.d(TAG, "Connection lost: " + cause.getMessage());
+                        }
+
+                        @Override
+                        public void messageArrived(String topic, MqttMessage message) throws Exception {
+                            Log.d(TAG, "Message received: " + message.toString());
+                        }
+
+                        @Override
+                        public void deliveryComplete(IMqttDeliveryToken token) {
+                            Log.d(TAG, "Delivery complete");
+                        }
+                    });
+
+                    // 메시지 구독
+                    mqttClient.subscribe("test/topic");
+
+                    // 메시지 발행
+                    MqttMessage message = new MqttMessage("Hello from Android!".getBytes());
+                    message.setQos(1);  // QoS Level 1
+                    mqttClient.publish("test/topic", message);
+
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
 
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "로그인 정보를 입력해주세요.", Toast.LENGTH_SHORT).show();

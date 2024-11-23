@@ -26,7 +26,7 @@ public class PasswordFragment extends Fragment {
         binding.btnFindPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast = Toast.makeText(getContext(), "입력한 이메일로\n비밀번호가 전송되었습니다.", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getContext(), "입력한 이메일로 비밀번호가 전송되었습니다.", Toast.LENGTH_LONG);
                 toast.show();
             }
         });
