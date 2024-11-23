@@ -19,7 +19,5 @@ public class SignUpRequest {
         return password;
     }
 
-    public String email() {
-        return email;
-    }
+    public String getEmail() { return email; }
 }
