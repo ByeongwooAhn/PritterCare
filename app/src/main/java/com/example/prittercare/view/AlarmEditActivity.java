@@ -19,7 +19,7 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.ReservationModel;
+import com.example.prittercare.model.ReservationData;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,7 +33,7 @@ public class AlarmEditActivity extends AppCompatActivity {
     private ImageView calendarIcon;
     private Spinner dailyCycleSpinner, hourlyCycleSpinner;
     private Calendar selectedDate;
-    private ReservationModel alarm;
+    private ReservationData alarm;
     private int alarmPosition = -1;
 
     @Override
@@ -57,7 +57,7 @@ public class AlarmEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("alarm_data")) {
-            alarm = (ReservationModel) intent.getSerializableExtra("alarm_data");
+            alarm = (ReservationData) intent.getSerializableExtra("alarm_data");
             alarmPosition = intent.getIntExtra("alarm_position", -1);
             if (alarm != null) {
                 setExistingAlarmData();
@@ -65,7 +65,7 @@ public class AlarmEditActivity extends AppCompatActivity {
                 Log.e("AlarmEditActivity", "Received null alarm data");
             }
         } else {
-            alarm = new ReservationModel("", "", false, "", ""); // 예약 종류 초기값 포함
+            alarm = new ReservationData("", "", false, "", ""); // 예약 종류 초기값 포함
         }
 
         saveButton.setOnClickListener(v -> saveAlarm());

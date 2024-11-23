@@ -9,13 +9,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.ReservationModel;
+import com.example.prittercare.model.ReservationData;
 
 import java.util.List;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.AlarmViewHolder> {
 
-    private List<ReservationModel> alarmList;
+    private List<ReservationData> alarmList;
     private OnAlarmClickListener clickListener;
     private OnAlarmLongClickListener longClickListener;
 
@@ -27,7 +27,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         void onAlarmLongClick(int position);
     }
 
-    public ReservationAdapter(List<ReservationModel> alarmList, OnAlarmClickListener clickListener, OnAlarmLongClickListener longClickListener) {
+    public ReservationAdapter(List<ReservationData> alarmList, OnAlarmClickListener clickListener, OnAlarmLongClickListener longClickListener) {
         this.alarmList = alarmList;
         this.clickListener = clickListener;
         this.longClickListener = longClickListener;
@@ -41,7 +41,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     @Override
     public void onBindViewHolder(AlarmViewHolder holder, int position) {
-        ReservationModel alarm = alarmList.get(position);
+        ReservationData alarm = alarmList.get(position);
 
         holder.alarmTime.setText(alarm.getTime());
         holder.alarmDate.setText(alarm.getDate());

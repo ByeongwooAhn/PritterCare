@@ -1,4 +1,4 @@
-package com.example.prittercare.model;
+package com.example.prittercare.model.request;
 
 public class LoginRequest {
     private String username;

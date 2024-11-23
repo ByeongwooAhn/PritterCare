@@ -11,8 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
+import com.example.prittercare.model.CageData;
 
-public class RegisterActivity extends AppCompatActivity {
+public class CageListEditActivity extends AppCompatActivity {
 
     private EditText etCageName;
     private RadioGroup rgAnimalType;
@@ -22,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_cage_edit);
 
         etCageName = findViewById(R.id.etCageName);
         rgAnimalType = findViewById(R.id.rgAnimalType);
@@ -31,6 +32,10 @@ public class RegisterActivity extends AppCompatActivity {
         etLighting = findViewById(R.id.etLighting);
         etWaterLevel = findViewById(R.id.etWaterLevel);
         waterLevelLayout = findViewById(R.id.waterLevelLayout); // 수위 설정 레이아웃
+
+        // 데이터 수신
+        Intent intent = getIntent();
+        CageData cageData = intent.getParcelableExtra("cageData");
 
         // 동물 선택 시 수위 설정 표시/숨김 처리
         rgAnimalType.setOnCheckedChangeListener((group, checkedId) -> {

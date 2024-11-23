@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
+import com.example.prittercare.model.CageData;
 import com.example.prittercare.view.adapters.CageListAdapter;
 
 import java.util.ArrayList;
@@ -42,16 +44,26 @@ public class CageListActivity extends AppCompatActivity {
         // SharedPreferences 초기화
         sharedPreferences = getSharedPreferences("CageData", Context.MODE_PRIVATE);
 
-        // 저장된 데이터 불러오기
-        loadSavedData();
+        // 전달된 데이터 확인
+        Intent intent = getIntent();
+        List<CageData> cageDataList = intent.getParcelableArrayListExtra("cageDataList");
 
-        // Adapter 설정
-        adapter = new CageListAdapter(this, cageList, position -> {
-            // 아이템 꾹 눌렀을 때
-            selectedPosition = position;
-            btnDelete.setVisibility(View.VISIBLE);
-            btnCancel.setVisibility(View.VISIBLE);
-        });
+        if (cageDataList != null && !cageDataList.isEmpty()) {
+            adapter = new CageListAdapter(cageDataList);
+            rvCageList.setAdapter(adapter);
+
+            // 클릭 리스너 설정
+            adapter.setOnItemClickListener(cage -> {
+                Intent editIntent = new Intent(CageListActivity.this, CageListEditActivity.class);
+                editIntent.putExtra("cageData", cage);
+                startActivity(editIntent);
+            });
+        } else {
+            cageDataList = new ArrayList<>(); // 빈 리스트 초기화
+            adapter = new CageListAdapter(cageDataList);
+            rvCageList.setAdapter(adapter);
+        }
+
         rvCageList.setAdapter(adapter);
 
         // 삭제/취소 버튼 초기화
@@ -118,7 +130,7 @@ public class CageListActivity extends AppCompatActivity {
 
     // 플러스 버튼 클릭 시 등록 화면으로 이동
     public void onAddClick(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
+        Intent intent = new Intent(this, CageListEditActivity.class);
         addCageLauncher.launch(intent); // ActivityResultLauncher로 실행
     }
 

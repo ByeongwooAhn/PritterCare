@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.ReservationModel;
+import com.example.prittercare.model.ReservationData;
 import com.example.prittercare.view.adapters.ReservationAdapter;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class ReservationActivity extends AppCompatActivity {
     // RecyclerView 및 어댑터
     private RecyclerView recyclerView;
     private ReservationAdapter adapter;
-    private List<ReservationModel> alarmList;
+    private List<ReservationData> alarmList;
 
     // 삭제 레이아웃 및 선택된 알람 위치
     private LinearLayout deleteLayout;
@@ -96,7 +96,7 @@ public class ReservationActivity extends AppCompatActivity {
 
         // 알람 추가 또는 수정 시 처리
         if (resultCode == RESULT_OK) {
-            ReservationModel updatedAlarm = (ReservationModel) data.getSerializableExtra("updated_alarm");
+            ReservationData updatedAlarm = (ReservationData) data.getSerializableExtra("updated_alarm");
             if (requestCode == REQUEST_CODE_ADD_ALARM) {
                 alarmList.add(updatedAlarm); // 새 알람 추가
             } else if (requestCode == REQUEST_CODE_EDIT_ALARM) {

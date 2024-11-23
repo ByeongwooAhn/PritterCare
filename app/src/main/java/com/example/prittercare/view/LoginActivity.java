@@ -11,9 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.databinding.ActivityLoginBinding;
 import com.example.prittercare.model.ApiService;
-import com.example.prittercare.model.LoginRequest;
+import com.example.prittercare.model.CageData;
+import com.example.prittercare.model.request.LoginRequest;
+import com.example.prittercare.model.response.LoginResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,85 +27,96 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private ActivityLoginBinding binding; // View Binding을 위한 변수
-    private boolean isBackPressedOnce = false; // 뒤로 가기 버튼 중복 클릭 확인용 변수
+    private ActivityLoginBinding binding;
+    private boolean isBackPressedOnce = false;
 
-    // Retrofit을 위한 기본 URL 설정
-    private static final String BASE_URL = "http://medicine.p-e.kr"; // 서버의 Spring Boot API 엔드포인트
+    private static final String BASE_URL = "http://medicine.p-e.kr";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityLoginBinding.inflate(getLayoutInflater()); // View Binding 객체 초기화
-        setContentView(binding.getRoot()); // View 설정
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        // 로그인 화면 상단의 뒤로 가기 버튼 숨기기
+        // 상단 바 - 뒤로가기 버튼 비활성화
         binding.layoutToolbar.btnBack.setVisibility(View.GONE);
 
-        // 뒤로 가기 버튼이 눌렸을 때의 동작 설정
+        // 스마트폰 자체 - 뒤로가기 버튼 두번 클릭 시 앱 종료
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (isBackPressedOnce) {
-                    // 두 번 눌렀을 경우 앱 종료
                     finishAffinity();
                 } else {
-                    // 처음 눌렀을 경우 안내 메시지 표시
-                    Toast.makeText(LoginActivity.this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "다시 한번 누르면 앱이 종료 됩니다.", Toast.LENGTH_SHORT).show();
                     isBackPressedOnce = true;
-
-                    // 2초 후 isBackPressedOnce 값을 초기화하여 중복 클릭 방지
-                    new android.os.Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            isBackPressedOnce = false;
-                        }
-                    }, 2000); // 2초 설정
+                    new android.os.Handler().postDelayed(() -> isBackPressedOnce = false, 2000);
                 }
             }
         });
 
-        // Sign Up 버튼 클릭 시 SignUpActivity로 이동
+        // 회원가입 버튼
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
+                moveToSignUp();
             }
         });
 
-        // Find Account 버튼 클릭 시 FindAccountActivity로 이동
+        // 계정 찾기 버튼
         binding.btnFindAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, FindAccountActivity.class);
-                startActivity(intent);
+                moveToFindAccount();
             }
         });
 
-        // Login 버튼 클릭 시 ID와 PW 입력 확인 후 로그인 요청
+        // 로그인 버튼
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 로그인 성공
-                Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class); // MainActivity로 이동
-                startActivity(intent);
-
-                String username = binding.tvLoginId.getText().toString(); // 사용자 ID 가져오기
-                String password = binding.tvLoginPw.getText().toString(); // 사용자 PW 가져오기
+                String username = binding.tvLoginId.getText().toString();
+                String password = binding.tvLoginPw.getText().toString();
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    // 입력 필드가 비어있는 경우 메시지 출력
-                    Toast.makeText(LoginActivity.this, "로그인 정보를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "로그인 정보를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else {
-                    logIn(username, password); // 로그인 메서드 호출
+                    logIn(username, password); // 로그인 실행
                 }
             }
         });
     }
 
-    // 로그인 요청 메서드 정의
+    // 사육장 정보 불러오기 테스트
+    private void testCheckCageData(String userName) {
+        List<CageData> dummyCages = new ArrayList<>();
+        dummyCages.add(new CageData("C123", "햄토리 하우스", "3", "22", "50", "2", "-1"));
+        dummyCages.add(new CageData("C124", "닌자 거북이네 집", "2", "28", "70", "3", "5"));
+
+        if (dummyCages != null && !dummyCages.isEmpty()) {
+            StringBuilder logMessage = new StringBuilder("###### 사육장 데이터 ######\n");
+            for (CageData cage : dummyCages) {
+                logMessage.append(String.format(
+                        "CageSerialNumber: %s\nCageName: %s\nAnimalType: %s\nTemperature: %s°C\nHumidity: %s%%\nLighting: %s\nWaterLevel: %s\n\n",
+                        cage.getCageSerialNumber(),
+                        cage.getCageName(),
+                        cage.getAnimalType(),
+                        cage.getTemperature(),
+                        cage.getHumidity(),
+                        cage.getLighting(),
+                        cage.getWaterLevel()
+                ));
+            }
+            Log.d("CageData", logMessage.toString());
+            moveToSelectCage(dummyCages);
+        } else {
+            Log.d("CageData", "###### 사육장 데이터가 없습니다 ######");
+            moveToNewCage();
+        }
+    }
+
+
+    // 로그인 요청 메서드
     private void logIn(String username, String password) {
         // Retrofit 인스턴스 생성 및 설정
         Retrofit retrofit = new Retrofit.Builder()
@@ -109,36 +124,30 @@ public class LoginActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create()) // Gson 컨버터 팩토리 추가
                 .build();
 
-        // API 인터페이스 생성
         ApiService apiService = retrofit.create(ApiService.class);
 
-        // 로그인 요청 데이터 생성
         LoginRequest loginRequest = new LoginRequest(username, password);
 
-        // Retrofit 비동기 요청 호출
-        Call<Boolean> call = apiService.logIn(loginRequest); // Boolean 반환 값으로 로그인 결과 받기
+        // 수정된 경로에 맞춰 호출
+        Call<Boolean> call = apiService.logIn(loginRequest);
 
-        // 서버 응답을 처리하는 콜백 설정
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.isSuccessful()) { // 응답 성공 시
-                    Boolean isLoginSuccessful = response.body(); // 응답 본문에서 결과 가져오기
+                if (response.isSuccessful()) {
+                    Log.d("LoginResponse", response.body().toString());
+                    Boolean isLoginSuccessful = response.body();
                     if (isLoginSuccessful != null && isLoginSuccessful) {
-                        // 로그인 성공
                         Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class); // MainActivity로 이동
-                        startActivity(intent);
+                        testCheckCageData(username);
                     } else {
-                        // 로그인 실패 (잘못된 ID/PW)
-                        Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "잘못된 아이디 혹은 비밀번호 입니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // 서버가 오류를 반환한 경우
                     Toast.makeText(LoginActivity.this, "서버 오류", Toast.LENGTH_SHORT).show();
-                    Log.e("LoginError", "Response Code: " + response.code()); // 오류 코드 로그 출력
+                    Log.e("LoginError", "Response Code: " + response.code());
                     try {
-                        String errorBody = response.errorBody().string(); // 오류 본문 로그 출력
+                        String errorBody = response.errorBody().string();
                         Log.e("LoginError", "Error Body: " + errorBody);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -153,5 +162,61 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("LoginActivity", "Network Error", t); // 네트워크 오류 로그 출력
             }
         });
+    }
+
+    // 사육장 정보 불러오기 메서드
+    private void checkCageData(String username) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        Call<List<CageData>> call = apiService.getCageData(username);
+        call.enqueue(new Callback<List<CageData>>() {
+            @Override
+            public void onResponse(Call<List<CageData>> call, Response<List<CageData>> response) {
+                if (response.isSuccessful()) {
+                    List<CageData> cageDataList = response.body();
+
+                    if (cageDataList != null && !cageDataList.isEmpty()) {
+                        moveToSelectCage(cageDataList);
+                    }else {
+                        moveToNewCage();
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "사육장 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CageData>> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "사육장 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("CageDataError", "Network Error", t);
+            }
+        });
+    }
+
+
+    private void moveToNewCage() {
+        Intent intent = new Intent(LoginActivity.this, CageListEditActivity.class);
+        startActivity(intent);
+    }
+
+    private void moveToSelectCage(List<CageData> cageDataList) {
+        Intent intent = new Intent(LoginActivity.this, CageListActivity.class);
+        intent.putParcelableArrayListExtra("cageDataList", new ArrayList<>(cageDataList));
+        startActivity(intent);
+    }
+
+    private void moveToSignUp() {
+        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+        startActivity(intent);
+    }
+
+    private void moveToFindAccount() {
+        Intent intent = new Intent(LoginActivity.this, FindAccountActivity.class);
+        startActivity(intent);
     }
 }

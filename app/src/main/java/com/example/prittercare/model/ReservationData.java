@@ -2,7 +2,7 @@ package com.example.prittercare.model;
 
 import java.io.Serializable;
 
-public class ReservationModel implements Serializable {
+public class ReservationData implements Serializable {
     private String time;
     private String date;
     private boolean isEnabled;
@@ -11,7 +11,7 @@ public class ReservationModel implements Serializable {
     private int dailyCycle; // 일주기
     private int hourlyCycle; // 시간주기
 
-    public ReservationModel(String time, String date, boolean isEnabled, String name, String type, int dailyCycle, int hourlyCycle) {
+    public ReservationData(String time, String date, boolean isEnabled, String name, String type, int dailyCycle, int hourlyCycle) {
         this.time = time;
         this.date = date;
         this.isEnabled = isEnabled;
@@ -21,7 +21,7 @@ public class ReservationModel implements Serializable {
         this.hourlyCycle = hourlyCycle;
     }
 
-    public ReservationModel(String time, String date, boolean isEnabled, String name, String type) {
+    public ReservationData(String time, String date, boolean isEnabled, String name, String type) {
     }
 
     // Getters and setters
