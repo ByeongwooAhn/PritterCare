@@ -25,7 +25,7 @@
         android:id="@+id/ivAnimalImage"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/ic_turtle"
+        android:src="@drawable/ic_hamster"
         android:contentDescription="케이지 동물 이미지"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp" />

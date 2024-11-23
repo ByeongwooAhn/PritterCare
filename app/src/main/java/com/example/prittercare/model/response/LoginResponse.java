@@ -9,7 +9,7 @@ public class LoginResponse {
     private String username;
     private List<CageData> cages; // 케이지 리스트
 
-    public LoginResponse(boolean success, String username, List<CageData> cages){
+    public LoginResponse(boolean success, String username, List<CageData> cages) {
         this.success = success;
         this.username = username;
         this.cages = cages;

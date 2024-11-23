@@ -13,7 +13,6 @@ import com.example.prittercare.databinding.ActivityLoginBinding;
 import com.example.prittercare.model.ApiService;
 import com.example.prittercare.model.CageData;
 import com.example.prittercare.model.request.LoginRequest;
-import com.example.prittercare.model.response.LoginResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;

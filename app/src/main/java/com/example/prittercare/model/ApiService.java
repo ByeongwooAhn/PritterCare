@@ -2,8 +2,6 @@ package com.example.prittercare.model;
 
 import com.example.prittercare.model.request.LoginRequest;
 import com.example.prittercare.model.request.SignUpRequest;
-import com.example.prittercare.model.response.LoginResponse;
-import com.example.prittercare.model.CageData;
 
 import java.util.List;
 
