@@ -121,7 +121,7 @@ public class LightFragment extends Fragment {
             containerLightLevel.setBackgroundResource(getContainerColorForLightLevel(currentLightLevel));  // 배경 색상 변경
         } else {
             lightLevelText.setText("조명 꺼짐");  // 조명이 꺼지면 텍스트 변경
-            lightLevelText.setTextColor(getResources().getColor(R.color.lightOFFText));  // 꺼짐 상태 텍스트 색상
+            lightLevelText.setTextColor(getResources().getColor(R.color.white));  // 꺼짐 상태 텍스트 색상
             containerLightLevel.setBackgroundResource(R.drawable.shape_card_main_light_off);  // 꺼짐 상태 배경
         }
     }
@@ -129,12 +129,12 @@ public class LightFragment extends Fragment {
     // 조명 레벨에 맞는 색상 리소스 ID 반환
     private int getColorForLightLevel(int level) {
         switch (level) {
-            case 1: return R.color.lightLevelText1;
-            case 2: return R.color.lightLevelText2;
-            case 3: return R.color.lightLevelText3;
-            case 4: return R.color.lightLevelText4;
-            case 5: return R.color.lightLevelText5;
-            default: return R.color.lightLevelText1;  // 기본 색상
+            case 1: return R.color.white;
+            case 2: return R.color.white;
+            case 3: return R.color.white;
+            case 4: return R.color.black;
+            case 5: return R.color.black;
+            default: return R.color.white;  // 기본 색상
         }
     }
 
@@ -167,11 +167,11 @@ public class LightFragment extends Fragment {
         // 활성화 버튼 스타일
         activeButton.setBackgroundResource(R.drawable.shape_button_main_light_active);
         // 활성화 텍스트 색상
-        activeButton.setTextColor(getResources().getColor(R.color.mainLightActiveBtnTextColor));
+        activeButton.setTextColor(getResources().getColor(R.color.basicColor03));
 
         // 비활성화 버튼 스타일
         inactiveButton.setBackgroundResource(R.drawable.shape_button_main_primary);
         // 비활성화 텍스트 색상
-        inactiveButton.setTextColor(getResources().getColor(R.color.mainPrimaryBtnTextColor));
+        inactiveButton.setTextColor(getResources().getColor(R.color.white));
     }
 }

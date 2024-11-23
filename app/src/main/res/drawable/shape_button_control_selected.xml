@@ -3,7 +3,7 @@
     android:shape="rectangle" >
 
     <!-- 내부 색상 -->
-    <solid android:color="@color/controlButtonSelectedColor"/>
+    <solid android:color="@color/basicColor02"/>
 
     <corners
         android:radius="10dp"/>

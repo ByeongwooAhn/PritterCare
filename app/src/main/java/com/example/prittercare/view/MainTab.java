@@ -65,7 +65,7 @@ public class MainTab extends FrameLayout {
         // TextView 초기화 : 탭 라벨 설정 및 텍스트 크기, 색상 설정
         textView = new TextView(context);
         textView.setText(tabLabel);
-        textView.setTextColor(ContextCompat.getColor(context, R.color.controlButtonTextColor));
+        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor03));
         textView.setTextSize(12);
 
         // TextView 레이아웃 설정 (정렬 위치와 마진)
@@ -100,10 +100,10 @@ public class MainTab extends FrameLayout {
         this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button_control_selected));
 
         // 아이콘 색상 변경
-        imageView.setColorFilter(ContextCompat.getColor(context, R.color.controlButtonSelectedIconColor));
+        imageView.setColorFilter(ContextCompat.getColor(context, R.color.basicColor03));
 
         // 텍스트 색상과 굵기 변경
-        textView.setTextColor(ContextCompat.getColor(context, R.color.controlButtonSelectedTextColor));
+        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor01));
         textView.setTextSize(12); // 텍스트 크기 유지
         textView.setTypeface(null, android.graphics.Typeface.BOLD);  // 텍스트를 굵게 설정
     }
@@ -123,7 +123,7 @@ public class MainTab extends FrameLayout {
         imageView.setColorFilter(null);
 
         // 텍스트 색상과 스타일 초기화
-        textView.setTextColor(ContextCompat.getColor(context, R.color.controlButtonTextColor));
+        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor03));
         textView.setTextSize(12); // 텍스트 크기 유지
         textView.setTypeface(null, android.graphics.Typeface.NORMAL);  // 텍스트 스타일을 기본으로
     }

@@ -43,13 +43,13 @@
                 android:gravity="center"
                 android:paddingEnd="10dp"
                 android:text="먹이 주기"
-                android:textColor="@color/mainPrimaryBtnTextColor" />
+                android:textColor="@color/white" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_fork_spoon"
-                app:tint="@color/mainPrimaryBtnTextColor" />
+                app:tint="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,13 +69,13 @@
                 android:gravity="center"
                 android:paddingEnd="10dp"
                 android:text="물 주기"
-                android:textColor="@color/mainPrimaryBtnTextColor" />
+                android:textColor="@color/white" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_water_glass"
-                app:tint="@color/mainPrimaryBtnTextColor" />
+                app:tint="@color/white" />
         </LinearLayout>
     </LinearLayout>
 
