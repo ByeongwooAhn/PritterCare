@@ -27,7 +27,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_light_on"
-            style="@style/MainLightActiveButtonStyle"
+            style="@style/ButtonStyle01"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -37,7 +37,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_light_off"
-            style="@style/MainPrimaryButtonStyle"
+            style="@style/ButtonStyle02"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

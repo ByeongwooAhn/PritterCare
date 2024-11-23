@@ -13,27 +13,15 @@
         <item name="android:timePickerMode">spinner</item>
         <item name="android:background">#000000</item> <!-- 배경색 설정 -->
     </style>
-    
-    <style name="MainPrimaryButtonStyle">
-        <item name="android:background">@drawable/shape_button_main_primary</item>
+
+    <style name="ButtonStyle02">
+        <item name="android:background">@drawable/shape_button02</item>
         <item name="android:stateListAnimator">@null</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="MainLightActiveButtonStyle">
-        <item name="android:background">@drawable/shape_button_main_light_active</item>
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:textColor">@color/basicColor03</item>
-    </style>
-
-    <style name="LoginPrimaryButtonStyle">
-        <item name="android:background">@drawable/shape_button_login_primary</item>
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="LoginSecondaryButtonStyle">
-        <item name="android:background">@drawable/shape_button_login_secondary</item>
+    <style name="ButtonStyle01">
+        <item name="android:background">@drawable/shape_button01</item>
         <item name="android:stateListAnimator">@null</item>
         <item name="android:textColor">@color/basicColor03</item>
     </style>

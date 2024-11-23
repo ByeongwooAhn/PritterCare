@@ -165,12 +165,12 @@ public class LightFragment extends Fragment {
     // 버튼 상태를 활성화/비활성화 상태로 전환
     private void toggleButtonState(Button activeButton, Button inactiveButton) {
         // 활성화 버튼 스타일
-        activeButton.setBackgroundResource(R.drawable.shape_button_main_light_active);
+        activeButton.setBackgroundResource(R.drawable.shape_button01);
         // 활성화 텍스트 색상
         activeButton.setTextColor(getResources().getColor(R.color.basicColor03));
 
         // 비활성화 버튼 스타일
-        inactiveButton.setBackgroundResource(R.drawable.shape_button_main_primary);
+        inactiveButton.setBackgroundResource(R.drawable.shape_button02);
         // 비활성화 텍스트 색상
         inactiveButton.setTextColor(getResources().getColor(R.color.white));
     }

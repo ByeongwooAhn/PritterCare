@@ -168,7 +168,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_login"
-                    style="@style/LoginPrimaryButtonStyle"
+                    style="@style/ButtonStyle02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="로그인" />
@@ -176,7 +176,7 @@
                 <!-- Sign Up 버튼 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_signup"
-                    style="@style/LoginSecondaryButtonStyle"
+                    style="@style/ButtonStyle01"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

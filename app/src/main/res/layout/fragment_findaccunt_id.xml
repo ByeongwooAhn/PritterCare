@@ -54,7 +54,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_find_id"
-            style="@style/LoginPrimaryButtonStyle"
+            style="@style/ButtonStyle02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="이메일로 전송" />

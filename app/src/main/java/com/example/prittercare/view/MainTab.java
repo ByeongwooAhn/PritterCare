@@ -46,7 +46,7 @@ public class MainTab extends FrameLayout {
         // FrameLayout 기본 크기와 배경 설정
         this.setLayoutParams(new LayoutParams(
                 dpToPx(context, 80), dpToPx(context, 80)));
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button_control));
+        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button01));
 
         // ImageView 초기화 : 아이콘 설정 및 크기, 스타일 설정
         imageView = new ImageView(context);
@@ -97,7 +97,7 @@ public class MainTab extends FrameLayout {
             return;
         }
         // 배경을 선택된 상태로 변경
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button_control_selected));
+        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button02));
 
         // 아이콘 색상 변경
         imageView.setColorFilter(ContextCompat.getColor(context, R.color.basicColor03));
@@ -117,7 +117,7 @@ public class MainTab extends FrameLayout {
             return;
         }
         // 기본 배경으로 설정
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button_control));
+        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button01));
 
         // 아이콘 색상 초기화
         imageView.setColorFilter(null);
