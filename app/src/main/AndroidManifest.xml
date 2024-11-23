@@ -21,6 +21,9 @@
             android:name=".view.main.ReservationActivity"
             android:exported="false" />
         <activity
+            android:name=".view.main.reservation.AlarmEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.MainActivity"
             android:exported="false" />
         <activity

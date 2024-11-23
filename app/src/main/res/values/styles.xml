@@ -8,4 +8,34 @@
         <item name="android:textCursorDrawable">@color/etCursorColor</item>
     </style>
 
+    <!-- Custom TimePicker Style -->
+    <style name="CustomTimePickerStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:timePickerMode">spinner</item>
+        <item name="android:background">#000000</item> <!-- 배경색 설정 -->
+    </style>
+    
+    <style name="MainPrimaryButtonStyle">
+        <item name="android:background">@drawable/shape_button_main_primary</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/mainPrimaryBtnTextColor</item>
+    </style>
+
+    <style name="MainLightActiveButtonStyle">
+        <item name="android:background">@drawable/shape_button_main_light_active</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/mainLightActiveBtnTextColor</item>
+    </style>
+
+    <style name="LoginPrimaryButtonStyle">
+        <item name="android:background">@drawable/shape_button_login_primary</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/loginPrimaryBtnTextColor</item>
+    </style>
+
+    <style name="LoginSecondaryButtonStyle">
+        <item name="android:background">@drawable/shape_button_login_secondary</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/loginSecondaryBtnTextColor</item>
+    </style>
+
 </resources>
