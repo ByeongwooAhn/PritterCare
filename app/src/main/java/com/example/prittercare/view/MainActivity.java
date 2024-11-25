@@ -2,6 +2,7 @@ package com.example.prittercare.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
@@ -12,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityMainBinding;
+import com.example.prittercare.model.MQTTHelper;
 import com.example.prittercare.view.fragments.FoodFragment;
 import com.example.prittercare.view.fragments.LightFragment;
 import com.example.prittercare.view.fragments.TemperatureAndHumidtyFragment;
@@ -45,11 +47,24 @@ public class MainActivity extends AppCompatActivity {
 
     private int animalType; // 특정 동물 타입에 따른 탭 구성을 결정하는 변수
 
+    // MQTT Helper 객체
+    private MQTTHelper mqttHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+/*        // MQTTHelper 객체 초기화
+        mqttHelper = new MQTTHelper("mqtt://your-server-uri", "myClientId", "yourUsername", "yourPassword");
+        mqttHelper.initialize();
+
+        // 메시지 구독
+        mqttHelper.subscribe("test/topic");
+
+        // 메시지 발행
+        mqttHelper.publish("test/topic", "Hello from Android!", 1);*/
 
         animalType = 1; // 동물 타입 (예시로 1을 사용)
         selectedTab = TAB_INDEX_TEMPERATURE_AND_HUMIDITY; // 초기 탭 설정 (온도/습도 탭)
@@ -71,20 +86,15 @@ public class MainActivity extends AppCompatActivity {
         updateTabStyle(selectedTab); // 초기 탭 스타일 설정
 
         // 뒤로가기 버튼 클릭 시 애니메이션과 함께 현재 Activity 종료
-        binding.layoutToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_scale));
-                finish();
-            }
+        binding.layoutToolbar.btnBack.setOnClickListener(view -> {
+            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_scale));
+            mqttHelper.disconnect();
+            finish();
         });
 
         // 전체 화면 버튼 클릭 이벤트
-        binding.ivFullScreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 전체 화면 기능 구현 필요
-            }
+        binding.ivFullScreen.setOnClickListener(view -> {
+            // 전체 화면 기능 구현 필요
         });
     }
 
@@ -104,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         newTab.setOnClickListener(view -> selectTab(newTabNumber)); // 탭 클릭 시 선택된 탭으로 전환
         binding.tabContainer.addView(newTab); // 탭 컨테이너에 탭 추가
 
-        if(newTabFragmentClass != null) {
+        if (newTabFragmentClass != null) {
             tabFragments.put(newTabNumber, newTabFragmentClass); // 탭 번호와 Fragment 매핑 추가
         }
         tabViews.add(newTab); // 탭을 리스트에 추가

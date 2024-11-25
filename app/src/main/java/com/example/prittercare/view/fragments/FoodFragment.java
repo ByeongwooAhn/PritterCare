@@ -2,38 +2,78 @@ package com.example.prittercare.view.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.prittercare.R;
+import com.example.prittercare.model.MQTTHelper;
 
-/**
- * Main 화면의 식수 공급 Fragment
- */
 public class FoodFragment extends Fragment {
 
-    // 기본 생성자: Fragment는 기본적으로 파라미터가 없는 생성자를 요구함
+    private MQTTHelper mqttHelper;
+
     public FoodFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Fragment의 UI를 구성하는 메서드
-     * 해당 메서드는 onCreateView()에서 레이아웃을 inflate하여 View를 반환함.
-     * 이 메서드는 Fragment가 화면에 표시될 때 호출됨.
-     *
-     * @param inflater LayoutInflater 객체 (XML 레이아웃을 View 객체로 변환)
-     * @param container Fragment가 속할 ViewGroup (보통 null로 설정됨)
-     * @param savedInstanceState 이전 상태 정보 (복원 용도)
-     * @return 생성된 View 객체 (UI 구성)
-     */
+    public static FoodFragment newInstance() {
+        return new FoodFragment();
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // fragment_main_food 레이아웃을 inflate하여 뷰 객체 생성 후 반환
-        return inflater.inflate(R.layout.fragment_main_food, container, false);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Initialize MQTT helper
+        mqttHelper = new MQTTHelper(requireContext(), "주소", "fragmentClientId", "id", "pw");
+        mqttHelper.initialize();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main_food, container, false);
+
+        // Initialize buttons
+        LinearLayout feedFoodButton = rootView.findViewById(R.id.btn_feed_food);
+        LinearLayout feedWaterButton = rootView.findViewById(R.id.btn_feed_water);
+
+        // Set up listeners
+        feedFoodButton.setOnClickListener(v -> feedFood());
+        feedWaterButton.setOnClickListener(v -> feedWater());
+
+        return rootView;
+    }
+
+    private void feedFood() {
+        if (mqttHelper.isConnected()) {
+            mqttHelper.publish("feed/food/topic", "1", 1); // Publish food supply message
+            Toast.makeText(requireContext(), "먹이를 공급합니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "MQTT 연결 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void feedWater() {
+        if (mqttHelper.isConnected()) {
+            mqttHelper.publish("feed/water/topic", "1", 1); // Publish water supply message
+            Toast.makeText(requireContext(), "물을 공급합니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "MQTT 연결 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mqttHelper != null) {
+            mqttHelper.disconnect();
+        }
     }
 }
