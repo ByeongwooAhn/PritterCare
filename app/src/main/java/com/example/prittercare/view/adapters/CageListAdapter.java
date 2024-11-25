@@ -14,49 +14,55 @@ import com.example.prittercare.model.CageData;
 
 import java.util.List;
 
-public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.exampleCageViewHolder> {
+public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageViewHolder> {
 
     private List<CageData> cageList;
     private OnItemClickListener onItemClickListener;
 
+    // 인터페이스: 클릭 이벤트 처리
     public interface OnItemClickListener {
         void onItemClick(CageData cage);
+        void onItemLongClick(CageData cage, int position);
     }
 
+    // 생성자
     public CageListAdapter(List<CageData> cageList) {
         this.cageList = cageList;
     }
 
+    // 클릭 리스너 설정
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
 
     @NonNull
     @Override
-    public exampleCageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cage_list_item, parent, false);
-        return new exampleCageViewHolder(view);
+        return new CageViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull exampleCageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CageViewHolder holder, int position) {
         CageData cage = cageList.get(position);
 
-        // 케이지 이름 설정
+        // 데이터를 UI에 바인딩
         holder.tvCageName.setText(cage.getCageName());
+        holder.ivAnimalImage.setImageResource(getAnimalImageResource(cage.getAnimalType()));
 
-        // 이미지 리소스 설정
-        String imageResId = cage.getAnimalType();
-        int imageResource = getAnimalImageResource(imageResId);
-        if (imageResource != 0) {
-            holder.ivAnimalImage.setImageResource(imageResource);
-        }
-
-        // 아이템 클릭 리스너 설정
+        // 클릭 이벤트 바인딩
         holder.itemView.setOnClickListener(view -> {
             if (onItemClickListener != null) {
                 onItemClickListener.onItemClick(cage);
             }
+        });
+
+        // 길게 클릭 이벤트 처리
+        holder.itemView.setOnLongClickListener(view -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemLongClick(cage, holder.getAdapterPosition());
+            }
+            return true; // 롱클릭 이벤트 소비
         });
     }
 
@@ -65,6 +71,7 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.exampl
         return cageList.size();
     }
 
+    // 동물 타입에 따른 이미지 리소스 반환
     private int getAnimalImageResource(String animalType) {
         switch (animalType) {
             case "fish":
@@ -78,11 +85,12 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.exampl
         }
     }
 
-    public static class exampleCageViewHolder extends RecyclerView.ViewHolder {
+    // ViewHolder 클래스 : UI 요소와 연결
+    public static class CageViewHolder extends RecyclerView.ViewHolder {
         TextView tvCageName;
         ImageView ivAnimalImage;
 
-        public exampleCageViewHolder(@NonNull View itemView) {
+        public CageViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCageName = itemView.findViewById(R.id.tvCageName);
             ivAnimalImage = itemView.findViewById(R.id.ivAnimalImage);

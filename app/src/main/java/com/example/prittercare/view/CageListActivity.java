@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
 import com.example.prittercare.model.CageData;
+import com.example.prittercare.model.CageListRepository;
 import com.example.prittercare.view.adapters.CageListAdapter;
 
 import java.util.ArrayList;
@@ -25,12 +26,11 @@ public class CageListActivity extends AppCompatActivity {
 
     private RecyclerView rvCageList;
     private CageListAdapter adapter;
-    private List<Cage> cageList = new ArrayList<>();
-    private SharedPreferences sharedPreferences;
-    private Button btnDelete, btnCancel;
+    private List<CageData> cageList;
+    private CageListRepository repository;
+    private Button btnDelete, btnCancel, btnEdit;
     private int selectedPosition = -1; // 꾹 눌린 항목의 위치 저장
 
-    // ActivityResultLauncher 추가
     private ActivityResultLauncher<Intent> addCageLauncher;
 
     @Override
@@ -38,146 +38,88 @@ public class CageListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cage_list);
 
-        rvCageList = findViewById(R.id.rvCageList);
-        rvCageList.setLayoutManager(new LinearLayoutManager(this));
+        // Repository 초기화
+        repository = new CageListRepository(this);
+        cageList = repository.loadCages();
 
-        // SharedPreferences 초기화
-        sharedPreferences = getSharedPreferences("CageData", Context.MODE_PRIVATE);
-
-        // 전달된 데이터 확인
-        Intent intent = getIntent();
-        List<CageData> cageDataList = intent.getParcelableArrayListExtra("cageDataList");
-
-        if (cageDataList != null && !cageDataList.isEmpty()) {
-            adapter = new CageListAdapter(cageDataList);
-            rvCageList.setAdapter(adapter);
-
-            // 클릭 리스너 설정
-            adapter.setOnItemClickListener(cage -> {
-                Intent editIntent = new Intent(CageListActivity.this, CageListEditActivity.class);
-                editIntent.putExtra("cageData", cage);
-                startActivity(editIntent);
-            });
-        } else {
-            cageDataList = new ArrayList<>(); // 빈 리스트 초기화
-            adapter = new CageListAdapter(cageDataList);
-            rvCageList.setAdapter(adapter);
+        if (cageList == null || cageList.isEmpty()) {
+            Log.d("CageListActivity", "No data in repository. Initializing empty list.");
+            cageList = new ArrayList<>();
         }
 
+        // RecyclerView 설정
+        rvCageList = findViewById(R.id.rvCageList);
+        rvCageList.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CageListAdapter(cageList);
         rvCageList.setAdapter(adapter);
 
-        // 삭제/취소 버튼 초기화
+        // RecyclerView 클릭 리스너 설정
+        adapter.setOnItemClickListener(new CageListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(CageData cage) {
+                // 짧게 클릭 -> MainActivity로 이동
+                Intent intent = new Intent(CageListActivity.this, MainActivity.class);
+                intent.putExtra("cageData", cage);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(CageData cage, int position) {
+                // 길게 클릭 시 Repository에 데이터 저장
+                repository.saveSelectedCage(cage); // 선택된 데이터 저장
+                selectedPosition = position;
+                showButtons();
+            }
+        });
+
+        // 버튼 초기화 및 이벤트 설정
+        setupButtons();
+    }
+
+    private void setupButtons() {
         btnDelete = findViewById(R.id.btnDelete);
         btnCancel = findViewById(R.id.btnCancel);
+        btnEdit = findViewById(R.id.btnEdit);
 
-        // ActivityResultLauncher 초기화
-        addCageLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Intent data = result.getData();
-                        String cageName = data.getStringExtra("cageName");
-                        String animalType = data.getStringExtra("animalType");
-
-                        int imageResId;
-                        switch (animalType) {
-                            case "hamster":
-                                imageResId = R.drawable.ic_hamster;
-                                break;
-                            case "fish":
-                                imageResId = R.drawable.ic_fish;
-                                break;
-                            case "turtle":
-                            default:
-                                imageResId = R.drawable.ic_turtle;
-                                break;
-                        }
-
-                        // 새로운 케이지 추가
-                        Cage newCage = new Cage(cageName, imageResId);
-                        cageList.add(newCage);
-                        adapter.notifyItemInserted(cageList.size() - 1);
-
-                        // 데이터 저장
-                        saveData();
-                    }
-                }
-        );
-
-        // 삭제 버튼 클릭
         btnDelete.setOnClickListener(v -> {
             if (selectedPosition != -1) {
                 cageList.remove(selectedPosition);
                 adapter.notifyItemRemoved(selectedPosition);
-                selectedPosition = -1;
-                saveData(); // 데이터 저장
+                repository.saveCages(cageList);
                 hideButtons();
             }
         });
 
-        // 취소 버튼 클릭
+        btnEdit.setOnClickListener(v -> {
+            // 편집 버튼 클릭 시 CageListEditActivity로 이동
+            if (selectedPosition != -1) {
+                Intent intent = new Intent(CageListActivity.this, CageListEditActivity.class);
+                startActivity(intent);
+                hideButtons();
+            }
+        });
+
         btnCancel.setOnClickListener(v -> {
-            selectedPosition = -1;
             hideButtons();
         });
+
+        hideButtons();
     }
 
-    // 버튼 숨기기
+    private void showButtons() {
+        btnDelete.setVisibility(View.VISIBLE);
+        btnEdit.setVisibility(View.VISIBLE);
+        btnCancel.setVisibility(View.VISIBLE);
+    }
+
     private void hideButtons() {
         btnDelete.setVisibility(View.GONE);
+        btnEdit.setVisibility(View.GONE);
         btnCancel.setVisibility(View.GONE);
     }
 
-    // 플러스 버튼 클릭 시 등록 화면으로 이동
     public void onAddClick(View view) {
         Intent intent = new Intent(this, CageListEditActivity.class);
-        addCageLauncher.launch(intent); // ActivityResultLauncher로 실행
-    }
-
-    // 저장된 데이터 불러오기
-    private void loadSavedData() {
-        String savedData = sharedPreferences.getString("cageList", "");
-        if (!savedData.isEmpty()) {
-            String[] items = savedData.split(";");
-            for (String item : items) {
-                String[] parts = item.split(",");
-                if (parts.length == 2) {
-                    String name = parts[0];
-                    int imageResId = Integer.parseInt(parts[1]);
-                    cageList.add(new Cage(name, imageResId));
-                }
-            }
-        }
-    }
-
-    // 데이터 저장
-    private void saveData() {
-        StringBuilder dataBuilder = new StringBuilder();
-        for (Cage cage : cageList) {
-            dataBuilder.append(cage.getName())
-                    .append(",")
-                    .append(cage.getImageResId())
-                    .append(";");
-        }
-        sharedPreferences.edit().putString("cageList", dataBuilder.toString()).apply();
-    }
-
-    // 데이터 모델 클래스
-    public static class Cage {
-        private String name;
-        private int imageResId;
-
-        public Cage(String name, int imageResId) {
-            this.name = name;
-            this.imageResId = imageResId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getImageResId() {
-            return imageResId;
-        }
+        addCageLauncher.launch(intent);
     }
 }

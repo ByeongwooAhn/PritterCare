@@ -45,9 +45,9 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    // MQTT 의존성 추가 (Eclipse Paho)
     implementation(libs.mqtt.v3)
     implementation(libs.mqtt.service)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
