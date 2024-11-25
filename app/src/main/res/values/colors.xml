@@ -1,55 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- normal color -->
-    <color name="colorPrimary">#d0caef</color>
-    <color name="colorPrimaryDark">#6f62e3</color>
-
+    <color name="basicColor01">#d0caef</color>
+    <color name="basicColor02">#6f62e3</color>
+    <color name="basicColor03">#21167c</color>
 
     <color name="backgroundColor">#dfe0e3</color>
 
-    <color name="colorAccent">#ffffff</color>
-
-    <color name="borderColor">#d0caef</color>
-
-    <color name="controlButtonColor">#d8d3f5</color>
-    <color name="controlButtonIconColor">#7b70e6</color>
-    <color name="controlButtonTextColor">#21167c</color>
-
-    <color name="controlButtonSelectedColor">#7b70e6</color>
-    <color name="controlButtonSelectedIconColor">#21167c</color>
-    <color name="controlButtonSelectedTextColor">#d8d3f5</color>
-
-
     <!-- 기본 텍스트 색상 -->
-    <color name="primaryTextColor">#333333</color>
-    <color name="secondaryTextColor">#666666</color>
-
     <color name="etTextColor">#7a797b</color>
     <color name="etTextHintColor">#aaa9ab</color>
     <color name="etCursorColor">#aaa9ab</color>
     <color name="etHandleColor">#838383</color>
-
-    <!-- 로그인 화면 -->
-    <color name="loginPrimaryBtnColor">#7b61ff</color>
-    <color name="loginPrimaryBtnTextColor">#fcfbff</color>
-    <color name="loginPrimaryBtnRippleColor">#160082</color>
-
-    <color name="loginSecondaryBtnColor">#fcfbff</color>
-    <color name="loginSecondaryBtnTextColor">#7b61ff</color>
-    <color name="loginSecondaryBtnBorderColor">#ece6ff</color>
-    <color name="loginSecondaryBtnRippleColor">#535353</color>
-
-
-    <!-- 메인 화면 -->
-    <color name="mainLeftArrowBtnColor">#3F51B5</color>
-    <color name="mainPrimaryBtnColor">#7b70e6</color>
-    <color name="mainPrimaryBtnTextColor">#ffffff</color>
-    <color name="mainPrimaryBtnRippleColor">#d9d9d9</color>
-
-    <color name="mainLightActiveBtnColor">#fcfbff</color>
-    <color name="mainLightActiveBtnTextColor">#7b61ff</color>
-    <color name="mainLightActiveBtnBorderColor">#7b61ff</color>
-    <color name="mainLightActiveBtnRippleColor">#7b61ff</color>
 
     <!-- 조명 조절 색상 -->
     <color name="lightLevel5">#ffe13c</color>
@@ -57,14 +19,10 @@
     <color name="lightLevel3">#bfa300</color>
     <color name="lightLevel2">#8c7700</color>
     <color name="lightLevel1">#514500</color>
-    <color name="lightOFF">#000000</color>
 
-    <!-- 조명 조절 텍스트 색상-->
-    <color name="lightLevelText5">#000000</color>
-    <color name="lightLevelText4">#000000</color>
-    <color name="lightLevelText3">#ffffff</color>
-    <color name="lightLevelText2">#ffffff</color>
-    <color name="lightLevelText1">#ffffff</color>
-    <color name="lightOFFText">#ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#666666</color>
+    <color name="grayDark">#333333</color>
+    <color name="black">#000000</color>
 
 </resources>

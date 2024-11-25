@@ -1,5 +1,6 @@
 package com.example.prittercare.view;
 
+import android.service.autofill.UserData;
 import android.util.Log;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import com.example.prittercare.databinding.ActivityLoginBinding;
 import com.example.prittercare.model.ApiService;
 import com.example.prittercare.model.CageData;
 import com.example.prittercare.model.request.LoginRequest;
-import com.example.prittercare.model.response.LoginResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // 사육장 정보 불러오기 테스트
+/*    // 사육장 정보 불러오기 테스트
     private void testCheckCageData(String userName) {
         List<CageData> dummyCages = new ArrayList<>();
         dummyCages.add(new CageData("C123", "햄토리 하우스", "3", "22", "50", "2", "-1"));
@@ -99,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                 logMessage.append(String.format(
                         "CageSerialNumber: %s\nCageName: %s\nAnimalType: %s\nTemperature: %s°C\nHumidity: %s%%\nLighting: %s\nWaterLevel: %s\n\n",
                         cage.getCageSerialNumber(),
+                        cage.getUserName(),
                         cage.getCageName(),
                         cage.getAnimalType(),
                         cage.getTemperature(),
@@ -113,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("CageData", "###### 사육장 데이터가 없습니다 ######");
             moveToNewCage();
         }
-    }
+    }*/
 
 
     // 로그인 요청 메서드
@@ -129,17 +130,19 @@ public class LoginActivity extends AppCompatActivity {
         LoginRequest loginRequest = new LoginRequest(username, password);
 
         // 수정된 경로에 맞춰 호출
-        Call<Boolean> call = apiService.logIn(loginRequest);
+        Call<List<CageData>> call = apiService.logIn(loginRequest);
 
-        call.enqueue(new Callback<Boolean>() {
+        call.enqueue(new Callback<List<CageData>>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(Call<List<CageData>> call, Response<List<CageData>> response) {
+                // JSON 응답 원본 로깅
+                String rawJson = response.body().toString();
+                Log.d("LoginResponse", "Raw Json " + rawJson);
                 if (response.isSuccessful()) {
-                    Log.d("LoginResponse", response.body().toString());
-                    Boolean isLoginSuccessful = response.body();
-                    if (isLoginSuccessful != null && isLoginSuccessful) {
+                    List<CageData> cageDataList = response.body();
+                    if (cageDataList != null && !cageDataList.isEmpty()) {
                         Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                        testCheckCageData(username);
+                        moveToSelectCage(cageDataList);
                     } else {
                         Toast.makeText(LoginActivity.this, "잘못된 아이디 혹은 비밀번호 입니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -156,14 +159,14 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(Call<List<CageData>> call, Throwable t) {
                 // 네트워크 오류 등 비정상적인 경우
                 Toast.makeText(LoginActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
                 Log.e("LoginActivity", "Network Error", t); // 네트워크 오류 로그 출력
             }
         });
     }
-
+/*
     // 사육장 정보 불러오기 메서드
     private void checkCageData(String username) {
         Retrofit retrofit = new Retrofit.Builder()
@@ -181,7 +184,6 @@ public class LoginActivity extends AppCompatActivity {
                     List<CageData> cageDataList = response.body();
 
                     if (cageDataList != null && !cageDataList.isEmpty()) {
-                        moveToSelectCage(cageDataList);
                     }else {
                         moveToNewCage();
                     }
@@ -196,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("CageDataError", "Network Error", t);
             }
         });
-    }
+    }*/
 
 
     private void moveToNewCage() {

@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/jua_regular"
                 android:text="로그인"
-                android:textColor="@color/primaryTextColor"
+                android:textColor="@color/grayDark"
                 android:textSize="25sp" />
 
 
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="아이디 기억하기"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/basicColor02"
                     android:textSize="12sp" />
 
                 <Space
@@ -151,10 +151,10 @@
                     android:id="@+id/btn_find_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorAccent"
+                    android:backgroundTint="@color/white"
                     android:padding="5dp"
                     android:text="아이디 / 비밀번호 찾기"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/basicColor01"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -168,7 +168,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_login"
-                    style="@style/LoginPrimaryButtonStyle"
+                    style="@style/ButtonStyle02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="로그인" />
@@ -176,7 +176,7 @@
                 <!-- Sign Up 버튼 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_signup"
-                    style="@style/LoginSecondaryButtonStyle"
+                    style="@style/ButtonStyle01"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

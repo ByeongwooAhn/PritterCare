@@ -81,13 +81,13 @@ public class CageListActivity extends AppCompatActivity {
 
                         int imageResId;
                         switch (animalType) {
-                            case "햄스터":
+                            case "hamster":
                                 imageResId = R.drawable.ic_hamster;
                                 break;
-                            case "물고기":
+                            case "fish":
                                 imageResId = R.drawable.ic_fish;
                                 break;
-                            case "거북이":
+                            case "turtle":
                             default:
                                 imageResId = R.drawable.ic_turtle;
                                 break;

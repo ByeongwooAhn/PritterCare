@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/jua_regular"
                 android:text="회원 가입"
-                android:textColor="@color/primaryTextColor"
+                android:textColor="@color/grayDark"
                 android:textSize="25sp" />
 
 
@@ -181,7 +181,7 @@
                 <!-- Sign Up 버튼 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_signup"
-                    style="@style/LoginPrimaryButtonStyle"
+                    style="@style/ButtonStyle02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="가입하기" />

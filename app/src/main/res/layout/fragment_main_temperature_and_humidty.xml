@@ -77,7 +77,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_set_temperature"
-                    style="@style/MainPrimaryButtonStyle"
+                    style="@style/ButtonStyle02"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="확인" />
@@ -141,7 +141,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_set_humidity"
-                    style="@style/MainPrimaryButtonStyle"
+                    style="@style/ButtonStyle02"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="확인" />

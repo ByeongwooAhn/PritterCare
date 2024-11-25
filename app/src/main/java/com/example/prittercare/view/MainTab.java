@@ -46,7 +46,7 @@ public class MainTab extends FrameLayout {
         // FrameLayout 기본 크기와 배경 설정
         this.setLayoutParams(new LayoutParams(
                 dpToPx(context, 80), dpToPx(context, 80)));
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button_control));
+        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button01));
 
         // ImageView 초기화 : 아이콘 설정 및 크기, 스타일 설정
         imageView = new ImageView(context);
@@ -65,7 +65,7 @@ public class MainTab extends FrameLayout {
         // TextView 초기화 : 탭 라벨 설정 및 텍스트 크기, 색상 설정
         textView = new TextView(context);
         textView.setText(tabLabel);
-        textView.setTextColor(ContextCompat.getColor(context, R.color.controlButtonTextColor));
+        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor03));
         textView.setTextSize(12);
 
         // TextView 레이아웃 설정 (정렬 위치와 마진)
@@ -97,13 +97,13 @@ public class MainTab extends FrameLayout {
             return;
         }
         // 배경을 선택된 상태로 변경
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button_control_selected));
+        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button02));
 
         // 아이콘 색상 변경
-        imageView.setColorFilter(ContextCompat.getColor(context, R.color.controlButtonSelectedIconColor));
+        imageView.setColorFilter(ContextCompat.getColor(context, R.color.basicColor03));
 
         // 텍스트 색상과 굵기 변경
-        textView.setTextColor(ContextCompat.getColor(context, R.color.controlButtonSelectedTextColor));
+        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor01));
         textView.setTextSize(12); // 텍스트 크기 유지
         textView.setTypeface(null, android.graphics.Typeface.BOLD);  // 텍스트를 굵게 설정
     }
@@ -117,13 +117,13 @@ public class MainTab extends FrameLayout {
             return;
         }
         // 기본 배경으로 설정
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button_control));
+        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button01));
 
         // 아이콘 색상 초기화
         imageView.setColorFilter(null);
 
         // 텍스트 색상과 스타일 초기화
-        textView.setTextColor(ContextCompat.getColor(context, R.color.controlButtonTextColor));
+        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor03));
         textView.setTextSize(12); // 텍스트 크기 유지
         textView.setTypeface(null, android.graphics.Typeface.NORMAL);  // 텍스트 스타일을 기본으로
     }
