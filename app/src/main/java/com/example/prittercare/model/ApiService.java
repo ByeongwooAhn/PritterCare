@@ -13,7 +13,7 @@ public interface ApiService {
 
     // 사용자 로그인
     @POST("/accounts/login")
-    Call<Boolean> logIn(
+    Call<List<CageData>> logIn(
             @Body LoginRequest loginRequest
     );
 
@@ -21,11 +21,5 @@ public interface ApiService {
     @POST("/accounts/signup")
     Call<Void> signUp(
             @Body SignUpRequest signUpRequest
-    );
-
-    // 사용자별 케이지 데이터 가져오기
-    @POST("/accounts/cages")
-    Call<List<CageData>> getCageData(
-            @Body String username // 요청 본문으로 사용자 이름 전달
     );
 }

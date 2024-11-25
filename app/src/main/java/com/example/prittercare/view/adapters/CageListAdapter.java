@@ -67,11 +67,11 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.exampl
 
     private int getAnimalImageResource(String animalType) {
         switch (animalType) {
-            case "1":
+            case "fish":
                 return R.drawable.ic_fish;
-            case "2":
+            case "turtle":
                 return R.drawable.ic_turtle;
-            case "3":
+            case "hamster":
                 return R.drawable.ic_hamster;
             default:
                 return 0;
