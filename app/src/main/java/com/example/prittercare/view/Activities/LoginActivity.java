@@ -1,6 +1,5 @@
-package com.example.prittercare.view;
+package com.example.prittercare.view.Activities;
 
-import android.service.autofill.UserData;
 import android.util.Log;
 import android.content.Intent;
 import android.os.Bundle;
@@ -82,8 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "로그인 정보를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else {
-                    testLogin(); // 서버 대체용 테스트 로그인 메서드
-                    // logIn(username, password); // 로그인 실행
+                    // testLogin(); // 서버 대체용 테스트 로그인 메서드
+                    logIn(username, password); // 로그인 실행
                 }
             }
         });

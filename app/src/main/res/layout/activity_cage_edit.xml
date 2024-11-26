@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0"
-    tools:context=".view.CageListEditActivity">
+    tools:context=".view.Activities.CageListEditActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -19,22 +19,22 @@
 
         <!-- ReservationActivity 추가 -->
         <activity
-            android:name=".view.ReservationActivity"
+            android:name=".view.Activities.ReservationActivity"
             android:exported="false" />
         <activity
-            android:name=".view.AlarmEditActivity"
+            android:name=".view.Activities.AlarmEditActivity"
             android:exported="false" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.Activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SignUpActivity"
+            android:name=".view.Activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".view.FindAccountActivity"
+            android:name=".view.Activities.FindAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.Activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,10 +43,10 @@
         </activity>
 
         <activity
-            android:name=".view.CageListEditActivity"
+            android:name=".view.Activities.CageListEditActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".view.CageListActivity"
+            android:name=".view.Activities.CageListActivity"
             android:exported="false"></activity>
 
         <receiver android:name=".controller.ReservationReceiver" />

@@ -19,20 +19,11 @@ public class FoodFragment extends Fragment {
 
     private MQTTHelper mqttHelper;
 
-    public FoodFragment() {
-        // Required empty public constructor
-    }
-
-    public static FoodFragment newInstance() {
-        return new FoodFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Initialize MQTT helper
-        mqttHelper = new MQTTHelper(requireContext(), "주소", "fragmentClientId", "id", "pw");
-        mqttHelper.initialize();
+    // FoodFragment 생성자
+    public static FoodFragment newInstance(MQTTHelper mqttHelper) {
+        FoodFragment fragment = new FoodFragment();
+        fragment.mqttHelper = mqttHelper;
+        return fragment;
     }
 
     @Nullable
@@ -40,40 +31,34 @@ public class FoodFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_food, container, false);
 
-        // Initialize buttons
+        // 버튼 초기화
         LinearLayout feedFoodButton = rootView.findViewById(R.id.btn_feed_food);
         LinearLayout feedWaterButton = rootView.findViewById(R.id.btn_feed_water);
 
-        // Set up listeners
+        // 리스너 설정
         feedFoodButton.setOnClickListener(v -> feedFood());
         feedWaterButton.setOnClickListener(v -> feedWater());
 
         return rootView;
     }
 
+    // 먹이 공급
     private void feedFood() {
-        if (mqttHelper.isConnected()) {
-            mqttHelper.publish("feed/food/topic", "1", 1); // Publish food supply message
-            Toast.makeText(requireContext(), "먹이를 공급합니다.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(requireContext(), "MQTT 연결 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-        }
+        sendCommand("feed/water/topic", "1", "먹이를 공급합니다.");
     }
 
+    // 물 공급
     private void feedWater() {
-        if (mqttHelper.isConnected()) {
-            mqttHelper.publish("feed/water/topic", "1", 1); // Publish water supply message
-            Toast.makeText(requireContext(), "물을 공급합니다.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(requireContext(), "MQTT 연결 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-        }
+        sendCommand("feed/water/topic", "1", "물을 공급합니다.");
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mqttHelper != null) {
-            mqttHelper.disconnect();
+    // 공통 MQTT 메시지 전송 메서드
+    private void sendCommand(String topic, String message, String successToast) {
+        if (mqttHelper != null && mqttHelper.isConnected()) {
+            mqttHelper.publish(topic, message, 1);
+            Toast.makeText(requireContext(), successToast, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "MQTT 연결 실패, 다시 시도 해주세요.", Toast.LENGTH_SHORT).show();
         }
     }
 }

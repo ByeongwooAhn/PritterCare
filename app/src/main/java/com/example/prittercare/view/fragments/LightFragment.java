@@ -14,33 +14,17 @@ import androidx.fragment.app.Fragment;
 import com.example.prittercare.R;
 import com.example.prittercare.model.MQTTHelper;
 
-/**
- * Main 화면의 조명 관리 Fragment
- * 사용자가 조명을 켜고 끄며, 조명 레벨을 조절할 수 있는 기능을 제공
- */
 public class LightFragment extends Fragment {
 
     private MQTTHelper mqttHelper;
-
-    // 뷰 선언
     private TextView lightLevelText;
-    private ImageButton btnLeft;
-    private ImageButton btnRight;
-    private Button btnOn;
-    private Button btnOff;
+    private View containerLightLevel;
 
-    // 조명 레벨 관련 변수
-    private int currentLightLevel = 1; // 초기 조명 레벨 (1부터 5까지)
-    private int maxLightLevel = 5; // 최대 조명 레벨
-    private boolean isLightOn = true; // 조명 상태 (켜짐/꺼짐)
+    private int currentLightLevel = 1;
+    private int maxLightLevel = 5;
+    private boolean isLightOn = true;
 
-    private View containerLightLevel; // 조명 레벨 컨테이너
-
-    public LightFragment() {
-        // 기본 생성자
-    }
-
-    public static LightFragment newInstance() {
+    public static LightFragment newInstance(MQTTHelper mqttHelper) {
         return new LightFragment();
     }
 
@@ -58,7 +42,7 @@ public class LightFragment extends Fragment {
         // 뷰 초기화
         lightLevelText = rootView.findViewById(R.id.tv_light_level);
         btnLeft = rootView.findViewById(R.id.btn_left);
-        btnRight = rootView.findViewById(R.id.btn_right);
+        ImageButton btnRight = rootView.findViewById(R.id.btn_right);
         btnOn = rootView.findViewById(R.id.btn_light_on);
         btnOff = rootView.findViewById(R.id.btn_light_off);
         containerLightLevel = rootView.findViewById(R.id.container_light_level);
@@ -140,23 +124,35 @@ public class LightFragment extends Fragment {
 
     private int getColorForLightLevel(int level) {
         switch (level) {
-            case 1: return R.color.white;
-            case 2: return R.color.white;
-            case 3: return R.color.white;
-            case 4: return R.color.black;
-            case 5: return R.color.black;
-            default: return R.color.white;
+            case 1:
+                return R.color.white;
+            case 2:
+                return R.color.white;
+            case 3:
+                return R.color.white;
+            case 4:
+                return R.color.black;
+            case 5:
+                return R.color.black;
+            default:
+                return R.color.white;
         }
     }
 
     private int getContainerColorForLightLevel(int level) {
         switch (level) {
-            case 1: return R.drawable.shape_card_main_light_level1;
-            case 2: return R.drawable.shape_card_main_light_level2;
-            case 3: return R.drawable.shape_card_main_light_level3;
-            case 4: return R.drawable.shape_card_main_light_level4;
-            case 5: return R.drawable.shape_card_main_light_level5;
-            default: return R.drawable.shape_card_main_light_level1;
+            case 1:
+                return R.drawable.shape_card_main_light_level1;
+            case 2:
+                return R.drawable.shape_card_main_light_level2;
+            case 3:
+                return R.drawable.shape_card_main_light_level3;
+            case 4:
+                return R.drawable.shape_card_main_light_level4;
+            case 5:
+                return R.drawable.shape_card_main_light_level5;
+            default:
+                return R.drawable.shape_card_main_light_level1;
         }
     }
 

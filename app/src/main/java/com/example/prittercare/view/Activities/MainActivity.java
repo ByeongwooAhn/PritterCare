@@ -1,8 +1,7 @@
-package com.example.prittercare.view;
+package com.example.prittercare.view.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
@@ -14,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityMainBinding;
 import com.example.prittercare.model.MQTTHelper;
+import com.example.prittercare.view.MainTabView;
 import com.example.prittercare.view.fragments.FoodFragment;
 import com.example.prittercare.view.fragments.LightFragment;
 import com.example.prittercare.view.fragments.TemperatureAndHumidtyFragment;
@@ -25,13 +25,15 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding; // UI 요소를 직접 참조하지 않고 사용할 수 있게 해주는 바인딩 객체
+    private ActivityMainBinding binding;
+    private MQTTHelper mqttHelper;
 
-    // 각 탭을 나타내는 CustomTab 인스턴스
-    MainTab tabTemperatureAndHumidity;
-    MainTab tabFoodAndWater;
-    MainTab tabLight;
-    MainTab tabReservation;
+
+    // 각 탭을 나타내는 Tab 인스턴스
+    MainTabView tabTemperatureAndHumidity;
+    MainTabView tabFoodAndWater;
+    MainTabView tabLight;
+    MainTabView tabReservation;
 
     // 탭 상수 (탭 번호를 구분하는 데 사용)
     private static final int TAB_INDEX_TEMPERATURE_AND_HUMIDITY = 0;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private int animalType; // 특정 동물 타입에 따른 탭 구성을 결정하는 변수
 
     // MQTT Helper 객체
-    private MQTTHelper mqttHelper;
+    //private MQTTHelper mqttHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,24 +58,21 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-/*        // MQTTHelper 객체 초기화
-        mqttHelper = new MQTTHelper("mqtt://your-server-uri", "myClientId", "yourUsername", "yourPassword");
+        // MQTTHelper 객체 초기화
+        mqttHelper = new MQTTHelper(this, "mqtt://your-server-uri", "myClientId", "yourUsername", "yourPassword");
         mqttHelper.initialize();
 
-        // 메시지 구독
-        mqttHelper.subscribe("test/topic");
-
-        // 메시지 발행
-        mqttHelper.publish("test/topic", "Hello from Android!", 1);*/
+        // mqtt Test 통신 명령어
+        // mqttTestRequest(mqttHelper);
 
         animalType = 1; // 동물 타입 (예시로 1을 사용)
         selectedTab = TAB_INDEX_TEMPERATURE_AND_HUMIDITY; // 초기 탭 설정 (온도/습도 탭)
 
         // 각 탭에 대한 정보 초기화
-        tabTemperatureAndHumidity = new MainTab(this, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity);
-        tabFoodAndWater = new MainTab(this, "먹이 / 물", R.drawable.ic_control_food_and_water);
-        tabLight = new MainTab(this, "조명", R.drawable.ic_control_light);
-        tabReservation = new MainTab(this, "예약", R.drawable.ic_control_reservation);
+        tabTemperatureAndHumidity = new MainTabView(this, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity);
+        tabFoodAndWater = new MainTabView(this, "먹이 / 물", R.drawable.ic_control_food_and_water);
+        tabLight = new MainTabView(this, "조명", R.drawable.ic_control_light);
+        tabReservation = new MainTabView(this, "예약", R.drawable.ic_control_reservation);
 
         setupTabs(); // 각 탭과 매핑된 Fragment 초기화
 
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateTabStyle(selectedTab); // 초기 탭 스타일 설정
 
-        // 뒤로가기 버튼 클릭 시 애니메이션과 함께 현재 Activity 종료
+        // 뒤로가기 버튼 클릭 시
         binding.layoutToolbar.btnBack.setOnClickListener(view -> {
             view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.button_scale));
             mqttHelper.disconnect();
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         addTab(TAB_INDEX_RESERVATION, tabReservation, null); // 예약 탭은 Fragment가 아닌 별도의 Activity로 전환
     }
 
-    private void addTab(int newTabNumber, MainTab newTab, Class<? extends Fragment> newTabFragmentClass) {
+    private void addTab(int newTabNumber, MainTabView newTab, Class<? extends Fragment> newTabFragmentClass) {
         if (newTab == null) return; // 탭이 null인 경우 추가하지 않음
         newTab.setOnClickListener(view -> selectTab(newTabNumber)); // 탭 클릭 시 선택된 탭으로 전환
         binding.tabContainer.addView(newTab); // 탭 컨테이너에 탭 추가
@@ -162,11 +161,19 @@ public class MainActivity extends AppCompatActivity {
             View tab = tabViews.get(i);
             if (i == tabNumber) {
                 // 선택된 탭 스타일 설정
-                ((MainTab) tab).setSelectedStyle(this);
+                ((MainTabView) tab).selectTab(this);
             } else {
                 // 기본 탭 스타일 설정
-                ((MainTab) tab).setBasicStyle(this);
+                ((MainTabView) tab).unSelectTab(this);
             }
         }
+    }
+
+    private void mqttTestRequest(MQTTHelper mqttHelper) {
+        // 메시지 구독
+        mqttHelper.subscribe("test/topic");
+
+        // 메시지 발행
+        mqttHelper.publish("test/topic", "Hello from Android!", 1);
     }
 }

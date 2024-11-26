@@ -1,4 +1,4 @@
-package com.example.prittercare.view;
+package com.example.prittercare.view.Activities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
