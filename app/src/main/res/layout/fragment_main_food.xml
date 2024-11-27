@@ -26,6 +26,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/btn_feed_food"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -53,6 +54,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btn_feed_water"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

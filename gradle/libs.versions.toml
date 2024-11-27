@@ -9,7 +9,6 @@ activity = "1.9.2"
 constraintlayout = "2.1.4"
 retrofit = "2.9.0"  # Retrofit 버전 추가
 gson = "2.9.0"  # Gson 버전 추가
-paho = "1.2.5"  # Eclipse Paho MQTT 추가
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -21,7 +20,9 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }  # Retrofit 추가
 gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "gson" }  # Gson 변환기 추가
-paho = { group = "org.eclipse.paho", name = "org.eclipse.paho.client.mqttv3", version.ref = "paho" } # Paho 의존성 추가
+mqtt-v3 = "org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5"
+mqtt-service = "org.eclipse.paho:org.eclipse.paho.android.service:1.1.1"
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -52,16 +52,19 @@
             android:layout_marginTop="8dp">
 
             <RadioButton
+                android:id="@+id/rbTurtle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="거북이" />
 
             <RadioButton
+                android:id="@+id/rbHamster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="햄스터" />
 
             <RadioButton
+                android:id="@+id/rbFish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="물고기" />

@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.prittercare.R;
+import com.example.prittercare.model.MQTTHelper;
 
 /**
  * Main 화면의 조명 관리 Fragment
@@ -18,45 +20,39 @@ import com.example.prittercare.R;
  */
 public class LightFragment extends Fragment {
 
+    private MQTTHelper mqttHelper;
+
     // 뷰 선언
-    private TextView lightLevelText;  // 현재 조명 레벨 텍스트
-    private ImageButton btnLeft;  // 왼쪽 버튼 (조명 레벨 감소)
-    private ImageButton btnRight;  // 오른쪽 버튼 (조명 레벨 증가)
-    private Button btnOn;  // ON 버튼
-    private Button btnOff;  // OFF 버튼
+    private TextView lightLevelText;
+    private ImageButton btnLeft;
+    private ImageButton btnRight;
+    private Button btnOn;
+    private Button btnOff;
 
     // 조명 레벨 관련 변수
-    private int currentLightLevel = 1;  // 초기 조명 레벨 (1부터 5까지)
-    private int maxLightLevel = 5;  // 최대 조명 레벨
+    private int currentLightLevel = 1; // 초기 조명 레벨 (1부터 5까지)
+    private int maxLightLevel = 5; // 최대 조명 레벨
+    private boolean isLightOn = true; // 조명 상태 (켜짐/꺼짐)
 
-    // 조명 레벨 컨테이너
-    private View containerLightLevel;
-
-    // 조명 상태 (켜짐/꺼짐)
-    private boolean isLightOn = true;
+    private View containerLightLevel; // 조명 레벨 컨테이너
 
     public LightFragment() {
         // 기본 생성자
     }
 
-    public static LightFragment newInstance(String param1, String param2) {
-        LightFragment fragment = new LightFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    public static LightFragment newInstance() {
+        return new LightFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 전달된 인자 처리 (현재는 사용되지 않음)
-        if (getArguments() != null) {
-        }
+        mqttHelper = new MQTTHelper(requireContext(), "주소", "fragmentClientId", "id", "pw");
+        mqttHelper.initialize();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Fragment의 레이아웃을 인플레이트하여 rootView 반환
         View rootView = inflater.inflate(R.layout.fragment_main_light, container, false);
 
         // 뷰 초기화
@@ -70,63 +66,78 @@ public class LightFragment extends Fragment {
         // 초기 조명 레벨 업데이트
         updateLightLevel();
 
-        // ON 버튼 클릭 시 조명 켜기
-        btnOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleButtonState(btnOn, btnOff);
-                turnLightOn();  // 조명 켜기
-            }
+        // ON 버튼 클릭 시
+        btnOn.setOnClickListener(v -> {
+            toggleButtonState(btnOn, btnOff);
+            turnLightOn();
+            sendLightLevel(); // 현재 조명 레벨 전송
         });
 
-        // OFF 버튼 클릭 시 조명 끄기
-        btnOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleButtonState(btnOff, btnOn);
-                turnLightOff();  // 조명 끄기
-            }
+        // OFF 버튼 클릭 시
+        btnOff.setOnClickListener(v -> {
+            toggleButtonState(btnOff, btnOn);
+            turnLightOff();
+            sendLightOffSignal(); // 조명 OFF 신호 전송
         });
 
         // 왼쪽 버튼 클릭 시 조명 레벨 감소
-        btnLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLightOn && currentLightLevel > 1) {
-                    currentLightLevel--;
-                    updateLightLevel();
-                }
+        btnLeft.setOnClickListener(v -> {
+            if (isLightOn && currentLightLevel > 1) {
+                currentLightLevel--;
+                updateLightLevel();
+                sendLightLevel(); // 조명 레벨 전송
+            } else {
+                Toast.makeText(requireContext(), "최소 단계입니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
         // 오른쪽 버튼 클릭 시 조명 레벨 증가
-        btnRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLightOn && currentLightLevel < maxLightLevel) {
-                    currentLightLevel++;
-                    updateLightLevel();
-                }
+        btnRight.setOnClickListener(v -> {
+            if (isLightOn && currentLightLevel < maxLightLevel) {
+                currentLightLevel++;
+                updateLightLevel();
+                sendLightLevel(); // 조명 레벨 전송
+            } else {
+                Toast.makeText(requireContext(), "최대 단계입니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
         return rootView;
     }
 
-    // 조명 레벨을 UI에 업데이트
-    private void updateLightLevel() {
-        if (isLightOn) {
-            lightLevelText.setText(currentLightLevel + " 단계");  // 현재 조명 레벨 표시
-            lightLevelText.setTextColor(getResources().getColor(getColorForLightLevel(currentLightLevel)));  // 레벨에 맞는 색상 변경
-            containerLightLevel.setBackgroundResource(getContainerColorForLightLevel(currentLightLevel));  // 배경 색상 변경
+    // 조명 레벨을 MQTT로 전송
+    private void sendLightLevel() {
+        if (mqttHelper.isConnected()) {
+            mqttHelper.publish("light/topic", String.valueOf(currentLightLevel), 1);
+            Toast.makeText(requireContext(), "조명 단계: " + currentLightLevel, Toast.LENGTH_SHORT).show();
         } else {
-            lightLevelText.setText("조명 꺼짐");  // 조명이 꺼지면 텍스트 변경
-            lightLevelText.setTextColor(getResources().getColor(R.color.white));  // 꺼짐 상태 텍스트 색상
-            containerLightLevel.setBackgroundResource(R.drawable.shape_card_main_light_off);  // 꺼짐 상태 배경
+            Toast.makeText(requireContext(), "MQTT 연결 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // 조명 레벨에 맞는 색상 리소스 ID 반환
+    // 조명 OFF 신호를 MQTT로 전송
+    private void sendLightOffSignal() {
+        if (mqttHelper.isConnected()) {
+            mqttHelper.publish("light/topic", "0", 1);
+            Toast.makeText(requireContext(), "조명 OFF", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "MQTT 연결 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // 조명 레벨을 UI에 업데이트
+    private void updateLightLevel() {
+        if (isLightOn) {
+            lightLevelText.setText(currentLightLevel + " 단계");
+            lightLevelText.setTextColor(getResources().getColor(getColorForLightLevel(currentLightLevel)));
+            containerLightLevel.setBackgroundResource(getContainerColorForLightLevel(currentLightLevel));
+        } else {
+            lightLevelText.setText("조명 꺼짐");
+            lightLevelText.setTextColor(getResources().getColor(R.color.white));
+            containerLightLevel.setBackgroundResource(R.drawable.shape_card_main_light_off);
+        }
+    }
+
     private int getColorForLightLevel(int level) {
         switch (level) {
             case 1: return R.color.white;
@@ -134,11 +145,10 @@ public class LightFragment extends Fragment {
             case 3: return R.color.white;
             case 4: return R.color.black;
             case 5: return R.color.black;
-            default: return R.color.white;  // 기본 색상
+            default: return R.color.white;
         }
     }
 
-    // 조명 레벨에 맞는 컨테이너 배경 색상 리소스 ID 반환
     private int getContainerColorForLightLevel(int level) {
         switch (level) {
             case 1: return R.drawable.shape_card_main_light_level1;
@@ -146,32 +156,25 @@ public class LightFragment extends Fragment {
             case 3: return R.drawable.shape_card_main_light_level3;
             case 4: return R.drawable.shape_card_main_light_level4;
             case 5: return R.drawable.shape_card_main_light_level5;
-            default: return R.drawable.shape_card_main_light_level1;  // 기본 배경
+            default: return R.drawable.shape_card_main_light_level1;
         }
     }
 
-    // 조명을 켜는 메서드
     private void turnLightOn() {
         isLightOn = true;
         updateLightLevel();
     }
 
-    // 조명을 끄는 메서드
     private void turnLightOff() {
         isLightOn = false;
         updateLightLevel();
     }
 
-    // 버튼 상태를 활성화/비활성화 상태로 전환
     private void toggleButtonState(Button activeButton, Button inactiveButton) {
-        // 활성화 버튼 스타일
         activeButton.setBackgroundResource(R.drawable.shape_button01);
-        // 활성화 텍스트 색상
         activeButton.setTextColor(getResources().getColor(R.color.basicColor03));
 
-        // 비활성화 버튼 스타일
         inactiveButton.setBackgroundResource(R.drawable.shape_button02);
-        // 비활성화 텍스트 색상
         inactiveButton.setTextColor(getResources().getColor(R.color.white));
     }
 }

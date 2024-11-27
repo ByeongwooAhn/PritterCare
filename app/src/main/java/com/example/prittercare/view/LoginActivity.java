@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.prittercare.databinding.ActivityLoginBinding;
 import com.example.prittercare.model.ApiService;
 import com.example.prittercare.model.CageData;
+import com.example.prittercare.model.CageListRepository;
 import com.example.prittercare.model.request.LoginRequest;
 
 import java.io.IOException;
@@ -81,40 +82,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "로그인 정보를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else {
-                    logIn(username, password); // 로그인 실행
+                    testLogin(); // 서버 대체용 테스트 로그인 메서드
+                    // logIn(username, password); // 로그인 실행
                 }
             }
         });
     }
-
-/*    // 사육장 정보 불러오기 테스트
-    private void testCheckCageData(String userName) {
-        List<CageData> dummyCages = new ArrayList<>();
-        dummyCages.add(new CageData("C123", "햄토리 하우스", "3", "22", "50", "2", "-1"));
-        dummyCages.add(new CageData("C124", "닌자 거북이네 집", "2", "28", "70", "3", "5"));
-
-        if (dummyCages != null && !dummyCages.isEmpty()) {
-            StringBuilder logMessage = new StringBuilder("###### 사육장 데이터 ######\n");
-            for (CageData cage : dummyCages) {
-                logMessage.append(String.format(
-                        "CageSerialNumber: %s\nCageName: %s\nAnimalType: %s\nTemperature: %s°C\nHumidity: %s%%\nLighting: %s\nWaterLevel: %s\n\n",
-                        cage.getCageSerialNumber(),
-                        cage.getUserName(),
-                        cage.getCageName(),
-                        cage.getAnimalType(),
-                        cage.getTemperature(),
-                        cage.getHumidity(),
-                        cage.getLighting(),
-                        cage.getWaterLevel()
-                ));
-            }
-            Log.d("CageData", logMessage.toString());
-            moveToSelectCage(dummyCages);
-        } else {
-            Log.d("CageData", "###### 사육장 데이터가 없습니다 ######");
-            moveToNewCage();
-        }
-    }*/
 
 
     // 로그인 요청 메서드
@@ -166,40 +139,23 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-/*
-    // 사육장 정보 불러오기 메서드
-    private void checkCageData(String username) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        ApiService apiService = retrofit.create(ApiService.class);
+    /**
+     * 테스트용 로그인 메서드 - 서버가 꺼져 있을 때 더미 데이터를 사용.
+     */
+    private void testLogin() {
+        // 더미 데이터 생성
+        List<CageData> dummyCageDataList = new ArrayList<>();
+        dummyCageDataList.add(new CageData("12345", "testUser", "Hamster Cage", "hamster", "25", "50", "5", "50"));
+        dummyCageDataList.add(new CageData("67890", "testUser", "Fish Tank", "fish", "20", "60", "1", "50"));
 
-        Call<List<CageData>> call = apiService.getCageData(username);
-        call.enqueue(new Callback<List<CageData>>() {
-            @Override
-            public void onResponse(Call<List<CageData>> call, Response<List<CageData>> response) {
-                if (response.isSuccessful()) {
-                    List<CageData> cageDataList = response.body();
+        // 테스트 성공 메시지 출력
+        Toast.makeText(this, "더미 데이터를 사용해 로그인 성공", Toast.LENGTH_SHORT).show();
+        Log.d("TestLogin", "Dummy data used for login: " + dummyCageDataList);
 
-                    if (cageDataList != null && !cageDataList.isEmpty()) {
-                    }else {
-                        moveToNewCage();
-                    }
-                } else {
-                    Toast.makeText(LoginActivity.this, "사육장 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<CageData>> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "사육장 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-                Log.e("CageDataError", "Network Error", t);
-            }
-        });
-    }*/
-
+        // 다음 화면으로 이동
+        moveToSelectCage(dummyCageDataList);
+    }
 
     private void moveToNewCage() {
         Intent intent = new Intent(LoginActivity.this, CageListEditActivity.class);
@@ -207,8 +163,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void moveToSelectCage(List<CageData> cageDataList) {
+        // Repository 에 데이터 저장
+        CageListRepository repository = new CageListRepository(this);
+        repository.saveCages(cageDataList);
+
+        // 다음 화면으로 이동
         Intent intent = new Intent(LoginActivity.this, CageListActivity.class);
-        intent.putParcelableArrayListExtra("cageDataList", new ArrayList<>(cageDataList));
         startActivity(intent);
     }
 
