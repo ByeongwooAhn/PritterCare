@@ -52,6 +52,10 @@ public class FoodFragment extends Fragment {
         sendCommand("feed/water/topic", "1", "물을 공급합니다.");
     }
 
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
     // 공통 MQTT 메시지 전송 메서드
     private void sendCommand(String topic, String message, String successToast) {
         if (mqttHelper != null && mqttHelper.isConnected()) {

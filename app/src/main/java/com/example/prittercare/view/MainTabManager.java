@@ -1,6 +1,7 @@
 package com.example.prittercare.view;
 
 import android.content.Intent;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,7 +26,7 @@ public class MainTabManager {
     private final ActivityMainBinding binding;
     private final MQTTHelper mqttHelper;
 
-    private int selectedTab = 0;
+    private int selectedTab = -1;
     private final List<MainTabView> tabs = new ArrayList<>();
     private final Map<Integer, Fragment> tabFragments = new HashMap<>();
 
@@ -69,23 +70,27 @@ public class MainTabManager {
         if (selectedTab == tabIndex) return;
 
         if (tabIndex == TAB_RESERVATION) {
-            // 예약 탭은 별도 Activity로 전환
             Intent intent = new Intent(activity, ReservationActivity.class);
             activity.startActivity(intent);
             return;
         }
 
-        // Fragment 교체
         Fragment fragment = tabFragments.get(tabIndex);
         if (fragment != null) {
             FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
             transaction.replace(binding.fragmentContainer.getId(), fragment);
             transaction.commit();
+        } else {
+            showToast("프레그먼트가 null 입니다.");
         }
 
         // 탭 스타일 업데이트
         updateTabStyle(tabIndex);
         selectedTab = tabIndex;
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
 
     private void updateTabStyle(int selectedTabIndex) {

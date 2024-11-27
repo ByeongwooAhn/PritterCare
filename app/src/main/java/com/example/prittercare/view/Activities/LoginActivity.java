@@ -82,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "로그인 정보를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else {
-                    testLogin(); // 서버 대체용 테스트 로그인 메서드
-                    //logIn(username, password); // 로그인 실행
+                    //testLogin(); // 서버 대체용 테스트 로그인 메서드
+                    logIn(username, password); // 로그인 실행
                 }
             }
         });
@@ -113,10 +113,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     if ("success".equals(apiResponse.getStatus())) {
                         List<CageData> cageDataList = apiResponse.getData().getCages();
-                        Toast.makeText(LoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                         moveToSelectCage(cageDataList);
                     } else {
-                        Toast.makeText(LoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, "서버 오류", Toast.LENGTH_SHORT).show();

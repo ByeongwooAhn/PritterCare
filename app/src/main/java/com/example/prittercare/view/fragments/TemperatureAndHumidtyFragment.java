@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,10 @@ public class TemperatureAndHumidtyFragment extends Fragment {
             String humidity = ((EditText) rootView.findViewById(R.id.et_set_humidity)).getText().toString();
             sendCommand("humidity/topic", humidity, "습도 설정: " + humidity);
         });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void sendCommand(String topic, String message, String successToast) {
