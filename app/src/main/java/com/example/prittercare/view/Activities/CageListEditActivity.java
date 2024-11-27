@@ -90,7 +90,7 @@ public class CageListEditActivity extends AppCompatActivity {
 
         try {
             selectedCage.setCageName(cageName);
-            selectedCage.setAniamlTyple(selectedAnimal);
+            selectedCage.setAniamlType(selectedAnimal);
             selectedCage.setTemperature(temperatureStr);
             selectedCage.setHumidity(humidityStr);
             selectedCage.setLighting(lightingStr);

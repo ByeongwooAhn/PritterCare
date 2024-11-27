@@ -30,7 +30,13 @@ public class CageData implements Parcelable {
     @SerializedName("env_water_level")
     private String waterLevel;
 
-    public CageData(String cageSerialNumber, String userName, String cageName, String animalType, String temperature, String humidity, String lighting, String waterLevel) {
+    @SerializedName("setType")
+    private String setType;
+
+    @SerializedName("setValue")
+    private String setValue;
+
+    public CageData(String cageSerialNumber, String userName, String cageName, String animalType, String temperature, String humidity, String lighting, String waterLevel, String setType, String setValue) {
         this.cageSerialNumber = cageSerialNumber;
         this.userName = userName;
         this.cageName = cageName;
@@ -39,6 +45,8 @@ public class CageData implements Parcelable {
         this.humidity = humidity;
         this.lighting = lighting;
         this.waterLevel = waterLevel;
+        this.setType = setType;
+        this.setValue = setValue;
     }
 
     // Parcelable 구현
@@ -51,6 +59,8 @@ public class CageData implements Parcelable {
         humidity = in.readString();
         lighting = in.readString();
         waterLevel = in.readString();
+        setType = in.readString();
+        setValue = in.readString();
     }
 
     public static final Creator<CageData> CREATOR = new Creator<CageData>() {
@@ -80,6 +90,8 @@ public class CageData implements Parcelable {
         dest.writeString(humidity);
         dest.writeString(lighting);
         dest.writeString(waterLevel);
+        dest.writeString(setType);
+        dest.writeString(setValue);
     }
 
     // Getter & Setter
@@ -115,12 +127,20 @@ public class CageData implements Parcelable {
         return waterLevel;
     }
 
+    public String getSetType() {
+        return setType;
+    }
+
+    public String getSetValue() {
+        return setValue;
+    }
+
     public void setCageName(String cageName) {
         this.cageName = cageName;
     }
 
-    public void setAniamlTyple(String aniamlTyple) {
-        this.animalType = aniamlTyple;
+    public void setAniamlType(String aniamlType) {
+        this.animalType = aniamlType;
     }
 
     public void setTemperature(String temperature) {

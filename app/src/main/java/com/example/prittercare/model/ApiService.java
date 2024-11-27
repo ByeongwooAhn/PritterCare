@@ -11,13 +11,9 @@ public interface ApiService {
 
     // 사용자 로그인
     @POST("/accounts/login")
-    Call<ApiResponse> logIn(
-            @Body LoginRequest loginRequest
-    );
+    Call<ApiResponse> logIn(@Body LoginRequest loginRequest);
 
     // 사용자 회원가입
     @POST("/accounts/signup")
-    Call<Void> signUp(
-            @Body SignUpRequest signUpRequest
-    );
+    Call<Void> signUp(@Body SignUpRequest signUpRequest);
 }

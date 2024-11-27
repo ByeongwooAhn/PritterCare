@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.ReservationData;
+import com.example.prittercare.model.data.ReservationData;
 
 import java.util.List;
 
@@ -43,29 +43,29 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     public void onBindViewHolder(AlarmViewHolder holder, int position) {
         ReservationData alarm = alarmList.get(position);
 
-        holder.alarmTime.setText(alarm.getTime());
-        holder.alarmDate.setText(alarm.getDate());
+        holder.alarmTime.setText(alarm.getReserveTime());
+        holder.alarmDate.setText(alarm.getReserveDate());
 
-        if (alarm.getName() != null && !alarm.getName().isEmpty()) {
-            holder.alarmName.setText(alarm.getName());
+        if (alarm.getReserveName() != null && !alarm.getReserveName().isEmpty()) {
+            holder.alarmName.setText(alarm.getReserveName());
             holder.alarmName.setVisibility(View.VISIBLE);
         } else {
             holder.alarmName.setVisibility(View.GONE);
         }
 
         // 주기 설정 표시
-        if (alarm.getDailyCycle() > 0) {
-            holder.alarmCycle.setText(String.format("%d일마다", alarm.getDailyCycle()));
+        if (alarm.getDayLoop() > 0) {
+            holder.alarmCycle.setText(String.format("%d일마다", alarm.getDayLoop()));
             holder.alarmCycle.setVisibility(View.VISIBLE);
-        } else if (alarm.getHourlyCycle() > 0) {
-            holder.alarmCycle.setText(String.format("%d시간마다", alarm.getHourlyCycle()));
+        } else if (alarm.getTimeLoop() > 0) {
+            holder.alarmCycle.setText(String.format("%d시간마다", alarm.getTimeLoop()));
             holder.alarmCycle.setVisibility(View.VISIBLE);
         } else {
             holder.alarmCycle.setVisibility(View.GONE); // 주기가 없으면 숨김
         }
 
         // 예약 종류에 따른 이미지 설정
-        switch (alarm.getType()) {
+        switch (alarm.getReserveType()) {
             case "water":
                 holder.alarmTypeIcon.setImageResource(R.drawable.ic_water);
                 break;

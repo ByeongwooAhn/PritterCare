@@ -1,45 +1,30 @@
 package com.example.prittercare.model;
 
 import com.example.prittercare.model.data.CageData;
+import com.example.prittercare.model.data.ReservationData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class ApiResponse {
-    @SerializedName("status")
-    private String status;
+    @SerializedName("cages")
+    private List<CageData> cages;
 
-    @SerializedName("message")
-    private String message;
+    @SerializedName("reservations")
+    private List<ReservationData> reservations;
 
-    @SerializedName("data")
-    private Data data;
-
-    public String getStatus() {
-        return status;
+    public ApiResponse(List<CageData> cages, List<ReservationData> reservations) {
+        this.cages = cages;
+        this.reservations = reservations;
     }
 
-    public String getMessage() {
-        return message;
+    public List<CageData> getCages() {
+        return cages;
     }
 
-    public Data getData() {
-        return data;
-    }
-
-    public static class Data {
-        @SerializedName("cages")
-        private List<CageData> cages;
-
-/*        @SerializedName("reservations")
-        private List<ReservationData> reservations;*/
-
-        public List<CageData> getCages() {
-            return cages;
-        }
-
-/*        public List<ReservationData> getReservations() {
-            return reservations;
-        }*/
+    public List<ReservationData> getReservations() {
+        return reservations;
     }
 }
+
+

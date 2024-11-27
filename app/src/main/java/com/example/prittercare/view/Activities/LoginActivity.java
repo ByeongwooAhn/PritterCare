@@ -39,10 +39,9 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // 상단 바 - 뒤로가기 버튼 비활성화
+        // 뒤로가기 버튼 설정
         binding.layoutToolbar.btnBack.setVisibility(View.GONE);
 
-        // 스마트폰 자체 - 뒤로가기 버튼 두번 클릭 시 앱 종료
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -99,54 +98,32 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-
         LoginRequest loginRequest = new LoginRequest(username, password);
 
-        // 수정된 경로에 맞춰 호출
-        Call<ApiResponse> call = apiService.logIn(loginRequest);
-
-        call.enqueue(new Callback<ApiResponse>() {
+        apiService.logIn(loginRequest).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse apiResponse = response.body();
+                    List<CageData> cages = apiResponse.getCages();
 
-                    if ("success".equals(apiResponse.getStatus())) {
-                        List<CageData> cageDataList = apiResponse.getData().getCages();
-                        Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                        moveToSelectCage(cageDataList);
+                    if (cages != null && !cages.isEmpty()) {
+                        showToast("로그인 성공");
+                        moveToSelectCage(cages);
                     } else {
-                        Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                        showToast("사용자 데이터를 불러오지 못했습니다.");
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "서버 오류", Toast.LENGTH_SHORT).show();
+                    showToast("로그인 실패");
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                // 네트워크 오류 등 비정상적인 경우
-                Toast.makeText(LoginActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
-                Log.e("LoginActivity", "Network Error", t); // 네트워크 오류 로그 출력
+                showToast("네트워크 오류 발생");
+                Log.e("LoginActivity", "Network Error", t);
             }
         });
-    }
-
-    /**
-     * 테스트용 로그인 메서드 - 서버가 꺼져 있을 때 더미 데이터를 사용.
-     */
-    private void testLogin() {
-        // 더미 데이터 생성
-        List<CageData> dummyCageDataList = new ArrayList<>();
-        dummyCageDataList.add(new CageData("12345", "testUser", "Hamster Cage", "hamster", "25", "50", "5", "50"));
-        dummyCageDataList.add(new CageData("67890", "testUser", "Fish Tank", "fish", "20", "60", "1", "50"));
-
-        // 테스트 성공 메시지 출력
-        Toast.makeText(this, "더미 데이터를 사용해 로그인 성공", Toast.LENGTH_SHORT).show();
-        Log.d("TestLogin", "Dummy data used for login: " + dummyCageDataList);
-
-        // 다음 화면으로 이동
-        moveToSelectCage(dummyCageDataList);
     }
 
     private void moveToNewCage() {
@@ -172,5 +149,9 @@ public class LoginActivity extends AppCompatActivity {
     private void moveToFindAccount() {
         Intent intent = new Intent(LoginActivity.this, FindAccountActivity.class);
         startActivity(intent);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

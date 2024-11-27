@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.ReservationData;
+import com.example.prittercare.model.data.ReservationData;
 import com.example.prittercare.view.adapters.ReservationAdapter;
 
 import java.util.ArrayList;

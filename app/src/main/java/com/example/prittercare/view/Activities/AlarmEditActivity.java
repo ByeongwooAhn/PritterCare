@@ -19,7 +19,7 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.ReservationData;
+import com.example.prittercare.model.data.ReservationData;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -142,7 +142,7 @@ public class AlarmEditActivity extends AppCompatActivity {
     }
 
     private void setExistingAlarmData() {
-        String time = alarm.getTime();
+        String time = alarm.getReserveTime();
         int hour, minute;
 
         try {
@@ -189,14 +189,14 @@ public class AlarmEditActivity extends AppCompatActivity {
             type = "light";
         }
 
-        alarm.setName(alarmName);
-        alarm.setType(type);
+        alarm.setReserveName(alarmName);
+        alarm.setReserveType(type);
 
         // 주기 설정 저장
         int dailyCycle = (int) dailyCycleSpinner.getSelectedItem();
         int hourlyCycle = (int) hourlyCycleSpinner.getSelectedItem();
-        alarm.setDailyCycle(dailyCycle);
-        alarm.setHourlyCycle(hourlyCycle);
+        alarm.setDayLoop(dailyCycle);
+        alarm.setTimeLoop(hourlyCycle);
 
         // 시간 설정
         int hour, minute;
@@ -211,10 +211,10 @@ public class AlarmEditActivity extends AppCompatActivity {
         String amPm = hour < 12 ? "오전" : "오후";
         int displayHour = hour % 12 == 0 ? 12 : hour % 12;
 
-        alarm.setTime(String.format("%s %02d:%02d", amPm, displayHour, minute));
+        alarm.setReserveTime(String.format("%s %02d:%02d", amPm, displayHour, minute));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 (E)", Locale.KOREAN);
-        alarm.setDate(dateFormat.format(selectedDate.getTime()));
+        alarm.setReserveDate(dateFormat.format(selectedDate.getTime()));
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra("updated_alarm", alarm);
