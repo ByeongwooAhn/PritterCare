@@ -20,7 +20,7 @@
 
         <include
             android:id="@+id/layout_toolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar_basic" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout_findaccount"

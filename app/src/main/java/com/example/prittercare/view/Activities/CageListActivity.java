@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
+import com.example.prittercare.databinding.ActivityCageListBinding;
 import com.example.prittercare.model.data.CageData;
 import com.example.prittercare.model.CageListRepository;
 import com.example.prittercare.view.adapters.CageListAdapter;
@@ -21,11 +23,10 @@ import java.util.List;
 
 public class CageListActivity extends AppCompatActivity {
 
-    private RecyclerView rvCageList;
+    private ActivityCageListBinding binding;
     private CageListAdapter adapter;
     private List<CageData> cageList;
     private CageListRepository repository;
-    private Button btnDelete, btnCancel, btnEdit;
     private int selectedPosition = -1; // 꾹 눌린 항목의 위치 저장
 
     private ActivityResultLauncher<Intent> addCageLauncher;
@@ -33,7 +34,10 @@ public class CageListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cage_list);
+
+        // View Binding 초기화
+        binding = ActivityCageListBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // Repository 초기화
         repository = new CageListRepository(this);
@@ -45,10 +49,9 @@ public class CageListActivity extends AppCompatActivity {
         }
 
         // RecyclerView 설정
-        rvCageList = findViewById(R.id.rvCageList);
-        rvCageList.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvCageList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CageListAdapter(cageList);
-        rvCageList.setAdapter(adapter);
+        binding.rvCageList.setAdapter(adapter);
 
         // RecyclerView 클릭 리스너 설정
         adapter.setOnItemClickListener(new CageListAdapter.OnItemClickListener() {
@@ -74,11 +77,7 @@ public class CageListActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        btnDelete = findViewById(R.id.btnDelete);
-        btnCancel = findViewById(R.id.btnCancel);
-        btnEdit = findViewById(R.id.btnEdit);
-
-        btnDelete.setOnClickListener(v -> {
+        binding.btnCageDelete.setOnClickListener(v -> {
             if (selectedPosition != -1) {
                 cageList.remove(selectedPosition);
                 adapter.notifyItemRemoved(selectedPosition);
@@ -87,7 +86,7 @@ public class CageListActivity extends AppCompatActivity {
             }
         });
 
-        btnEdit.setOnClickListener(v -> {
+        binding.btnCageEdit.setOnClickListener(v -> {
             // 편집 버튼 클릭 시 CageListEditActivity로 이동
             if (selectedPosition != -1) {
                 Intent intent = new Intent(CageListActivity.this, CageListEditActivity.class);
@@ -96,27 +95,40 @@ public class CageListActivity extends AppCompatActivity {
             }
         });
 
-        btnCancel.setOnClickListener(v -> {
+        binding.btnCageCancel.setOnClickListener(v -> {
             hideButtons();
+        });
+
+        binding.layoutCageToolbar.btnCageBack.setOnClickListener(view -> {
+            view.startAnimation(AnimationUtils.loadAnimation(CageListActivity.this, R.anim.button_scale));
+            finish();
+        });
+
+        binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view -> {
+            view.startAnimation(AnimationUtils.loadAnimation(CageListActivity.this, R.anim.button_scale));
+            Intent intent = new Intent(this, CageListEditActivity.class);
+            intent.putExtra("isNew", true); // 새 데이터를 추가하는 플래그 설정
+            startActivity(intent);
         });
 
         hideButtons();
     }
 
     private void showButtons() {
-        btnDelete.setVisibility(View.VISIBLE);
-        btnEdit.setVisibility(View.VISIBLE);
-        btnCancel.setVisibility(View.VISIBLE);
+        binding.btnCageDelete.setVisibility(View.VISIBLE);
+        binding.btnCageEdit.setVisibility(View.VISIBLE);
+        binding.btnCageCancel.setVisibility(View.VISIBLE);
     }
 
     private void hideButtons() {
-        btnDelete.setVisibility(View.GONE);
-        btnEdit.setVisibility(View.GONE);
-        btnCancel.setVisibility(View.GONE);
+        binding.btnCageDelete.setVisibility(View.GONE);
+        binding.btnCageEdit.setVisibility(View.GONE);
+        binding.btnCageCancel.setVisibility(View.GONE);
     }
 
-    public void onAddClick(View view) {
-        Intent intent = new Intent(this, CageListEditActivity.class);
-        addCageLauncher.launch(intent);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null; // 메모리 누수 방지
     }
 }

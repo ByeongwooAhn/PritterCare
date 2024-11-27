@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         animalType = "turtle";
 
         // MQTTHelper 객체 초기화
-        mqttHelper = new MQTTHelper(this, "url", "myClientId", "username", "password");
+        mqttHelper = new MQTTHelper(this, "tcp://medicine.p-e.kr:1884", "myClientId", "GuestMosquitto", "MosquittoGuest1119!");
         mqttHelper.initialize();
 
         tabManager = new MainTabManager(this, binding, mqttHelper);

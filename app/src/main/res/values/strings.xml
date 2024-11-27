@@ -9,4 +9,5 @@
     <string name="password_hint">비밀번호</string>
     <string name="password_check_hint">비밀번호 재입력</string>
     <string name="email_hint">이메일 주소</string>
+    <string name="btn_add">케이지 추가\n</string>
 </resources>

@@ -49,6 +49,19 @@ public class CageData implements Parcelable {
         this.setValue = setValue;
     }
 
+    public CageData() {
+        this.cageSerialNumber = "";
+        this.userName = "";
+        this.cageName = "";
+        this.animalType = "";
+        this.temperature = "";
+        this.humidity = "";
+        this.lighting = "";
+        this.waterLevel = "";
+        this.setType = "";
+        this.setValue = "";
+    }
+
     // Parcelable 구현
     protected CageData(Parcel in) {
         cageSerialNumber = in.readString();

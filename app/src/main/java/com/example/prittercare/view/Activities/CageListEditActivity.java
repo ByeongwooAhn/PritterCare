@@ -37,7 +37,15 @@ public class CageListEditActivity extends AppCompatActivity {
 
         // Repository 및 데이터 로드
         repository = new CageListRepository(this);
-        selectedCage = repository.loadSelectedCage();
+
+        boolean isNew = getIntent().getBooleanExtra("isNew", false);
+
+        if (isNew) {
+            // 새 데이터 추가 모드
+            selectedCage = new CageData();
+        } else {
+            selectedCage = repository.loadSelectedCage();
+        }
 
         // UI에 데이터 바인딩
         if (selectedCage != null) {
