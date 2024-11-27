@@ -39,6 +39,7 @@ android {
 dependencies {
     implementation(libs.retrofit)  // Retrofit 의존성 추가
     implementation(libs.gson)  // Gson 변환기 의존성 추가
+    implementation(libs.paho) // Eclipse Paho MQTT 클라이언트 의존성 추가
 
     implementation(libs.appcompat)
     implementation(libs.material)
