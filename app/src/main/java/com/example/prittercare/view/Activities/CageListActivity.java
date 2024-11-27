@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.CageData;
+import com.example.prittercare.model.data.CageData;
 import com.example.prittercare.model.CageListRepository;
 import com.example.prittercare.view.adapters.CageListAdapter;
 

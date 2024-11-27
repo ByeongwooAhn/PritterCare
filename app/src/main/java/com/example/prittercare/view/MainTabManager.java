@@ -9,6 +9,7 @@ import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityMainBinding;
 import com.example.prittercare.model.MQTTHelper;
 import com.example.prittercare.view.Activities.MainActivity;
+import com.example.prittercare.view.Activities.ReservationActivity;
 import com.example.prittercare.view.fragments.FoodFragment;
 import com.example.prittercare.view.fragments.LightFragment;
 import com.example.prittercare.view.fragments.TemperatureAndHumidtyFragment;
@@ -90,9 +91,9 @@ public class MainTabManager {
     private void updateTabStyle(int selectedTabIndex) {
         for (int i = 0; i < tabs.size(); i++) {
             if (i == selectedTabIndex) {
-                tabs.get(i).setSelectedStyle(activity);
+                tabs.get(i).selectTab(activity);
             } else {
-                tabs.get(i).setBasicStyle(activity);
+                tabs.get(i).unSelectTab(activity);
             }
         }
     }

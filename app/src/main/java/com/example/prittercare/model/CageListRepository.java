@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.prittercare.model.data.CageData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,5 +86,4 @@ public class CageListRepository {
         Log.d("CageListRepository", "No Selected Cage Data Found.");
         return null;
     }
-
 }

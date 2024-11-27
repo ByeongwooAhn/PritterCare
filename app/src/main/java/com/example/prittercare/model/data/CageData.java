@@ -1,4 +1,4 @@
-package com.example.prittercare.model;
+package com.example.prittercare.model.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

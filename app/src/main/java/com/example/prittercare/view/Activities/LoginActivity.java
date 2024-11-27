@@ -10,8 +10,9 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.databinding.ActivityLoginBinding;
+import com.example.prittercare.model.ApiResponse;
 import com.example.prittercare.model.ApiService;
-import com.example.prittercare.model.CageData;
+import com.example.prittercare.model.data.CageData;
 import com.example.prittercare.model.CageListRepository;
 import com.example.prittercare.model.request.LoginRequest;
 
@@ -81,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "로그인 정보를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else {
-                    // testLogin(); // 서버 대체용 테스트 로그인 메서드
-                    logIn(username, password); // 로그인 실행
+                    testLogin(); // 서버 대체용 테스트 로그인 메서드
+                    //logIn(username, password); // 로그인 실행
                 }
             }
         });
@@ -102,36 +103,28 @@ public class LoginActivity extends AppCompatActivity {
         LoginRequest loginRequest = new LoginRequest(username, password);
 
         // 수정된 경로에 맞춰 호출
-        Call<List<CageData>> call = apiService.logIn(loginRequest);
+        Call<ApiResponse> call = apiService.logIn(loginRequest);
 
-        call.enqueue(new Callback<List<CageData>>() {
+        call.enqueue(new Callback<ApiResponse>() {
             @Override
-            public void onResponse(Call<List<CageData>> call, Response<List<CageData>> response) {
-                // JSON 응답 원본 로깅
-                String rawJson = response.body().toString();
-                Log.d("LoginResponse", "Raw Json " + rawJson);
-                if (response.isSuccessful()) {
-                    List<CageData> cageDataList = response.body();
-                    if (cageDataList != null && !cageDataList.isEmpty()) {
-                        Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse apiResponse = response.body();
+
+                    if ("success".equals(apiResponse.getStatus())) {
+                        List<CageData> cageDataList = apiResponse.getData().getCages();
+                        Toast.makeText(LoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         moveToSelectCage(cageDataList);
                     } else {
-                        Toast.makeText(LoginActivity.this, "잘못된 아이디 혹은 비밀번호 입니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, "서버 오류", Toast.LENGTH_SHORT).show();
-                    Log.e("LoginError", "Response Code: " + response.code());
-                    try {
-                        String errorBody = response.errorBody().string();
-                        Log.e("LoginError", "Error Body: " + errorBody);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CageData>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // 네트워크 오류 등 비정상적인 경우
                 Toast.makeText(LoginActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
                 Log.e("LoginActivity", "Network Error", t); // 네트워크 오류 로그 출력

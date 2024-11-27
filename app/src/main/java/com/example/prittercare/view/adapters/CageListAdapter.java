@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.CageData;
+import com.example.prittercare.model.data.CageData;
 
 import java.util.List;
 

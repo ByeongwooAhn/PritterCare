@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
-import com.example.prittercare.model.CageData;
+import com.example.prittercare.model.data.CageData;
 import com.example.prittercare.model.CageListRepository;
 
 public class CageListEditActivity extends AppCompatActivity {
