@@ -62,14 +62,14 @@ public class MainTabView extends FrameLayout {
     }
 
     public void selectTab(Context context) {
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button02));
+        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_tab_selected));
         imageView.setColorFilter(ContextCompat.getColor(context, R.color.basicColor03));
         textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor01));
         textView.setTypeface(null, android.graphics.Typeface.BOLD);
     }
 
     public void unSelectTab(Context context) {
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button01));
+        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_tab_unselected));
         imageView.setColorFilter(null);
         textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor03));
         textView.setTypeface(null, android.graphics.Typeface.NORMAL);
