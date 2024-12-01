@@ -24,9 +24,9 @@
         <activity
             android:name=".view.Activities.AlarmEditActivity"
             android:exported="false" />
-        <activity
+<!--        <activity
             android:name=".view.Activities.MainActivity"
-            android:exported="false" />
+            android:exported="false" />-->
         <activity
             android:name=".view.Activities.SignUpActivity"
             android:exported="false" />
@@ -34,7 +34,7 @@
             android:name=".view.Activities.FindAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".view.Activities.LoginActivity"
+            android:name=".view.Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -101,4 +101,9 @@ public class MQTTHelper {
     public boolean isConnected() {
         return mqttClient != null && mqttClient.isConnected();
     }
+
+    // 추가된 메서드
+    public MqttClient getMqttClient() {
+        return mqttClient;
+    }
 }
