@@ -23,6 +23,14 @@ public class TemperatureAndHumidtyFragment extends Fragment {
 
     private MQTTHelper mqttHelper;
 
+    // 사용자 및 장치 정보
+    private String userid = "testuser"; // 사용자 ID
+    private String serialnumber = "testnum"; // 장치 일련번호
+
+    // MQTT 토픽
+    private String TEMPERATURE_TOPIC;
+    private String HUMIDITY_TOPIC;
+
     public static TemperatureAndHumidtyFragment newInstance(MQTTHelper mqttHelper) {
         TemperatureAndHumidtyFragment fragment = new TemperatureAndHumidtyFragment();
         fragment.mqttHelper = mqttHelper;
@@ -34,6 +42,13 @@ public class TemperatureAndHumidtyFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_temperature_and_humidty, container, false);
 
+        TEMPERATURE_TOPIC = "${userid}/${serialnumber}/temperature"
+                .replace("${userid}", userid)
+                .replace("${serialnumber}", serialnumber);
+        HUMIDITY_TOPIC = "${userid}/${serialnumber}/humidity"
+                .replace("${userid}", userid)
+                .replace("${serialnumber}", serialnumber);
+
         setupButtonListeners(rootView);
         return rootView;
     }
@@ -41,12 +56,12 @@ public class TemperatureAndHumidtyFragment extends Fragment {
     private void setupButtonListeners(View rootView) {
         rootView.findViewById(R.id.btn_set_temperature).setOnClickListener(view -> {
             String temperature = ((EditText) rootView.findViewById(R.id.et_set_temperature)).getText().toString();
-            sendCommand("temperature/topic", temperature, "온도 설정: " + temperature);
+            sendCommand(TEMPERATURE_TOPIC, temperature, "온도 설정: " + temperature);
         });
 
         rootView.findViewById(R.id.btn_set_humidity).setOnClickListener(view -> {
             String humidity = ((EditText) rootView.findViewById(R.id.et_set_humidity)).getText().toString();
-            sendCommand("humidity/topic", humidity, "습도 설정: " + humidity);
+            sendCommand(HUMIDITY_TOPIC, humidity, "습도 설정: " + humidity);
         });
     }
 

@@ -19,6 +19,14 @@ public class FoodFragment extends Fragment {
 
     private MQTTHelper mqttHelper;
 
+    // 사용자 및 장치 정보
+    private String userid = "testuser"; // 사용자 ID
+    private String serialnumber = "testnum"; // 장치 일련번호
+
+    // MQTT 토픽
+    private String FOOD_TOPIC;
+    private String WATER_TOPIC;
+
     // FoodFragment 생성자
     public static FoodFragment newInstance(MQTTHelper mqttHelper) {
         FoodFragment fragment = new FoodFragment();
@@ -30,6 +38,13 @@ public class FoodFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_food, container, false);
+
+        FOOD_TOPIC = "${userid}/${serialnumber}/food"
+                .replace("${userid}", userid)
+                .replace("${serialnumber}", serialnumber);
+        WATER_TOPIC = "${userid}/${serialnumber}/water"
+                .replace("${userid}", userid)
+                .replace("${serialnumber}", serialnumber);
 
         // 버튼 초기화
         LinearLayout feedFoodButton = rootView.findViewById(R.id.btn_feed_food);
@@ -44,12 +59,12 @@ public class FoodFragment extends Fragment {
 
     // 먹이 공급
     private void feedFood() {
-        sendCommand("feed/water/topic", "1", "먹이를 공급합니다.");
+        sendCommand(FOOD_TOPIC, "1", "먹이를 공급합니다.");
     }
 
     // 물 공급
     private void feedWater() {
-        sendCommand("feed/water/topic", "1", "물을 공급합니다.");
+        sendCommand(WATER_TOPIC, "1", "물을 공급합니다.");
     }
 
     private void showToast(String message) {
