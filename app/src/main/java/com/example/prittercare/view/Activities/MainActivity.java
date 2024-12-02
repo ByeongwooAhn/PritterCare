@@ -21,10 +21,14 @@ public class MainActivity extends AppCompatActivity {
 
     private String animalType;
 
+    // 사용자 및 장치 정보
+    private String userid = "testuser"; // 사용자 ID
+    private String serialnumber = "testnum"; // 장치 일련번호
+
     // MQTT Topics
     /*private static final String TEMPERATURE_TOPIC = "sensor/temperature";*/
-    private static final String TEMPERATURE_TOPIC = "test/topic";
-    private static final String HUMIDITY_TOPIC = "sensor/humidity";
+    private String TEMPERATURE_TOPIC;
+    private String HUMIDITY_TOPIC;
 
     // Variables to store the latest values
     private String latestTemperature = "0°C";
@@ -38,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // MQTT 토픽 초기화
+        TEMPERATURE_TOPIC = "${userid}/${serialnumber}/temperature"
+                .replace("${userid}", userid)
+                .replace("${serialnumber}", serialnumber);
+        HUMIDITY_TOPIC = "${userid}/${serialnumber}/humidity"
+                .replace("${userid}", userid)
+                .replace("${serialnumber}", serialnumber);
 
         // 동물 타입 설정
         animalType = "turtle";

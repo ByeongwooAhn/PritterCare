@@ -27,6 +27,13 @@ public class LightFragment extends Fragment {
 
     private MQTTHelper mqttHelper;
 
+    // 사용자 및 장치 정보
+    private String userid = "testuser"; // 사용자 ID
+    private String serialnumber = "testnum"; // 장치 일련번호
+
+    // MQTT 토픽
+    private String LIGHT_TOPIC;
+
     public static LightFragment newInstance(MQTTHelper mqttHelper) {
         LightFragment fragment = new LightFragment();
         fragment.mqttHelper = mqttHelper;
@@ -38,6 +45,11 @@ public class LightFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main_light, container, false);
+
+        // MQTT 토픽 초기화
+        LIGHT_TOPIC = "${userid}/${serialnumber}/light"
+                .replace("${userid}", userid)
+                .replace("${serialnumber}", serialnumber);
 
         // 초기화 및 설정
         initializeViews(rootView);
@@ -73,7 +85,7 @@ public class LightFragment extends Fragment {
     private void turnLightOff() {
         isLightOn = false;
         updateUI();
-        sendCommand("light/topic", "0", "조명 OFF");
+        sendCommand(LIGHT_TOPIC, "0", "조명 OFF");
     }
 
     // 조명 단계를 조정하는 메서드
@@ -89,7 +101,7 @@ public class LightFragment extends Fragment {
         } else {
             currentLightLevel = newLevel;
             updateUI();
-            sendCommand("light/topic", String.valueOf(currentLightLevel), "조명 단계: " + currentLightLevel);
+            sendCommand(LIGHT_TOPIC, String.valueOf(currentLightLevel), "조명 단계: " + currentLightLevel);
         }
     }
 
