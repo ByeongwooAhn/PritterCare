@@ -106,4 +106,8 @@ public class MQTTHelper {
     public MqttClient getMqttClient() {
         return mqttClient;
     }
+
+    public Context getContext() {
+        return null;
+    }
 }

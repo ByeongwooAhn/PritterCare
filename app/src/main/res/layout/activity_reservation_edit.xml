@@ -42,8 +42,7 @@
         app:layout_constraintBottom_toBottomOf="@id/alarmDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/alarmDate"
-        app:layout_constraintTop_toTopOf="@id/alarmDate"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@id/alarmDate" />
 
     <!-- 알람 이름 입력란 -->
     <EditText
@@ -68,8 +67,7 @@
         android:background="#666666"
         app:layout_constraintTop_toBottomOf="@id/alarmNameInput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:paddingBottom="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 예약 종류 라벨 -->
     <TextView
@@ -84,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@id/alarmNameUnderline"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- 예약 종류 선택 (물, 먹이, 조명) -->
+    <!-- 예약 종류 선택 -->
     <RadioGroup
         android:id="@+id/typeSelectionGroup"
         android:layout_width="match_parent"
@@ -103,7 +101,7 @@
             android:text="물"
             android:textColor="#FFFFFF"
             android:buttonTint="#FFFFFF"
-            android:drawableTop="@drawable/ic_water"
+            android:drawableTop="@drawable/ic_water_48"
             android:gravity="center"
             android:layout_marginEnd="16dp"/>
 
@@ -129,57 +127,75 @@
             android:gravity="center"/>
     </RadioGroup>
 
+    <!-- 조명 단계 설정 라벨 -->
+    <TextView
+        android:id="@+id/lightLevelLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="조명 단계 (0~5):"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/typeSelectionGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- 조명 단계 설정 SeekBar -->
+    <SeekBar
+        android:id="@+id/lightLevelSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="5"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/lightLevelLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
     <!-- 일 주기 설정 -->
     <TextView
         android:id="@+id/dailyCycleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="    일 주기 :"
+        android:text="일 주기:"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:paddingTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/typeSelectionGroup"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/lightLevelSeekBar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
 
-    <!-- 일 주기 스피너 -->
     <Spinner
         android:id="@+id/dailyCycleSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/dailyCycleLabel"
-        app:layout_constraintTop_toBottomOf="@id/typeSelectionGroup" />
+        app:layout_constraintBaseline_toBaselineOf="@id/dailyCycleLabel" />
 
-    <!-- 시간 주기 설정 라벨 -->
+    <!-- 시간 주기 설정 -->
     <TextView
         android:id="@+id/hourlyCycleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:text="시간 주기 :"
+        android:text="시간 주기:"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/dailyCycleLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dailyCycleSpinner" />
-
-    <!-- 시간 주기 스피너 -->
-
-    <!-- 취소 버튼 -->
+        android:layout_marginTop="16dp"/>
 
     <Spinner
         android:id="@+id/hourlyCycleSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/hourlyCycleLabel"
-        app:layout_constraintTop_toBottomOf="@id/dailyCycleSpinner" />
+        app:layout_constraintBaseline_toBaselineOf="@id/hourlyCycleLabel" />
 
+
+    <!-- 버튼 -->
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="0dp"
@@ -193,7 +209,6 @@
         android:background="@android:color/transparent"
         android:padding="16dp" />
 
-    <!-- 저장 버튼 -->
     <Button
         android:id="@+id/saveButton"
         android:layout_width="0dp"

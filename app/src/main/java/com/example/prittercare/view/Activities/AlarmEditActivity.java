@@ -1,5 +1,7 @@
 package com.example.prittercare.view.Activities;
 
+import static com.example.prittercare.R.*;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,22 +28,30 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * AlarmEditActivity 클래스
+ * 예약 데이터를 추가하거나 수정하는 액티비티입니다.
+ */
 public class AlarmEditActivity extends AppCompatActivity {
 
+    // UI 요소
     private TimePicker timePicker;
     private Button saveButton, cancelButton;
     private TextView reservationDate;
     private ImageView calendarIcon;
     private Spinner dailyCycleSpinner, hourlyCycleSpinner;
-    private Calendar selectedDate;
-    private ReservationData alarm;
-    private int alarmPosition = -1;
+
+    // 예약 데이터 관련 필드
+    private Calendar selectedDate; // 선택된 날짜
+    private ReservationData alarm; // 예약 데이터 객체
+    private int alarmPosition = -1; // RecyclerView에서의 예약 위치
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_edit);
 
+        // UI 요소 초기화
         timePicker = findViewById(R.id.timePicker);
         reservationDate = findViewById(R.id.alarmDate);
         calendarIcon = findViewById(R.id.calendarIcon);
@@ -49,36 +60,74 @@ public class AlarmEditActivity extends AppCompatActivity {
         dailyCycleSpinner = findViewById(R.id.dailyCycleSpinner);
         hourlyCycleSpinner = findViewById(R.id.hourlyCycleSpinner);
 
+        // 현재 날짜를 기본값으로 설정
         selectedDate = Calendar.getInstance();
         updateDateText();
 
+        // 달력 아이콘 클릭 시 날짜 선택 다이얼로그 표시
         calendarIcon.setOnClickListener(v -> showDatePickerDialog());
+
+        // TimePicker를 24시간 형식으로 설정
         timePicker.setIs24HourView(false);
 
+        // 인텐트에서 기존 예약 데이터 가져오기
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("alarm_data")) {
             alarm = (ReservationData) intent.getSerializableExtra("alarm_data");
             alarmPosition = intent.getIntExtra("alarm_position", -1);
             if (alarm != null) {
-                setExistingAlarmData();
+                setExistingAlarmData(); // 기존 데이터 UI에 표시
             } else {
                 Log.e("AlarmEditActivity", "Received null alarm data");
             }
         } else {
-            alarm = new ReservationData("", "", false, "", ""); // 예약 종류 초기값 포함
+            // 새로운 예약 데이터 생성 (기본값 포함)
+            alarm = new ReservationData("", "", "", "");
         }
 
+        // 저장 버튼 클릭 시 예약 데이터 저장
         saveButton.setOnClickListener(v -> saveAlarm());
+        // 취소 버튼 클릭 시 액티비티 종료
         cancelButton.setOnClickListener(v -> finish());
 
-        // 일 주기 설정 (0 ~ 7일)
-        Integer[] dailyCycleOptions = {0, 1, 2, 3, 4, 5, 6, 7}; // 0 추가
+        // 예약 타입 선택 라디오 그룹
+        RadioGroup typeSelectionGroup = findViewById(R.id.typeSelectionGroup);
+        TextView lightLevelLabel = findViewById(R.id.lightLevelLabel);
+        SeekBar lightLevelSeekBar = findViewById(R.id.lightLevelSeekBar);
+
+        // 예약 타입에 따른 조명 단계 UI 표시 여부 설정
+        typeSelectionGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radioLight) {
+                lightLevelLabel.setVisibility(View.VISIBLE);
+                lightLevelSeekBar.setVisibility(View.VISIBLE);
+            } else {
+                lightLevelLabel.setVisibility(View.GONE);
+                lightLevelSeekBar.setVisibility(View.GONE);
+            }
+        });
+
+        // 조명 단계 변경 리스너
+        lightLevelSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                lightLevelLabel.setText("조명 단계 (0~5): " + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        // 일 주기 스피너 설정 (0 ~ 7일)
+        Integer[] dailyCycleOptions = {0, 1, 2, 3, 4, 5, 6, 7};
         ArrayAdapter<Integer> dailyCycleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dailyCycleOptions);
         dailyCycleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dailyCycleSpinner.setAdapter(dailyCycleAdapter);
 
-        // 시간 주기 설정 (0 ~ 24시간)
-        Integer[] hourlyCycleOptions = new Integer[25]; // 0 ~ 24시간 설정
+        // 시간 주기 스피너 설정 (0 ~ 24시간)
+        Integer[] hourlyCycleOptions = new Integer[25];
         for (int i = 0; i <= 24; i++) {
             hourlyCycleOptions[i] = i;
         }
@@ -86,39 +135,35 @@ public class AlarmEditActivity extends AppCompatActivity {
         hourlyCycleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hourlyCycleSpinner.setAdapter(hourlyCycleAdapter);
 
-        // 일 주기 Spinner 선택 리스너 설정
+        // 스피너 선택 리스너 (일 주기와 시간 주기가 동시에 설정되지 않도록 처리)
         dailyCycleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int dailyCycleValue = (Integer) dailyCycleSpinner.getSelectedItem();
-                if (dailyCycleValue != 0) { // 일 주기가 0이 아닌 값으로 설정되었을 때
-                    hourlyCycleSpinner.setSelection(0); // 시간 주기를 0으로 설정
+                if (dailyCycleValue != 0) {
+                    hourlyCycleSpinner.setSelection(0);
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // 선택이 없을 때는 아무 동작도 하지 않음
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // 시간 주기 Spinner 선택 리스너 설정
         hourlyCycleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int hourlyCycleValue = (Integer) hourlyCycleSpinner.getSelectedItem();
-                if (hourlyCycleValue != 0) { // 시간 주기가 0이 아닌 값으로 설정되었을 때
-                    dailyCycleSpinner.setSelection(0); // 일 주기를 0으로 설정
+                if (hourlyCycleValue != 0) {
+                    dailyCycleSpinner.setSelection(0);
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // 선택이 없을 때는 아무 동작도 하지 않음
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
+    // 날짜 선택 다이얼로그 표시
     private void showDatePickerDialog() {
         int year = selectedDate.get(Calendar.YEAR);
         int month = selectedDate.get(Calendar.MONTH);
@@ -136,11 +181,13 @@ public class AlarmEditActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    // 날짜 텍스트 업데이트
     private void updateDateText() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 (E)", Locale.KOREAN);
         reservationDate.setText(dateFormat.format(selectedDate.getTime()));
     }
 
+    // 기존 예약 데이터를 UI에 설정
     private void setExistingAlarmData() {
         String time = alarm.getReserveTime();
         int hour, minute;
@@ -161,7 +208,7 @@ public class AlarmEditActivity extends AppCompatActivity {
                 minute = 0;
             }
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 timePicker.setHour(hour);
                 timePicker.setMinute(minute);
             } else {
@@ -173,6 +220,7 @@ public class AlarmEditActivity extends AppCompatActivity {
         }
     }
 
+    // 예약 데이터 저장
     private void saveAlarm() {
         EditText alarmNameInput = findViewById(R.id.alarmNameInput);
         String alarmName = alarmNameInput.getText().toString();
@@ -216,6 +264,7 @@ public class AlarmEditActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 (E)", Locale.KOREAN);
         alarm.setReserveDate(dateFormat.format(selectedDate.getTime()));
 
+        // 결과 데이터 반환
         Intent resultIntent = new Intent();
         resultIntent.putExtra("updated_alarm", alarm);
         resultIntent.putExtra("alarm_position", alarmPosition);
