@@ -1,5 +1,6 @@
 package com.example.prittercare.view.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.prittercare.R;
 import com.example.prittercare.model.data.CageData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageViewHolder> {
 
-    private List<CageData> cageList;
+    private List<CageData> cageList = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
 
     // 인터페이스: 클릭 이벤트 처리
@@ -27,7 +29,7 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
 
     // 생성자
     public CageListAdapter(List<CageData> cageList) {
-        this.cageList = cageList;
+        this.cageList = (cageList != null) ? cageList : new ArrayList<>();
     }
 
     // 클릭 리스너 설정
@@ -48,7 +50,9 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
 
         // 데이터를 UI에 바인딩
         holder.tvCageName.setText(cage.getCageName());
+        Log.d("CageData Binding to UI", "CageName : " + cage.getCageName());
         holder.ivAnimalImage.setImageResource(getAnimalImageResource(cage.getAnimalType()));
+        Log.d("CageData Binding to UI", "AnimalType : " + cage.getAnimalType());
 
         // 클릭 이벤트 바인딩
         holder.itemView.setOnClickListener(view -> {
@@ -68,7 +72,8 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
 
     @Override
     public int getItemCount() {
-        return cageList.size();
+        Log.d("Adapter", "Item count: " + (cageList != null ? cageList.size() : 0));
+        return cageList != null ? cageList.size() : 0;
     }
 
     // 동물 타입에 따른 이미지 리소스 반환
