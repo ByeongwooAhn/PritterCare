@@ -1,49 +1,61 @@
 package com.example.prittercare.model.data;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class ReservationData implements Serializable {
-    @SerializedName("cage_serial_number")
+
+    @SerializedName("cage_serial_number") // 장치 ID
     private String cageSerialNumber;
 
-    @SerializedName("reserve_name")
+    @SerializedName("reserve_name") // 예약 이름
     private String reserveName;
 
-    @SerializedName("reserve_date")
+    @SerializedName("reserve_date") // 예약 날짜
     private String reserveDate;
 
-    @SerializedName("reserve_time")
+    @SerializedName("reserve_time") // 예약 시간
     private String reserveTime;
 
-    @SerializedName("activate")
-    private boolean activate;
+    @SerializedName("day_loop") // 일주기
+    private int dayLoop;
 
-    @SerializedName("day_loop")
-    private int dayLoop; // 일주기
+    @SerializedName("time_loop") // 시간주기
+    private int timeLoop;
 
-    @SerializedName("time_loop")
-    private int timeLoop; // 시간주기
+    @SerializedName("reserve_type") // 예약 종류 ("water", "food", "light")
+    private String reserveType;
 
-    @SerializedName("reserve_type")
-    private String reserveType; // 예약 종류
+    @SerializedName("reserve_light_level")
+    private int lightLevel; // 조명 단계 (0 ~ 5)
 
-    public ReservationData(String cageSerialNumber, String reserveTime, String reserveDate, boolean activate, String reserveName, String reserveType, int dayLoop, int timeLoop) {
+    private int id; // 예약 고유 ID
+    private String userId; // 사용자 ID 추가
+    private int hour;
+    private int minute;
+
+    public ReservationData(String cageSerialNumber, String reserveTime, String reserveDate, String reserveName, String reserveType, int dayLoop, int timeLoop) {
         this.cageSerialNumber = cageSerialNumber;
         this.reserveName = reserveName;
         this.reserveDate = reserveDate;
         this.reserveTime = reserveTime;
-        this.activate = activate;
         this.dayLoop = dayLoop;
         this.timeLoop = timeLoop;
         this.reserveType = reserveType;
     }
 
-    public ReservationData(String reserveTime, String reserveDate, boolean activate, String reserveName, String reserveType) {
+    public ReservationData(String reserveTime, String reserveDate, String reserveName, String reserveType) {
     }
 
     // Getters and setters
+    public String getCageSerialNumber() {
+        return cageSerialNumber;
+    }
+
+    public void setCageSerialNumber(String cageSerialNumber) {
+        this.cageSerialNumber = cageSerialNumber;
+    }
+
     public String getReserveTime() {
         return reserveTime;
     }
@@ -58,14 +70,6 @@ public class ReservationData implements Serializable {
 
     public void setReserveDate(String reserveDate) {
         this.reserveDate = reserveDate;
-    }
-
-    public boolean isActivate() {
-        return activate;
-    }
-
-    public void setActivate(boolean activate) {
-        this.activate = activate;
     }
 
     public String getReserveName() {
@@ -98,5 +102,45 @@ public class ReservationData implements Serializable {
 
     public void setTimeLoop(int timeLoop) {
         this.timeLoop = timeLoop;
+    }
+
+    public int getLightLevel() {
+        return lightLevel;
+    }
+
+    public void setLightLevel(int lightLevel) {
+        this.lightLevel = lightLevel;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

@@ -5,12 +5,23 @@
     android:orientation="vertical"
     android:background="#000000">
 
-    <!-- 상단 텍스트 라벨과 알람 추가 버튼을 포함하는 레이아웃 -->
+    <!-- 상단 텍스트 라벨, 뒤로가기 버튼 및 알람 추가 버튼을 포함하는 레이아웃 -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!-- 뒤로가기 버튼 -->
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back" />
+
+        <!-- 중앙 예약 텍스트 -->
         <TextView
             android:id="@+id/label"
             android:layout_width="wrap_content"
@@ -18,7 +29,7 @@
             android:text="예약"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
-            android:layout_alignParentStart="true" />
+            android:layout_centerHorizontal="true" />
 
         <!-- 알람 추가 버튼 -->
         <ImageButton
