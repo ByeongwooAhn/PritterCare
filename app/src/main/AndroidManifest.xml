@@ -37,7 +37,7 @@
         <receiver
             android:name=".view.Activities.AlarmReceiver"
             android:exported="false">
-        </receiver
+        </receiver>
         <activity
             android:name=".view.Activities.SignUpActivity"
             android:exported="false" />

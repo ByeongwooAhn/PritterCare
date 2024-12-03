@@ -64,7 +64,9 @@ public class CageListActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Log.d("CageListActivity", "Fetched cage list size: " + (cageListResponse != null ? cageListResponse.size() : "null"));
+                    for (CageData cage : cageListResponse) {
+                        Log.d("CageListActivity", "CageData: " + cage.toString());
+                    }
                     updateCageList(cageListResponse);
                 }
             }
@@ -83,11 +85,9 @@ public class CageListActivity extends AppCompatActivity {
         cageList.clear();
         if (cageListResponse != null) {
             cageList.addAll(cageListResponse);
-            Log.d("CageListActivity", "Cage list updated. Size: " + cageList.size());
         }
         DataManager.getInstance().setCageList(cageList);
         adapter.notifyDataSetChanged();
-        Log.d("CageListActivity", "Adapter notified. Item count: " + adapter.getItemCount());
     }
 
     private void setupRecyclerView() {
@@ -97,14 +97,13 @@ public class CageListActivity extends AppCompatActivity {
         binding.rvCageList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CageListAdapter(cageList);
         binding.rvCageList.setAdapter(adapter);
-        Log.d("RecyclerView Setup", "Adapter set. Item count: " + adapter.getItemCount());
 
         // recyclerView 클릭 리스너 설정
         adapter.setOnItemClickListener(new CageListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CageData cage) {
                 // 짧게 클릭 -> MainActivity 로 이동
-                moveToMainActivity();
+                moveToMainActivity(cage);
             }
 
             @Override
@@ -145,7 +144,6 @@ public class CageListActivity extends AppCompatActivity {
         binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view -> {
             view.startAnimation(AnimationUtils.loadAnimation(CageListActivity.this, R.anim.button_scale));
             Intent intent = new Intent(this, CageListEditActivity.class);
-            intent.putExtra("isNew", true); // 새 데이터를 추가하는 플래그 설정
             startActivity(intent);
         });
 
@@ -158,10 +156,11 @@ public class CageListActivity extends AppCompatActivity {
         finish();
     }
 
-    private void moveToMainActivity() {
+    private void moveToMainActivity(CageData cage) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("cageName", cage.getCageName()); // cageName 전달
+        intent.putExtra("cageSerialNumber", cage.getCageSerialNumber()); // serialNumber 전달
         startActivity(intent);
-        finish();
     }
 
     private void showButtons() {

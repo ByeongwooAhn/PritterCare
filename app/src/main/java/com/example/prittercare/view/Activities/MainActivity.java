@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
 import com.example.prittercare.databinding.ActivityMainBinding;
+import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.MQTTHelper;
 import com.example.prittercare.view.MainTabManager;
 
@@ -22,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
     private String animalType;
 
     // 사용자 및 장치 정보
-    private String userid = "testuser"; // 사용자 ID
-    private String serialnumber = "testnum"; // 장치 일련번호
+    private String cageSerialNumber; // 장치 일련번호
+    private String cageName;
+    private String userName; // 사용자 ID
 
     // MQTT Topics
     /*private static final String TEMPERATURE_TOPIC = "sensor/temperature";*/
@@ -43,13 +45,27 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // serialNumber 받기
+        cageSerialNumber = getIntent().getStringExtra("cageSerialNumber");
+        if(cageSerialNumber != null) {
+            Log.d("MainActivity", "Received cageSerialNumber : " + cageSerialNumber);
+        }
+
+        // cageName 받기
+        cageName = getIntent().getStringExtra("cageName");
+        if(cageName != null) {
+            Log.d("MainActivity", "Received cageName : " + cageName);
+        }
+
+        userName = DataManager.getInstance().getUserName();
+
         // MQTT 토픽 초기화
-        TEMPERATURE_TOPIC = "${userid}/${serialnumber}/temperature"
-                .replace("${userid}", userid)
-                .replace("${serialnumber}", serialnumber);
-        HUMIDITY_TOPIC = "${userid}/${serialnumber}/humidity"
-                .replace("${userid}", userid)
-                .replace("${serialnumber}", serialnumber);
+        TEMPERATURE_TOPIC = "${userName}/${cageSerialNumber}/temperature"
+                .replace("${userName}", userName)
+                .replace("${cageSerialNumber}", this.cageSerialNumber);
+        HUMIDITY_TOPIC = "${userName}/${cageSerialNumber}/humidity"
+                .replace("${userName}", userName)
+                .replace("${cageSerialNumber}", this.cageSerialNumber);
 
         // 동물 타입 설정
         animalType = "turtle";
@@ -79,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
         binding.ivFullScreen.setOnClickListener(view -> {
             // 전체 화면 기능 구현 필요
         });
+
+        binding.layoutToolbar.tvTitleToolbar.setText(cageName);
     }
 
     private void subscribeToTopics() {

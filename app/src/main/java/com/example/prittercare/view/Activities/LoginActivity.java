@@ -11,6 +11,7 @@ import com.example.prittercare.controller.LogController;
 import com.example.prittercare.controller.LoginCallback;
 import com.example.prittercare.controller.ToastController;
 import com.example.prittercare.databinding.ActivityLoginBinding;
+import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.DataRepository;
 
 public class LoginActivity extends AppCompatActivity {
@@ -80,6 +81,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(String token) {
                 toastController.showToast("로그인 성공");
                 logController.logInfo("########################\n토큰값 : "+token);
+                DataManager.getInstance().setUserName(userName);
+                DataManager.getInstance().setToken(token);
                 moveToCageList();
             }
 

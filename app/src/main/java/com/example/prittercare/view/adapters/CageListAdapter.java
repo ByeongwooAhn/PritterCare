@@ -24,6 +24,7 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
     // 인터페이스: 클릭 이벤트 처리
     public interface OnItemClickListener {
         void onItemClick(CageData cage);
+
         void onItemLongClick(CageData cage, int position);
     }
 
@@ -50,9 +51,8 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
 
         // 데이터를 UI에 바인딩
         holder.tvCageName.setText(cage.getCageName());
-        Log.d("CageData Binding to UI", "CageName : " + cage.getCageName());
         holder.ivAnimalImage.setImageResource(getAnimalImageResource(cage.getAnimalType()));
-        Log.d("CageData Binding to UI", "AnimalType : " + cage.getAnimalType());
+
 
         // 클릭 이벤트 바인딩
         holder.itemView.setOnClickListener(view -> {
@@ -72,7 +72,6 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
 
     @Override
     public int getItemCount() {
-        Log.d("Adapter", "Item count: " + (cageList != null ? cageList.size() : 0));
         return cageList != null ? cageList.size() : 0;
     }
 
