@@ -4,18 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewManager;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prittercare.R;
+import com.example.prittercare.controller.CageListCallback;
 import com.example.prittercare.databinding.ActivityCageListBinding;
+import com.example.prittercare.model.DataManager;
+import com.example.prittercare.model.DataRepository;
 import com.example.prittercare.model.data.CageData;
-import com.example.prittercare.model.CageListRepository;
 import com.example.prittercare.view.adapters.CageListAdapter;
 
 import java.util.ArrayList;
@@ -26,10 +27,9 @@ public class CageListActivity extends AppCompatActivity {
     private ActivityCageListBinding binding;
     private CageListAdapter adapter;
     private List<CageData> cageList;
-    private CageListRepository repository;
-    private int selectedPosition = -1; // 꾹 눌린 항목의 위치 저장
+    private int selectedPosition = -1;
 
-    private ActivityResultLauncher<Intent> addCageLauncher;
+    private DataRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,41 +39,80 @@ public class CageListActivity extends AppCompatActivity {
         binding = ActivityCageListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Repository 초기화
-        repository = new CageListRepository(this);
-        cageList = repository.loadCages();
-
-        if (cageList == null || cageList.isEmpty()) {
-            Log.d("CageListActivity", "No data in repository. Initializing empty list.");
-            cageList = new ArrayList<>();
-        }
+        // DataRepository 초기화
+        repository = new DataRepository();
 
         // RecyclerView 설정
+        setupRecyclerView();
+
+        // API 호출 및 데이터 초기화
+        fetchCageList();
+
+        // 버튼 초기화 및 이벤트 설정
+        setupButtons();
+    }
+
+    private void fetchCageList() {
+        String token = DataManager.getInstance().getUserToken(); // DataManager 에서 토큰 가져오기
+
+        repository.fetchCageList(token, new CageListCallback<CageData>() {
+            @Override
+            public void onSuccess(List<CageData> cageListResponse) {
+                if (cageListResponse == null || cageListResponse.isEmpty()) {
+                    moveToNewCageActivity();
+                    Intent intent = new Intent(CageListActivity.this, CageListEditActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Log.d("CageListActivity", "Fetched cage list size: " + (cageListResponse != null ? cageListResponse.size() : "null"));
+                    updateCageList(cageListResponse);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+                Log.e("CageListActivity", "Cage 리스트를 가져오는 데 실패했습니다.", error);
+            }
+        });
+    }
+
+    private void updateCageList(List<CageData> cageListResponse) {
+        if (cageList == null) {
+            cageList = new ArrayList<>();
+        }
+        cageList.clear();
+        if (cageListResponse != null) {
+            cageList.addAll(cageListResponse);
+            Log.d("CageListActivity", "Cage list updated. Size: " + cageList.size());
+        }
+        DataManager.getInstance().setCageList(cageList);
+        adapter.notifyDataSetChanged();
+        Log.d("CageListActivity", "Adapter notified. Item count: " + adapter.getItemCount());
+    }
+
+    private void setupRecyclerView() {
+        if (adapter == null) {
+            cageList = new ArrayList<>();
+        }
         binding.rvCageList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CageListAdapter(cageList);
         binding.rvCageList.setAdapter(adapter);
+        Log.d("RecyclerView Setup", "Adapter set. Item count: " + adapter.getItemCount());
 
-        // RecyclerView 클릭 리스너 설정
+        // recyclerView 클릭 리스너 설정
         adapter.setOnItemClickListener(new CageListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CageData cage) {
-                // 짧게 클릭 -> MainActivity로 이동
-                Intent intent = new Intent(CageListActivity.this, MainActivity.class);
-                intent.putExtra("cageData", cage);
-                startActivity(intent);
+                // 짧게 클릭 -> MainActivity 로 이동
+                moveToMainActivity();
             }
 
             @Override
             public void onItemLongClick(CageData cage, int position) {
-                // 길게 클릭 시 Repository에 데이터 저장
-                repository.saveSelectedCage(cage); // 선택된 데이터 저장
                 selectedPosition = position;
                 showButtons();
             }
         });
-
-        // 버튼 초기화 및 이벤트 설정
-        setupButtons();
     }
 
     private void setupButtons() {
@@ -81,7 +120,6 @@ public class CageListActivity extends AppCompatActivity {
             if (selectedPosition != -1) {
                 cageList.remove(selectedPosition);
                 adapter.notifyItemRemoved(selectedPosition);
-                repository.saveCages(cageList);
                 hideButtons();
             }
         });
@@ -112,6 +150,18 @@ public class CageListActivity extends AppCompatActivity {
         });
 
         hideButtons();
+    }
+
+    private void moveToNewCageActivity() {
+        Intent intent = new Intent(this, CageListEditActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void moveToMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void showButtons() {

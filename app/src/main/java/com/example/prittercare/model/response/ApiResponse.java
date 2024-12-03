@@ -1,5 +1,4 @@
-package com.example.prittercare.model;
-
+package com.example.prittercare.model.response;
 import com.example.prittercare.model.data.CageData;
 import com.example.prittercare.model.data.ReservationData;
 import com.google.gson.annotations.SerializedName;

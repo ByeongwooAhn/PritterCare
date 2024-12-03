@@ -1,4 +1,4 @@
-package com.example.prittercare.model;
+package com.example.prittercare.model.response;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +9,7 @@ import com.example.prittercare.model.data.CageData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CageListRepository {
+/*public class CageListRepository {
     private static final String PREF_NAME = "CageData";
     private static final String CAGE_LIST_KEY = "cageList";
     private static final String SELECTED_CAGE_KEY = "selectedCage";
@@ -100,4 +100,4 @@ public class CageListRepository {
         Log.d("CageListRepository", "No Selected Cage Data Found.");
         return null;
     }
-}
+}*/

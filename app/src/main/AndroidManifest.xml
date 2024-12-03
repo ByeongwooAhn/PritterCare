@@ -17,16 +17,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!-- ReservationActivity 추가 -->
+        <activity
+            android:name=".view.Activities.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.Activities.ReservationActivity"
             android:exported="false" />
         <activity
             android:name=".view.Activities.AlarmEditActivity"
             android:exported="false" />
-<!--        <activity
-            android:name=".view.Activities.MainActivity"
-            android:exported="false" />-->
         <activity
             android:name=".view.Activities.SignUpActivity"
             android:exported="false" />
@@ -35,19 +39,14 @@
             android:exported="false" />
         <activity
             android:name=".view.Activities.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
 
         <activity
             android:name=".view.Activities.CageListEditActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".view.Activities.CageListActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
 
         <receiver android:name=".controller.ReservationReceiver" />
 

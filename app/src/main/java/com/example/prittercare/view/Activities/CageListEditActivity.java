@@ -11,21 +11,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prittercare.R;
 import com.example.prittercare.model.data.CageData;
-import com.example.prittercare.model.CageListRepository;
 
 public class CageListEditActivity extends AppCompatActivity {
 
     private EditText etCageName, etTemperature, etHumidity, etLighting, etWaterLevel;
     private RadioGroup rgAnimalType;
     private View waterLevelLayout;
-    private CageListRepository repository;
     private CageData selectedCage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cage_edit);
-
+/*
         // UI 초기화
         etCageName = findViewById(R.id.etCageName);
         rgAnimalType = findViewById(R.id.rgAnimalType);
@@ -76,10 +74,10 @@ public class CageListEditActivity extends AppCompatActivity {
         rgAnimalType.setOnCheckedChangeListener((group, checkedId) -> {
             String selectedAnimal = ((RadioButton) findViewById(checkedId)).getText().toString();
             waterLevelLayout.setVisibility("햄스터".equals(selectedAnimal) ? View.GONE : View.VISIBLE);
-        });
+        });*/
     }
 
-    // 완료 버튼 클릭 시 데이터 확인 및 저장
+/*    // 완료 버튼 클릭 시 데이터 확인 및 저장
     public void onSubmitClick(View view) {
         String cageName = etCageName.getText().toString();
         int selectedAnimalId = rgAnimalType.getCheckedRadioButtonId();
@@ -111,7 +109,7 @@ public class CageListEditActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             Toast.makeText(this, "숫자를 올바르게 입력하세요.", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     // 취소 버튼 클릭 시
     public void onBackClick(View view) {
