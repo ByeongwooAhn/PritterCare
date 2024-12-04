@@ -27,7 +27,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_light_on"
-            style="@style/ButtonStyle01"
+            style="@style/ButtonStyle01_fish"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -37,7 +37,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_light_off"
-            style="@style/ButtonStyle02"
+            style="@style/ButtonStyle02_fish"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -61,7 +61,7 @@
             android:background="?android:selectableItemBackground"
             android:contentDescription="Move Left"
             android:src="@drawable/ic_left_arrow"
-            app:tint="@color/basicColor02" />
+            app:tint="@color/basicColor02_fish" />
 
         <LinearLayout
             android:id="@+id/container_light_level"

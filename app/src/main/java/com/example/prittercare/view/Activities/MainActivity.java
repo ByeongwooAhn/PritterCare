@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.prittercare.R;
+import com.example.prittercare.controller.StyleManager;
 import com.example.prittercare.databinding.ActivityMainBinding;
 import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.MQTTHelper;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private final Handler handler = new Handler();
     private final int UPDATE_INTERVAL = 5000; // 5 seconds
 
+    private StyleManager styleManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,18 +50,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // serialNumber 받기
-        cageSerialNumber = getIntent().getStringExtra("cageSerialNumber");
+        cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
         if(cageSerialNumber != null) {
             Log.d("MainActivity", "Received cageSerialNumber : " + cageSerialNumber);
         }
 
         // cageName 받기
-        cageName = getIntent().getStringExtra("cageName");
+        cageName = DataManager.getInstance().getCurrentCageName();
         if(cageName != null) {
             Log.d("MainActivity", "Received cageName : " + cageName);
         }
 
+        // animalType 받기
+        animalType = DataManager.getInstance().getCurrentAnimalType();
+
+        // userName 받기
         userName = DataManager.getInstance().getUserName();
+
+        // StyleManager
+        styleManager = new StyleManager(this, animalType);
 
         // MQTT 토픽 초기화
         TEMPERATURE_TOPIC = "${userName}/${cageSerialNumber}/temperature"
@@ -97,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.layoutToolbar.tvTitleToolbar.setText(cageName);
+
+        applyAnimalStyle();
     }
 
     private void subscribeToTopics() {
@@ -128,6 +141,11 @@ public class MainActivity extends AppCompatActivity {
         // 각각의 토픽 구독
         mqttHelper.subscribe(TEMPERATURE_TOPIC);
         mqttHelper.subscribe(HUMIDITY_TOPIC);
+    }
+
+    private void applyAnimalStyle() {
+        binding.main.setBackground(AppCompatResources.getDrawable(this, styleManager.getBackgroundMainId()));
+        binding.mainLayoutContainer.setBackground(AppCompatResources.getDrawable(this,styleManager.getCardShapeId()));
     }
 
     private void startPeriodicUpdate() {

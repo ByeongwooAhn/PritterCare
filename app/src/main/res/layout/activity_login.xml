@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="아이디 기억하기"
-                    android:textColor="@color/basicColor02"
+                    android:textColor="@color/basicColor02_fish"
                     android:textSize="12sp" />
 
                 <Space
@@ -154,7 +154,7 @@
                     android:backgroundTint="@color/white"
                     android:padding="5dp"
                     android:text="아이디 / 비밀번호 찾기"
-                    android:textColor="@color/basicColor01"
+                    android:textColor="@color/basicColor01_fish"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -168,7 +168,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_login"
-                    style="@style/ButtonStyle02"
+                    style="@style/ButtonStyle02_fish"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="로그인" />
@@ -176,7 +176,7 @@
                 <!-- Sign Up 버튼 -->
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_signup"
-                    style="@style/ButtonStyle01"
+                    style="@style/ButtonStyle01_fish"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

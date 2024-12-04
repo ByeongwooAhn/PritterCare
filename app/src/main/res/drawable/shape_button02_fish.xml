@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/basicColor01"> <!-- ripple 색상 설정 -->
+    android:color="@color/basicColor01_fish"> <!-- ripple 색상 설정 -->
 
     <!-- 기본 배경 모양 -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/basicColor02" />
+            <solid android:color="@color/basicColor02_fish" />
             <corners android:radius="@dimen/login_btn_border_radius"/>
         </shape>
     </item>

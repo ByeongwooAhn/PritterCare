@@ -9,6 +9,7 @@ public class DataManager {
     private String userToken;
     private String userName;
     private List<CageData> cageList;
+    private String currentCageSerialNumber; // 현재 타겟 케이지의 Serial Number
 
     private DataManager() {
     }
@@ -46,4 +47,38 @@ public class DataManager {
     public List<CageData> getCageList() {
         return cageList;
     }
+
+    public String getCurrentCageSerialNumber() {
+        return currentCageSerialNumber;
+    }
+
+    public void setCurrentCageSerialNumber(String currentCageSerialNumber) {
+        this.currentCageSerialNumber = currentCageSerialNumber;
+    }
+
+    // 현재 타겟 CageData 가져오기
+    private CageData getCurrentCageData() {
+        if (cageList == null || currentCageSerialNumber == null) {
+            return null;
+        }
+        for (CageData cage : cageList) {
+            if (currentCageSerialNumber.equals(cage.getCageSerialNumber())) {
+                return cage;
+            }
+        }
+        return null;
+    }
+
+    // 현재 타겟 CageName 가져오기
+    public String getCurrentCageName() {
+        CageData currentCage = getCurrentCageData();
+        return currentCage != null ? currentCage.getCageName() : null;
+    }
+
+    // 현재 타겟 AnimalType 가져오기
+    public String getCurrentAnimalType() {
+        CageData currentCage = getCurrentCageData();
+        return currentCage != null ? currentCage.getAnimalType() : null;
+    }
+
 }

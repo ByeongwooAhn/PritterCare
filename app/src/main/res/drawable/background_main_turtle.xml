@@ -3,10 +3,7 @@
     android:shape="rectangle" >
     <gradient
         android:angle="90"
-        android:startColor="@color/basicColor01_fish"
-        android:endColor="@color/basicColor02_fish"
+        android:startColor="@color/basicColor01_turtle"
+        android:endColor="@color/basicColor02_turtle"
         android:type="linear" />
-    <corners
-        android:bottomLeftRadius="50dp"
-        android:bottomRightRadius="50dp" />
 </shape>

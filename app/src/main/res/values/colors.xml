@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- normal color -->
-    <color name="basicColor01">#d0caef</color>
-    <color name="basicColor02">#6f62e3</color>
-    <color name="basicColor03">#21167c</color>
+    <!-- 물고기 색상 -->
+    <color name="basicColor01_fish">#d0caef</color>
+    <color name="basicColor02_fish">#6f62e3</color>
+    <color name="basicColor03_fish">#21167c</color>
+
+    <!-- 거북이 색상 -->
+    <color name="basicColor01_turtle">#90EE90</color>
+    <color name="basicColor02_turtle">#32CD32</color>
+    <color name="basicColor03_turtle">#006400</color>
+
+    <!-- 햄스터 색상 -->
+    <color name="basicColor01_hamster">#FFA07A</color>
+    <color name="basicColor02_hamster">#FF8C00</color>
+    <color name="basicColor03_hamster">#8B4513</color>
+
+    <!-- 기본 색상 -->
+    <color name="basicColor01_basic">#D3D3D3</color>
+    <color name="basicColor02_basic">#A9A9A9</color>
+    <color name="basicColor03_basic">#696969</color>
+
+
 
     <color name="backgroundColor">#dfe0e3</color>
 

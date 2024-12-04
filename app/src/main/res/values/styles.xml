@@ -14,16 +14,44 @@
         <item name="android:background">#000000</item> <!-- 배경색 설정 -->
     </style>
 
-    <style name="ButtonStyle02">
-        <item name="android:background">@drawable/shape_button02</item>
+    <!-- 물고기 버튼 스타일 -->
+    <style name="ButtonStyle02_fish">
+        <item name="android:background">@drawable/shape_button02_fish</item>
         <item name="android:stateListAnimator">@null</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="ButtonStyle01">
-        <item name="android:background">@drawable/shape_button01</item>
+    <style name="ButtonStyle01_fish">
+        <item name="android:background">@drawable/shape_button01_fish</item>
         <item name="android:stateListAnimator">@null</item>
-        <item name="android:textColor">@color/basicColor03</item>
+        <item name="android:textColor">@color/basicColor03_fish</item>
     </style>
+
+    <!-- 거북이 버튼 스타일 -->
+    <style name="ButtonStyle02_turtle">
+        <item name="android:background">@drawable/shape_button02_turtle</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ButtonStyle01_turtle">
+        <item name="android:background">@drawable/shape_button01_turtle</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/basicColor03_turtle</item>
+    </style>
+
+    <!-- 햄스터 버튼 스타일 -->
+    <style name="ButtonStyle02_hamster">
+        <item name="android:background">@drawable/shape_button02_hamster</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ButtonStyle01_hamster">
+        <item name="android:background">@drawable/shape_button01_hamster</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/basicColor03_hamster</item>
+    </style>
+
 
 </resources>

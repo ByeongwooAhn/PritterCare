@@ -3,6 +3,7 @@ package com.example.prittercare.view;
 import static android.view.Gravity.CENTER;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,21 +11,32 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.example.prittercare.R;
+import com.example.prittercare.controller.StyleManager;
+import com.example.prittercare.model.DataManager;
 
 public class MainTabView extends FrameLayout {
+
+    private StyleManager styleManager;
+    private String animalType;
 
     private ImageView imageView;
     private TextView textView;
 
     public MainTabView(Context context, String tabLabel, int iconResId) {
         super(context);
+        applyAnimalStyle(context);
         initializeLayout(context, tabLabel, iconResId);
+    }
+
+    private void applyAnimalStyle(Context context) {
+        animalType = DataManager.getInstance().getCurrentAnimalType();
+        styleManager = new StyleManager(context, DataManager.getInstance().getCurrentAnimalType());
     }
 
     private void initializeLayout(Context context, String tabLabel, int iconResId) {
         // 기본 레이아웃 크기와 배경 설정
         this.setLayoutParams(new LayoutParams(convertDpToPx(context, 80), convertDpToPx(context, 80)));
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button01));
+        this.setBackground(ContextCompat.getDrawable(context, styleManager.getButton01ShapeId()));
 
         // 아이콘 설정
         imageView = new ImageView(context);
@@ -40,7 +52,7 @@ public class MainTabView extends FrameLayout {
         // 텍스트 설정
         textView = new TextView(context);
         textView.setText(tabLabel);
-        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor03));
+        textView.setTextColor(ContextCompat.getColor(context, styleManager.getBasicColor03Id()));
         textView.setTextSize(12);
 
         LayoutParams textParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -62,17 +74,19 @@ public class MainTabView extends FrameLayout {
     }
 
     public void selectTab(Context context) {
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_tab_selected));
-        imageView.setColorFilter(ContextCompat.getColor(context, R.color.basicColor03));
-        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor01));
+        this.setBackground(ContextCompat.getDrawable(context, styleManager.getSelectedTabId()));
+        imageView.setColorFilter(ContextCompat.getColor(context, styleManager.getBasicColor03Id()));
+        textView.setTextColor(ContextCompat.getColor(context, styleManager.getBasicColor01Id()));
         textView.setTypeface(null, android.graphics.Typeface.BOLD);
     }
 
     public void unSelectTab(Context context) {
-        this.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_tab_unselected));
-        imageView.setColorFilter(null);
-        textView.setTextColor(ContextCompat.getColor(context, R.color.basicColor03));
+        this.setBackground(ContextCompat.getDrawable(context, styleManager.getUnselectedTabId()));
+        imageView.setColorFilter(ContextCompat.getColor(context, styleManager.getBasicColor02Id()));
+        textView.setTextColor(ContextCompat.getColor(context, styleManager.getBasicColor03Id()));
         textView.setTypeface(null, android.graphics.Typeface.NORMAL);
+
+        Log.d("MainTabView", "UnselectedTabId: " + styleManager.getResourceName(styleManager.getUnselectedTabId()));
     }
 
     private int convertDpToPx(Context context, float dp) {

@@ -71,8 +71,6 @@ public class MainTabManager {
 
         if (tabIndex == TAB_RESERVATION) {
             Intent intent = new Intent(activity, ReservationActivity.class);
-            //수정해야하는 부분
-            intent.putExtra("cageName", ""); // cageName 전달
             activity.startActivity(intent);
             return;
         }
@@ -80,7 +78,7 @@ public class MainTabManager {
         Fragment fragment = tabFragments.get(tabIndex);
         if (fragment != null) {
             FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(binding.fragmentContainer.getId(), fragment);
+            transaction.replace(binding.mainFragmentContainer.getId(), fragment);
             transaction.commit();
         } else {
             showToast("프레그먼트가 null 입니다.");

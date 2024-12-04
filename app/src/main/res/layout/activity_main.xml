@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_main"
+    android:background="@drawable/background_main_fish"
     android:orientation="vertical"
     tools:context=".view.Activities.MainActivity">
 
@@ -135,15 +135,16 @@
             </HorizontalScrollView>
 
             <LinearLayout
+                android:id="@+id/main_layout_container"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
-                android:background="@drawable/shape_card_purple"
+                android:background="@drawable/shape_card_fish"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
                 <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/fragment_container"
+                    android:id="@+id/main_fragment_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
