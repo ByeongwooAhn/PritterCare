@@ -46,13 +46,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // serialNumber 받기
-        cageSerialNumber = getIntent().getStringExtra("cageSerialNumber");
+        cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
         if(cageSerialNumber != null) {
             Log.d("MainActivity", "Received cageSerialNumber : " + cageSerialNumber);
         }
 
         // cageName 받기
-        cageName = getIntent().getStringExtra("cageName");
+        cageName = DataManager.getInstance().getCurrentCageName();
         if(cageName != null) {
             Log.d("MainActivity", "Received cageName : " + cageName);
         }

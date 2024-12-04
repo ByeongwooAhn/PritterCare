@@ -158,8 +158,7 @@ public class CageListActivity extends AppCompatActivity {
 
     private void moveToMainActivity(CageData cage) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("cageName", cage.getCageName()); // cageName 전달
-        intent.putExtra("cageSerialNumber", cage.getCageSerialNumber()); // serialNumber 전달
+        DataManager.getInstance().setCurrentCageSerialNumber(cage.getCageSerialNumber());
         startActivity(intent);
     }
 
