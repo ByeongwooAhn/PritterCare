@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.MQTTHelper;
 import com.example.prittercare.model.data.ReservationData;
 
@@ -50,7 +51,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         mqttHelper.initialize(); // MQTT 연결 초기화
 
         // MQTT 토픽 설정
-        String topic = reservation.getUserId() + "/" + reservation.getCageSerialNumber() + "/light"; // 토픽 경로
+        String topic = DataManager.getInstance().getUserName() + "/" + DataManager.getInstance() + "/light"; // 토픽 경로
         String payload = ""; // MQTT 메시지 페이로드
 
         // 예약 타입에 따른 MQTT 메시지 생성

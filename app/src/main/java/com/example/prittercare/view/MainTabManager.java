@@ -71,6 +71,8 @@ public class MainTabManager {
 
         if (tabIndex == TAB_RESERVATION) {
             Intent intent = new Intent(activity, ReservationActivity.class);
+            //수정해야하는 부분
+            intent.putExtra("cageName", ""); // cageName 전달
             activity.startActivity(intent);
             return;
         }

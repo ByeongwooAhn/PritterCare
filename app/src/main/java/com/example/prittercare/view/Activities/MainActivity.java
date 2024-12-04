@@ -72,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
 
         // MQTTHelper 초기화
         mqttHelper = new MQTTHelper(this, "tcp://medicine.p-e.kr:1884", "myClientId", "GuestMosquitto", "MosquittoGuest1119!");
-/*        mqttHelper.initialize();*/
+        mqttHelper.initialize();
 
         // MainTabManager 초기화
         tabManager = new MainTabManager(this, binding, mqttHelper);
         tabManager.initializeTabs();
 
-/*        // MQTT Topics 구독 및 메시지 처리
-        subscribeToTopics();*/
+        // MQTT Topics 구독 및 메시지 처리
+        subscribeToTopics();
 
 /*        // UI 업데이트 루프 시작
         startPeriodicUpdate();*/
