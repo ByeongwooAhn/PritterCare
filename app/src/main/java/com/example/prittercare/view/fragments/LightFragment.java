@@ -9,9 +9,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.prittercare.R;
+import com.example.prittercare.controller.StyleManager;
+import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.MQTTHelper;
 
 public class LightFragment extends Fragment {
@@ -28,8 +31,11 @@ public class LightFragment extends Fragment {
     private MQTTHelper mqttHelper;
 
     // 사용자 및 장치 정보
-    private String userid = "testuser"; // 사용자 ID
-    private String serialnumber = "testnum"; // 장치 일련번호
+    private String userid = DataManager.getInstance().getUserName(); // 사용자 ID
+    private String serialnumber = DataManager.getInstance().getCurrentCageSerialNumber(); // 장치 일련번호
+    private String animalType;
+
+    StyleManager styleManager;
 
     // MQTT 토픽
     private String LIGHT_TOPIC;
@@ -52,12 +58,27 @@ public class LightFragment extends Fragment {
                 .replace("${serialnumber}", serialnumber);
 
         // 초기화 및 설정
+        applyAnimalStyle(rootView);
         initializeViews(rootView);
         setupListeners(rootView);
 
         // UI 초기 상태
         updateUI();
         return rootView;
+    }
+
+    private void applyAnimalStyle(View rootView) {
+        animalType = DataManager.getInstance().getCurrentAnimalType();
+        styleManager = new StyleManager(getContext(), animalType);
+
+        // 버튼 스타일 변경
+        AppCompatButton lightONButton = rootView.findViewById(R.id.btn_light_on);
+        AppCompatButton lightOFFButton = rootView.findViewById(R.id.btn_light_off);
+        lightONButton.setBackgroundResource(styleManager.getButton01ShapeId());
+        lightONButton.setTextColor(styleManager.getBasicColor03Id());
+        lightOFFButton.setBackgroundResource(styleManager.getButton02ShapeId());
+        lightOFFButton.setTextColor(getResources().getColor(R.color.white));
+
     }
 
     // 뷰 초기화
@@ -85,7 +106,7 @@ public class LightFragment extends Fragment {
     private void turnLightOff() {
         isLightOn = false;
         updateUI();
-        sendCommand(LIGHT_TOPIC, "0", "조명 OFF");
+        sendCommand("light/topic", "0", "조명 OFF");
     }
 
     // 조명 단계를 조정하는 메서드

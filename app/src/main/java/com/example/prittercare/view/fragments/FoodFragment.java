@@ -1,9 +1,12 @@
 package com.example.prittercare.view.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,15 +16,20 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.prittercare.R;
+import com.example.prittercare.controller.StyleManager;
+import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.MQTTHelper;
 
 public class FoodFragment extends Fragment {
 
     private MQTTHelper mqttHelper;
 
+    private StyleManager styleManager;
+    private String animalType;
+
     // 사용자 및 장치 정보
-    private String userid = "testuser"; // 사용자 ID
-    private String serialnumber = "testnum"; // 장치 일련번호
+    private String userid = DataManager.getInstance().getUserName(); // 사용자 ID
+    private String serialnumber = DataManager.getInstance().getCurrentCageSerialNumber();
 
     // MQTT 토픽
     private String FOOD_TOPIC;
@@ -46,15 +54,26 @@ public class FoodFragment extends Fragment {
                 .replace("${userid}", userid)
                 .replace("${serialnumber}", serialnumber);
 
+        applyAnimalStyle(getContext());
+
         // 버튼 초기화
         LinearLayout feedFoodButton = rootView.findViewById(R.id.btn_feed_food);
         LinearLayout feedWaterButton = rootView.findViewById(R.id.btn_feed_water);
+
+        feedFoodButton.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
+        feedWaterButton.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
+
 
         // 리스너 설정
         feedFoodButton.setOnClickListener(v -> feedFood());
         feedWaterButton.setOnClickListener(v -> feedWater());
 
         return rootView;
+    }
+
+    private void applyAnimalStyle(Context context) {
+        animalType = DataManager.getInstance().getCurrentAnimalType();
+        styleManager = new StyleManager(context, animalType);
     }
 
     // 먹이 공급

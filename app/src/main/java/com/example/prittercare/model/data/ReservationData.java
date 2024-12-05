@@ -14,9 +14,6 @@ public class ReservationData implements Serializable {
     @SerializedName("reserve_date") // 예약 날짜
     private String reserveDate;
 
-    @SerializedName("reserve_time") // 예약 시간
-    private String reserveTime;
-
     @SerializedName("day_loop") // 일주기
     private int dayLoop;
 
@@ -29,19 +26,32 @@ public class ReservationData implements Serializable {
     @SerializedName("reserve_light_level")
     private int lightLevel; // 조명 단계 (0 ~ 5)
 
-    private int id; // 예약 고유 ID
-    private String userId; // 사용자 ID 추가
-    private int hour;
-    private int minute;
+    @SerializedName("reserve_id")
+    private int reserveId; // 예약 고유 ID
 
-    public ReservationData(String cageSerialNumber, String reserveTime, String reserveDate, String reserveName, String reserveType, int dayLoop, int timeLoop) {
+    @SerializedName("reserve_hour")
+    private int reserveHour;
+
+    @SerializedName("reserve_minute")
+    private int reserveMinute;
+
+    @SerializedName("reserve_time")
+    private String reserveTime;
+
+    public ReservationData(String cageSerialNumber, String reserveName, String reserveDate, String reserveType,
+                           String reserveTime, int dayLoop, int timeLoop, int lightLevel,
+                           int reserveId, int reserveHour, int reserveMinute) {
         this.cageSerialNumber = cageSerialNumber;
         this.reserveName = reserveName;
         this.reserveDate = reserveDate;
+        this.reserveType = reserveType;
         this.reserveTime = reserveTime;
         this.dayLoop = dayLoop;
         this.timeLoop = timeLoop;
-        this.reserveType = reserveType;
+        this.lightLevel = lightLevel;
+        this.reserveId = reserveId;
+        this.reserveHour = reserveHour;
+        this.reserveMinute = reserveMinute;
     }
 
     public ReservationData(String reserveTime, String reserveDate, String reserveName, String reserveType) {
@@ -56,13 +66,6 @@ public class ReservationData implements Serializable {
         this.cageSerialNumber = cageSerialNumber;
     }
 
-    public String getReserveTime() {
-        return reserveTime;
-    }
-
-    public void setReserveTime(String reserveTime) {
-        this.reserveTime = reserveTime;
-    }
 
     public String getReserveDate() {
         return reserveDate;
@@ -112,35 +115,36 @@ public class ReservationData implements Serializable {
         this.lightLevel = lightLevel;
     }
 
-    public int getId() {
-        return id;
+    public int getReserveId() {
+        return reserveId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setReserveId(int reserveId) {
+        this.reserveId = reserveId;
     }
 
-    public int getHour() {
-        return hour;
+    public int getReserveHour() {
+        return reserveHour;
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
+    public void setReserveHour(int reserveHour) {
+        this.reserveHour = reserveHour;
     }
 
-    public int getMinute() {
-        return minute;
+    public int getReserveMinute() {
+        return reserveMinute;
     }
 
-    public void setMinute(int minute) {
-        this.minute = minute;
+    public void setReserveMinute(int reserveMinute) {
+        this.reserveMinute = reserveMinute;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getReserveTime() {
+        return reserveTime;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setReserveTime(String reserveTime) {
+        this.reserveTime = reserveTime;
     }
+
 }
