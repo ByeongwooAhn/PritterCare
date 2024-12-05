@@ -36,15 +36,15 @@ public class AlarmScheduler {
         // PendingIntent를 생성하여 AlarmReceiver에 예약 데이터를 전달
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
-                reservation.getId(), // 예약의 고유 ID를 사용하여 PendingIntent 구분
+                reservation.getReserveId(), // 예약의 고유 ID를 사용하여 PendingIntent 구분
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
         // 예약 시간 설정 (Hour, Minute를 Calendar 객체에 반영)
         Calendar alarmTime = Calendar.getInstance();
-        alarmTime.set(Calendar.HOUR_OF_DAY, reservation.getHour());
-        alarmTime.set(Calendar.MINUTE, reservation.getMinute());
+        alarmTime.set(Calendar.HOUR_OF_DAY, reservation.getReserveHour());
+        alarmTime.set(Calendar.MINUTE, reservation.getReserveMinute());
 
         // 알람 실행 시간 계산
         long triggerTime = alarmTime.getTimeInMillis(); // 예약 시간의 밀리초 값
@@ -69,7 +69,7 @@ public class AlarmScheduler {
                         AlarmManager.INTERVAL_DAY * reservation.getDayLoop(), // 반복 주기
                         pendingIntent // 알람 실행 시 PendingIntent 실행
                 );
-                Log.d(TAG, "Daily repeating alarm set for reservation ID: " + reservation.getId());
+                Log.d(TAG, "Daily repeating alarm set for reservation ID: " + reservation.getReserveId());
             } else {
                 Log.e(TAG, "AlarmManager is null. Cannot set daily repeating alarm.");
             }
@@ -82,7 +82,7 @@ public class AlarmScheduler {
                         AlarmManager.INTERVAL_HOUR * reservation.getTimeLoop(), // 반복 주기
                         pendingIntent // 알람 실행 시 PendingIntent 실행
                 );
-                Log.d(TAG, "Hourly repeating alarm set for reservation ID: " + reservation.getId());
+                Log.d(TAG, "Hourly repeating alarm set for reservation ID: " + reservation.getReserveId());
             } else {
                 Log.e(TAG, "AlarmManager is null. Cannot set hourly repeating alarm.");
             }
@@ -94,7 +94,7 @@ public class AlarmScheduler {
                         triggerTime, // 실행 시간
                         pendingIntent // 알람 실행 시 PendingIntent 실행
                 );
-                Log.d(TAG, "Single alarm set for reservation ID: " + reservation.getId());
+                Log.d(TAG, "Single alarm set for reservation ID: " + reservation.getReserveId());
             } else {
                 Log.e(TAG, "AlarmManager is null. Cannot set single alarm.");
             }

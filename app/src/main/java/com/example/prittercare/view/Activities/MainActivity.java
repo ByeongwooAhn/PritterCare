@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     // MQTT Topics
     /*private static final String TEMPERATURE_TOPIC = "sensor/temperature";*/
-    private String TEMPERATURE_TOPIC;
+    private String TEMPERATURE_TOPIC="test/topic";
     private String HUMIDITY_TOPIC;
 
     // Variables to store the latest values
@@ -61,25 +61,16 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity", "Received cageName : " + cageName);
         }
 
-        // animalType 받기
-        animalType = DataManager.getInstance().getCurrentAnimalType();
-
         // userName 받기
         userName = DataManager.getInstance().getUserName();
 
-        // StyleManager
-        styleManager = new StyleManager(this, animalType);
-
         // MQTT 토픽 초기화
-        TEMPERATURE_TOPIC = "${userName}/${cageSerialNumber}/temperature"
+        /*TEMPERATURE_TOPIC = "${userName}/${cageSerialNumber}/temperature"
                 .replace("${userName}", userName)
-                .replace("${cageSerialNumber}", this.cageSerialNumber);
+                .replace("${cageSerialNumber}", this.cageSerialNumber);*/
         HUMIDITY_TOPIC = "${userName}/${cageSerialNumber}/humidity"
                 .replace("${userName}", userName)
                 .replace("${cageSerialNumber}", this.cageSerialNumber);
-
-        // 동물 타입 설정
-        animalType = "turtle";
 
         // MQTTHelper 초기화
         mqttHelper = new MQTTHelper(this, "tcp://medicine.p-e.kr:1884", "myClientId", "GuestMosquitto", "MosquittoGuest1119!");
@@ -92,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         // MQTT Topics 구독 및 메시지 처리
         subscribeToTopics();
 
-/*        // UI 업데이트 루프 시작
-        startPeriodicUpdate();*/
+        // UI 업데이트 루프 시작
+        startPeriodicUpdate();
 
         // 뒤로가기 버튼 클릭 이벤트
         binding.layoutToolbar.btnBack.setOnClickListener(view -> {
@@ -144,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void applyAnimalStyle() {
+        animalType = DataManager.getInstance().getCurrentAnimalType();
+        styleManager = new StyleManager(this, animalType);
+
         binding.main.setBackground(AppCompatResources.getDrawable(this, styleManager.getBackgroundMainId()));
         binding.mainLayoutContainer.setBackground(AppCompatResources.getDrawable(this,styleManager.getCardShapeId()));
     }
