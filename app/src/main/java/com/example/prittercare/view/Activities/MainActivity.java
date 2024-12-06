@@ -1,8 +1,11 @@
 package com.example.prittercare.view.Activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -140,6 +143,15 @@ public class MainActivity extends AppCompatActivity {
 
         binding.main.setBackground(AppCompatResources.getDrawable(this, styleManager.getBackgroundMainId()));
         binding.mainLayoutContainer.setBackground(AppCompatResources.getDrawable(this,styleManager.getCardShapeId()));
+        setStatusBar(styleManager);
+    }
+
+    private void setStatusBar(StyleManager styleManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(styleManager.getBasicColor02Id()));
+        }
     }
 
     private void startPeriodicUpdate() {

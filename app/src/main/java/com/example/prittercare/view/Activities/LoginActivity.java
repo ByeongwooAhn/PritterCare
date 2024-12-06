@@ -1,12 +1,16 @@
 package com.example.prittercare.view.Activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.prittercare.R;
 import com.example.prittercare.controller.LogController;
 import com.example.prittercare.controller.LoginCallback;
 import com.example.prittercare.controller.ToastController;

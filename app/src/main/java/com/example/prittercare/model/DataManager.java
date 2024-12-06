@@ -81,4 +81,16 @@ public class DataManager {
         return currentCage != null ? currentCage.getAnimalType() : null;
     }
 
+    public void updateCageData(CageData updatedCage) {
+        for (CageData cage : cageList) {
+            if (cage.getCageSerialNumber().equals(updatedCage.getCageSerialNumber())) {
+                cage.setCageName(updatedCage.getCageName());
+                break;
+            }
+        }
+    }
+
+    public void removeCageData(CageData cage) {
+        cageList.remove(cage);
+    }
 }

@@ -19,45 +19,46 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+        <!-- 로그인 -->
         <activity
             android:name=".view.Activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.Activities.FindAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Activities.SignUpActivity"
+            android:exported="false" />
+
+        <!-- 사육장 리스트 -->
+        <activity
+            android:name=".view.Activities.CageListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Activities.CageAddActivity"
+            android:exported="false" />
+
+        <!-- 메인 페이지 -->
+        <activity
+            android:name=".view.Activities.MainActivity"
+            android:exported="false" />
         <activity
             android:name=".view.Activities.ReservationActivity"
             android:exported="false" />
         <activity
             android:name=".view.Activities.AlarmEditActivity"
-            android:exported="false" />
-        <!-- AlarmReceiver 등록 -->
+            android:exported="false" /> <!-- AlarmReceiver 등록 -->
         <receiver
             android:name=".view.Activities.AlarmReceiver"
-            android:exported="false">
-        </receiver>
-        <activity
-            android:name=".view.Activities.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.Activities.FindAccountActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.Activities.MainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".view.Activities.CageListEditActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.Activities.CageListActivity"
             android:exported="false" />
 
         <receiver android:name=".controller.ReservationReceiver" />
-
-
     </application>
 
 </manifest>
