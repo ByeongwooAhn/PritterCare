@@ -6,14 +6,14 @@
     <color name="basicColor03_fish">#21167c</color>
 
     <!-- 거북이 색상 -->
-    <color name="basicColor01_turtle">#90EE90</color>
-    <color name="basicColor02_turtle">#32CD32</color>
-    <color name="basicColor03_turtle">#006400</color>
+    <color name="basicColor01_turtle">#dfefba</color>
+    <color name="basicColor02_turtle">#599a2b</color>
+    <color name="basicColor03_turtle">#096422</color>
 
     <!-- 햄스터 색상 -->
-    <color name="basicColor01_hamster">#FFA07A</color>
-    <color name="basicColor02_hamster">#FF8C00</color>
-    <color name="basicColor03_hamster">#8B4513</color>
+    <color name="basicColor01_hamster">#ffe493</color>
+    <color name="basicColor02_hamster">#ecbe19</color>
+    <color name="basicColor03_hamster">#804437</color>
 
     <!-- 기본 색상 -->
     <color name="basicColor01_basic">#D3D3D3</color>
@@ -29,6 +29,9 @@
     <color name="etTextHintColor">#aaa9ab</color>
     <color name="etCursorColor">#aaa9ab</color>
     <color name="etHandleColor">#838383</color>
+
+    <color name="signupErrorTextColor">#ff8080</color>
+    <color name="signupSuccessTextColor">#3c9c43</color>
 
     <!-- 조명 조절 색상 -->
     <color name="lightLevel5">#ffe13c</color>

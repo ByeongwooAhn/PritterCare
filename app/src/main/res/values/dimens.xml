@@ -5,4 +5,6 @@
 
     <dimen name="main_btn_border_radius">5dp</dimen>
     <dimen name="main_btn_border_width">2dp</dimen>
+
+    <dimen name="signup_default_margin_bottom">20dp</dimen>
 </resources>
