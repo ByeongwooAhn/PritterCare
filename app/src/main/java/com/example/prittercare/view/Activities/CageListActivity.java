@@ -36,14 +36,14 @@ public class CageListActivity extends AppCompatActivity {
         binding = ActivityCageListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // RecyclerView 설정
+        setupRecyclerView();
+
         // DataRepository 초기화
         repository = new DataRepository();
 
         // API 호출 및 데이터 초기화
         loadCageDataFromServer();
-
-        // RecyclerView 설정
-        setupRecyclerView();
 
         binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view -> moveToNewCageActivity());
     }
@@ -56,9 +56,6 @@ public class CageListActivity extends AppCompatActivity {
             public void onSuccess(List<CageData> cageListResponse) {
                 if (cageListResponse == null || cageListResponse.isEmpty()) {
                     moveToNewCageActivity();
-                    Intent intent = new Intent(CageListActivity.this, CageAddActivity.class);
-                    startActivity(intent);
-                    finish();
                 } else {
                     for (CageData cage : cageListResponse) {
                         Log.d("CageListActivity", "CageData: " + cage.toString());
@@ -147,8 +144,9 @@ public class CageListActivity extends AppCompatActivity {
     }
 
     private void moveToNewCageActivity() {
-        Intent intent = new Intent(this, CageAddActivity.class);
+        Intent intent = new Intent(CageListActivity.this, CageAddActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void moveToMainActivity(CageData cage) {

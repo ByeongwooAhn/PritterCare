@@ -117,7 +117,7 @@
                     android:background="#cccccc"
                     android:gravity="center_vertical"
                     android:hint="비밀번호"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:paddingStart="10dp"
                     android:textColor="@color/etTextColor"

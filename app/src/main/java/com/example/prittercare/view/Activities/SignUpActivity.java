@@ -188,6 +188,7 @@ public class SignUpActivity extends AppCompatActivity {
         // 에러 메시지 표시
         errorView.setVisibility(View.VISIBLE);
         errorView.setText(errorMessage);
+        errorView.setTextColor(getResources().getColor(R.color.signupErrorTextColor)); // 성공 메시지 색상
 
         // marginBottom 제거
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();

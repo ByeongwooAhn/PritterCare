@@ -26,7 +26,7 @@
 
     <!-- 기본 텍스트 색상 -->
     <color name="etTextColor">#7a797b</color>
-    <color name="etTextHintColor">#aaa9ab</color>
+    <color name="etTextHintColor">#bbbabc</color>
     <color name="etCursorColor">#aaa9ab</color>
     <color name="etHandleColor">#838383</color>
 

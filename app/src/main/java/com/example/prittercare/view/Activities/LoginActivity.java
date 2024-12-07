@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.prittercare.R;
 import com.example.prittercare.controller.LogController;
 import com.example.prittercare.controller.LoginCallback;
 import com.example.prittercare.controller.ToastController;

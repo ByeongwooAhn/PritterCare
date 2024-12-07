@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
         userName = DataManager.getInstance().getUserName();
 
         // MQTT 토픽 초기화
-        /*TEMPERATURE_TOPIC = "${userName}/${cageSerialNumber}/temperature"
+        TEMPERATURE_TOPIC = "${userName}/${cageSerialNumber}/temperature"
                 .replace("${userName}", userName)
-                .replace("${cageSerialNumber}", this.cageSerialNumber);*/
+                .replace("${cageSerialNumber}", this.cageSerialNumber);
         HUMIDITY_TOPIC = "${userName}/${cageSerialNumber}/humidity"
                 .replace("${userName}", userName)
                 .replace("${cageSerialNumber}", this.cageSerialNumber);
