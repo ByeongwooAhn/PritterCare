@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +29,13 @@ import com.google.android.material.tabs.TabLayout;
 
 public class TemperatureAndHumidtyFragment extends Fragment {
 
-    public MQTTHelper mqttHelper;
+    LinearLayout temperatureContainerLayout, humidityContainerLayout;
+    TextView temperatureGetTextView, temperatureTextTextView, temperatureSignTextView;
+    TextView humidityGetTextView, humidityTextTextView, humiditySignTextView;
+    AppCompatButton temperatureButton, humidityButton;
+
+
+    private MQTTHelper mqttHelper;
 
     // 사용자 및 장치 정보
     private String userid = DataManager.getInstance().getUserName(); // 사용자 ID
@@ -58,71 +66,66 @@ public class TemperatureAndHumidtyFragment extends Fragment {
                 .replace("${userid}", userid)
                 .replace("${serialnumber}", serialnumber);
 
-        setupButtonListeners(rootView);
+        initializeViews(rootView);
         applyAnimalStyle(rootView);
+        setupButtonListeners(rootView);
 
         return rootView;
     }
 
-    private void setupButtonListeners(View rootView) {
-        // 온도 설정 버튼
-        rootView.findViewById(R.id.btn_set_temperature).setOnClickListener(view -> {
-            EditText temperatureEditText = rootView.findViewById(R.id.et_set_temperature);
-            String temperature = temperatureEditText.getText().toString();
+    private void initializeViews(View rootView) {
+        temperatureContainerLayout = rootView.findViewById(R.id.layout_container_temperature);
+        temperatureGetTextView = rootView.findViewById(R.id.tv_get_temperature);
+        temperatureTextTextView = rootView.findViewById(R.id.tv_temperature_text);
+        temperatureSignTextView = rootView.findViewById(R.id.tv_temperature_sign);
+        temperatureButton = rootView.findViewById(R.id.btn_set_temperature);
 
-            if (!temperature.isEmpty()) {
-                sendCommand(TEMPERATURE_TOPIC, temperature, "온도 설정: " + temperature);
-
-                // "설정된 온도 값:" TextView 업데이트
-                TextView temperatureTextView = rootView.findViewById(R.id.tv_get_temperature);
-                temperatureTextView.setText("설정된 온도 값: " + temperature + "°C");
-            } else {
-                Toast.makeText(requireContext(), "온도 값을 입력해주세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // 습도 설정 버튼
-        rootView.findViewById(R.id.btn_set_humidity).setOnClickListener(view -> {
-            EditText humidityEditText = rootView.findViewById(R.id.et_set_humidity);
-            String humidity = humidityEditText.getText().toString();
-
-            if (!humidity.isEmpty()) {
-                sendCommand(HUMIDITY_TOPIC, humidity, "습도 설정: " + humidity);
-
-                // "설정된 습도 값:" TextView 업데이트
-                TextView humidityTextView = rootView.findViewById(R.id.tv_get_humidity);
-                humidityTextView.setText("설정된 습도 값: " + humidity + " %");
-            } else {
-                Toast.makeText(requireContext(), "습도 값을 입력해주세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        humidityContainerLayout = rootView.findViewById(R.id.layout_container_humidity);
+        humidityGetTextView = rootView.findViewById(R.id.tv_get_humidity);
+        humidityTextTextView = rootView.findViewById(R.id.tv_humidity_text);
+        humiditySignTextView = rootView.findViewById(R.id.tv_humidity_sign);
+        humidityButton = rootView.findViewById(R.id.btn_set_humidity);
     }
-
 
     private void applyAnimalStyle(View rootView) {
         animalType = DataManager.getInstance().getCurrentAnimalType();
         styleManager = new StyleManager(getContext(), animalType);
 
+        temperatureContainerLayout.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
+        humidityContainerLayout.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
+
         // TextView 스타일 변경
-        TextView temperatureGetTextView = rootView.findViewById(R.id.tv_get_temperature);
-        TextView humidityGetTextView = rootView.findViewById(R.id.tv_get_humidity);
-        temperatureGetTextView.setTextColor(styleManager.getBasicColor02Id());
-        humidityGetTextView.setTextColor(styleManager.getBasicColor03Id());
+        temperatureGetTextView.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor03Id()));
+        humidityGetTextView.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor03Id()));
+        temperatureTextTextView.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor01Id()));
+        humidityTextTextView.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor01Id()));
+        temperatureSignTextView.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor01Id()));
+        humiditySignTextView.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor01Id()));
 
         // 버튼 스타일 변경
-        AppCompatButton temperatureButton = rootView.findViewById(R.id.btn_set_temperature);
-        AppCompatButton humidityButton = rootView.findViewById(R.id.btn_set_humidity);
-        temperatureButton.setBackgroundResource(styleManager.getButton02ShapeId());
-        temperatureButton.setTextColor(styleManager.getBasicColor02Id());
-        humidityButton.setBackgroundResource(styleManager.getButton02ShapeId());
-        humidityButton.setTextColor(styleManager.getBasicColor02Id());
+        temperatureButton.setBackgroundResource(styleManager.getButton01ShapeId());
+        temperatureButton.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor03Id()));
+        humidityButton.setBackgroundResource(styleManager.getButton01ShapeId());
+        humidityButton.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor03Id()));
+    }
+
+    private void setupButtonListeners(View rootView) {
+        rootView.findViewById(R.id.btn_set_temperature).setOnClickListener(view -> {
+            String temperature = ((EditText) rootView.findViewById(R.id.et_set_temperature)).getText().toString();
+            sendCommand(TEMPERATURE_TOPIC, temperature, "온도 설정: " + temperature);
+        });
+
+        rootView.findViewById(R.id.btn_set_humidity).setOnClickListener(view -> {
+            String humidity = ((EditText) rootView.findViewById(R.id.et_set_humidity)).getText().toString();
+            sendCommand(HUMIDITY_TOPIC, humidity, "습도 설정: " + humidity);
+        });
     }
 
     private void sendCommand(String topic, String message, String successToast) {
-        if(mqttHelper != null && mqttHelper.isConnected()) {
+        if (mqttHelper != null && mqttHelper.isConnected()) {
             mqttHelper.publish(topic, message, 1);
             Toast.makeText(requireContext(), successToast, Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             Toast.makeText(requireContext(), "MQTT 연결 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
         }
     }

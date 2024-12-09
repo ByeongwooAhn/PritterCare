@@ -49,6 +49,7 @@
         <!-- 메인 페이지 -->
         <activity
             android:name=".view.Activities.MainActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".view.Activities.ReservationActivity"

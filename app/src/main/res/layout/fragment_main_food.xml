@@ -15,69 +15,55 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/jua"
-        android:text="먹이 물 공급"
+        android:text="물 공급"
         android:textColor="#333333"
         android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        android:orientation="horizontal">
+        android:gravity="center">
 
         <LinearLayout
-            android:id="@+id/btn_feed_food"
+            android:id="@+id/layout_container_feed_water"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
+            android:layout_height="144dp"
             android:layout_weight="1"
             android:background="@drawable/shape_button02_fish"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
-            android:padding="12dp">
+            android:orientation="vertical"
+            android:padding="40dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/btn_feed_water"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_button01_fish"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
-                android:paddingEnd="10dp"
-                android:text="먹이 주기"
-                android:textColor="@color/white" />
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_fork_spoon"
-                app:tint="@color/white" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/ic_btn_water_glass"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_water_glass"/>
 
-        <LinearLayout
-            android:id="@+id/btn_feed_water"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@drawable/shape_button02_fish"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:padding="12dp">
+                <TextView
+                    android:id="@+id/tv_btn_water_glass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="물 주기"
+                    android:textColor="@color/basicColor03_fish"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingEnd="10dp"
-                android:text="물 주기"
-                android:textColor="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_water_glass"
-                app:tint="@color/white" />
         </LinearLayout>
     </LinearLayout>
 

@@ -21,73 +21,99 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_light_on"
-            style="@style/ButtonStyle01_fish"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="ON" />
-
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_light_off"
-            style="@style/ButtonStyle02_fish"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="OFF" />
-    </LinearLayout>
-
-    <!-- Lighting Control Buttons and Points -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <!-- Left Button -->
-        <ImageButton
-            android:id="@+id/btn_left"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="Move Left"
-            android:src="@drawable/ic_left_arrow"
-            app:tint="@color/basicColor02_fish" />
+        android:gravity="center">
 
         <LinearLayout
-            android:id="@+id/container_light_level"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_card_main_light_level1"
+            android:id="@+id/layout_container_light"
+            android:layout_width="0dp"
+            android:layout_height="144dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button02_fish"
             android:gravity="center"
-            android:padding="5dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_light_level"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 단계"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_ic_light_level"
+                        android:src="@drawable/ic_light"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_light_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/basicColor01_fish"
+                        android:text="1 단계"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
+                    <!-- Left Button -->
+                    <ImageButton
+                        android:id="@+id/btn_left"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?android:selectableItemBackground"
+                        android:contentDescription="Move Left"
+                        android:src="@drawable/ic_left_arrow" />
+
+                    <!-- SeekBar -->
+                    <SeekBar
+                        android:layout_gravity="center"
+                        android:id="@+id/seekbar_step_light"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:max="4"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/custom_seekbar"
+                        android:splitTrack="false"
+                        android:thumb="@drawable/ic_thumb_fish"
+                        android:thumbOffset="8dp" />
+
+                    <!-- Right Button -->
+                    <ImageButton
+                        android:id="@+id/btn_right"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?android:selectableItemBackground"
+                        android:contentDescription="Move Right"
+                        android:src="@drawable/ic_right_arrow" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_set_light"
+                    style="@style/ButtonStyle01_fish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="설정" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!-- Right Button -->
-        <ImageButton
-            android:id="@+id/btn_right"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="Move Right"
-            android:src="@drawable/ic_right_arrow" />
     </LinearLayout>
 </LinearLayout>

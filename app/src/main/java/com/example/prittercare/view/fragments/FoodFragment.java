@@ -1,6 +1,7 @@
 package com.example.prittercare.view.fragments;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.prittercare.R;
@@ -35,6 +38,11 @@ public class FoodFragment extends Fragment {
     private String FOOD_TOPIC;
     private String WATER_TOPIC;
 
+    LinearLayout feedWaterButton;
+    ImageView feedWaterButtonIcon;
+    TextView feeWaterButtonText;
+    LinearLayout feetWaterContainer;
+
     // FoodFragment 생성자
     public static FoodFragment newInstance(MQTTHelper mqttHelper) {
         FoodFragment fragment = new FoodFragment();
@@ -47,26 +55,27 @@ public class FoodFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_food, container, false);
 
-        FOOD_TOPIC = "${userid}/${serialnumber}/food"
-                .replace("${userid}", userid)
-                .replace("${serialnumber}", serialnumber);
         WATER_TOPIC = "${userid}/${serialnumber}/water"
                 .replace("${userid}", userid)
                 .replace("${serialnumber}", serialnumber);
+/*        FOOD_TOPIC = "${userid}/${serialnumber}/food"
+                .replace("${userid}", userid)
+                .replace("${serialnumber}", serialnumber);*/
+
+        feetWaterContainer = rootView.findViewById(R.id.layout_container_feed_water);
+
+        // 버튼 초기화
+        feedWaterButton = rootView.findViewById(R.id.btn_feed_water);
+        feedWaterButtonIcon = rootView.findViewById(R.id.ic_btn_water_glass);
+        feedWaterButtonIcon.setColorFilter(null);
+        feeWaterButtonText = rootView.findViewById(R.id.tv_btn_water_glass);
+
 
         applyAnimalStyle(getContext());
 
-        // 버튼 초기화
-        LinearLayout feedFoodButton = rootView.findViewById(R.id.btn_feed_food);
-        LinearLayout feedWaterButton = rootView.findViewById(R.id.btn_feed_water);
-
-        feedFoodButton.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
-        feedWaterButton.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
-
-
         // 리스너 설정
-        feedFoodButton.setOnClickListener(v -> feedFood());
         feedWaterButton.setOnClickListener(v -> feedWater());
+
 
         return rootView;
     }
@@ -74,11 +83,12 @@ public class FoodFragment extends Fragment {
     private void applyAnimalStyle(Context context) {
         animalType = DataManager.getInstance().getCurrentAnimalType();
         styleManager = new StyleManager(context, animalType);
-    }
 
-    // 먹이 공급
-    private void feedFood() {
-        sendCommand(FOOD_TOPIC, "1", "먹이를 공급합니다.");
+        feetWaterContainer.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
+
+        feedWaterButton.setBackgroundResource(styleManager.getButton01ShapeId());
+        feedWaterButtonIcon.setColorFilter(getContext().getColor(styleManager.getBasicColor03Id()), PorterDuff.Mode.SRC_IN);
+        feeWaterButtonText.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor03Id()));
     }
 
     // 물 공급

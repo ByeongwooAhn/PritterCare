@@ -6,13 +6,15 @@ public class StyleManager {
     Context context;
     String animalType;
 
-    public StyleManager (Context context, String animalType) {
+    public StyleManager(Context context, String animalType) {
         this.context = context;
         this.animalType = animalType;
     }
 
 
-    /** 01. color resources */
+    /**
+     * 01. color resources
+     */
     public int getBasicColor01Id() {
         String resourceName = "basicColor01_" + animalType; // 리소스 이름 생성
         return context.getResources().getIdentifier(resourceName, "color", context.getPackageName());
@@ -29,7 +31,10 @@ public class StyleManager {
     }
 
 
-    /** 02. drawable resources */
+    /**
+     * 02. drawable resources
+     */
+
     // Button
     public int getButton01ShapeId() {
         String resourceName = "shape_button01_" + animalType;
@@ -61,11 +66,19 @@ public class StyleManager {
     // BackGround
     public int getBackgroundMainId() {
         String resourceName = "background_main_" + animalType;
-        return context.getResources().getIdentifier(resourceName, "drawable",context.getPackageName());
+        return context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
+    }
+
+    // Icon
+    public int getSeekBarThumbIconId() {
+        String resourceName = "ic_thumb_" + animalType;
+        return context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
     }
 
 
-    /** 03. drawable resources */
+    /**
+     * 03. drawable resources
+     */
     public int getButtonStyle01() {
         String resourceName = "ButtonStyle01_" + animalType;
         return context.getResources().getIdentifier(resourceName, "style", context.getPackageName());
@@ -76,7 +89,6 @@ public class StyleManager {
         return context.getResources().getIdentifier(resourceName, "style", context.getPackageName());
     }
 
-    // toString() 메서드 오버라이딩
     public String getResourceName(int resourceId) {
         return context.getResources().getResourceEntryName(resourceId); // 리소스 이름 반환
     }
