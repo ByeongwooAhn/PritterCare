@@ -1,5 +1,6 @@
 package com.example.prittercare.view.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.prittercare.R;
 import com.example.prittercare.model.data.ReservationData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,9 +50,19 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
      * @param longClickListener 롱클릭 리스너
      */
     public ReservationAdapter(List<ReservationData> alarmList, OnAlarmClickListener clickListener, OnAlarmLongClickListener longClickListener) {
-        this.alarmList = alarmList;
+        this.alarmList = (alarmList != null) ? alarmList : new ArrayList<>(); // null 방지
         this.clickListener = clickListener;
         this.longClickListener = longClickListener;
+    }
+
+    /**
+     * 데이터를 갱신하는 메서드
+     *
+     * @param newAlarmList 새로운 예약 데이터 리스트
+     */
+    public void updateData(List<ReservationData> newAlarmList) {
+        this.alarmList = (newAlarmList != null) ? newAlarmList : new ArrayList<>(); // null 방지
+        notifyDataSetChanged(); // 데이터 변경 시 RecyclerView 업데이트
     }
 
     /**
@@ -77,6 +89,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     public void onBindViewHolder(AlarmViewHolder holder, int position) {
         // 현재 예약 데이터를 가져옴
         ReservationData alarm = alarmList.get(position);
+        Log.d("AlarmEditActivity", "Saved light level: " + alarm.getLightLevel());
 
         // 시간 및 날짜 설정
         holder.alarmTime.setText(alarm.getReserveTime());
@@ -105,15 +118,24 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         switch (alarm.getReserveType()) {
             case "water":
                 holder.alarmTypeIcon.setImageResource(R.drawable.ic_water); // 물
+                holder.lightLevelText.setVisibility(View.GONE); // 조명 단계 숨김
                 break;
             case "food":
                 holder.alarmTypeIcon.setImageResource(R.drawable.ic_food); // 음식
+                holder.lightLevelText.setVisibility(View.GONE); // 조명 단계 숨김
                 break;
             case "light":
-                holder.alarmTypeIcon.setImageResource(R.drawable.ic_light); // 조명
+                holder.alarmTypeIcon.setImageResource(R.drawable.ic_light);
+                if (alarm.getLightLevel() > 0) {
+                    holder.lightLevelText.setText(String.format("%d단계", alarm.getLightLevel()));
+                    holder.lightLevelText.setVisibility(View.VISIBLE);
+                } else {
+                    holder.lightLevelText.setVisibility(View.GONE);
+                }
                 break;
             default:
                 holder.alarmTypeIcon.setImageResource(R.drawable.ic_placeholder); // 기본 아이콘
+                holder.lightLevelText.setVisibility(View.GONE);
         }
 
         // 아이템 클릭 리스너 설정
@@ -133,7 +155,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
      */
     @Override
     public int getItemCount() {
-        return alarmList.size();
+        return (alarmList != null) ? alarmList.size() : 0; // null 체크
     }
 
     /**
@@ -143,7 +165,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     public static class AlarmViewHolder extends RecyclerView.ViewHolder {
 
         // UI 요소 선언
-        TextView alarmTime, alarmDate, alarmName, alarmCycle;
+        TextView alarmTime, alarmDate, alarmName, alarmCycle, lightLevelText;
         ImageView alarmTypeIcon;
 
         public AlarmViewHolder(View itemView) {
@@ -154,6 +176,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             alarmName = itemView.findViewById(R.id.reservationName);
             alarmCycle = itemView.findViewById(R.id.alarmCycle); // 주기 텍스트
             alarmTypeIcon = itemView.findViewById(R.id.alarmTypeIcon); // 예약 타입 아이콘
+            lightLevelText = itemView.findViewById(R.id.lightLevelText); // lightLevelText 초기화
         }
     }
 }

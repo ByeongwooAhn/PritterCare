@@ -27,7 +27,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class TemperatureAndHumidtyFragment extends Fragment {
 
-    private MQTTHelper mqttHelper;
+    public MQTTHelper mqttHelper;
 
     // 사용자 및 장치 정보
     private String userid = DataManager.getInstance().getUserName(); // 사용자 ID
@@ -65,16 +65,39 @@ public class TemperatureAndHumidtyFragment extends Fragment {
     }
 
     private void setupButtonListeners(View rootView) {
+        // 온도 설정 버튼
         rootView.findViewById(R.id.btn_set_temperature).setOnClickListener(view -> {
-            String temperature = ((EditText) rootView.findViewById(R.id.et_set_temperature)).getText().toString();
-            sendCommand(TEMPERATURE_TOPIC, temperature, "온도 설정: " + temperature);
+            EditText temperatureEditText = rootView.findViewById(R.id.et_set_temperature);
+            String temperature = temperatureEditText.getText().toString();
+
+            if (!temperature.isEmpty()) {
+                sendCommand(TEMPERATURE_TOPIC, temperature, "온도 설정: " + temperature);
+
+                // "설정된 온도 값:" TextView 업데이트
+                TextView temperatureTextView = rootView.findViewById(R.id.tv_get_temperature);
+                temperatureTextView.setText("설정된 온도 값: " + temperature + "°C");
+            } else {
+                Toast.makeText(requireContext(), "온도 값을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            }
         });
 
+        // 습도 설정 버튼
         rootView.findViewById(R.id.btn_set_humidity).setOnClickListener(view -> {
-            String humidity = ((EditText) rootView.findViewById(R.id.et_set_humidity)).getText().toString();
-            sendCommand(HUMIDITY_TOPIC, humidity, "습도 설정: " + humidity);
+            EditText humidityEditText = rootView.findViewById(R.id.et_set_humidity);
+            String humidity = humidityEditText.getText().toString();
+
+            if (!humidity.isEmpty()) {
+                sendCommand(HUMIDITY_TOPIC, humidity, "습도 설정: " + humidity);
+
+                // "설정된 습도 값:" TextView 업데이트
+                TextView humidityTextView = rootView.findViewById(R.id.tv_get_humidity);
+                humidityTextView.setText("설정된 습도 값: " + humidity + " %");
+            } else {
+                Toast.makeText(requireContext(), "습도 값을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
+
 
     private void applyAnimalStyle(View rootView) {
         animalType = DataManager.getInstance().getCurrentAnimalType();

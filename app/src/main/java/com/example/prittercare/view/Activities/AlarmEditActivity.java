@@ -111,6 +111,7 @@ public class AlarmEditActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 lightLevelLabel.setText("조명 단계 (0~5): " + progress);
+                alarm.setLightLevel(progress); // 조명 단계 저장
             }
 
             @Override
