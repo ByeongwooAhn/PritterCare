@@ -18,6 +18,8 @@ import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.MQTTHelper;
 import com.example.prittercare.view.MainTabManager;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -33,16 +35,16 @@ public class MainActivity extends AppCompatActivity {
     private String userName; // 사용자 ID
 
     // MQTT Topics
-    /*private static final String TEMPERATURE_TOPIC = "sensor/temperature";*/
-    private String TEMPERATURE_TOPIC="test/topic";
+    private String SENSOR_TOPIC;
+    private String TEMPERATURE_TOPIC;
     private String HUMIDITY_TOPIC;
 
     // Variables to store the latest values
     private String latestTemperature = "0°C";
-    private String latestHumidity = "0 %";
+    private String latestHumidity = "0%";
 
     private final Handler handler = new Handler();
-    private final int UPDATE_INTERVAL = 5000; // 5 seconds
+    private final int UPDATE_INTERVAL = 3000; // 3 seconds
 
     private StyleManager styleManager;
 
@@ -54,26 +56,35 @@ public class MainActivity extends AppCompatActivity {
 
         // serialNumber 받기
         cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
-        if(cageSerialNumber != null) {
-            Log.d("MainActivity", "Received cageSerialNumber : " + cageSerialNumber);
+        if (cageSerialNumber == null || cageSerialNumber.isEmpty()) {
+            Log.e(TAG, "cageSerialNumber가 null입니다. 기본값으로 설정합니다.");
+            cageSerialNumber = "defaultCage";
         }
 
         // cageName 받기
         cageName = DataManager.getInstance().getCurrentCageName();
-        if(cageName != null) {
-            Log.d("MainActivity", "Received cageName : " + cageName);
+        if (cageName != null) {
+            Log.d(TAG, "Received cageName: " + cageName);
+        } else {
+            cageName = "Unknown Cage";
         }
 
         // userName 받기
         userName = DataManager.getInstance().getUserName();
+        if (userName == null || userName.isEmpty()) {
+            Log.e(TAG, "userName이 null입니다. 기본값으로 설정합니다.");
+            userName = "defaultUser";
+        }
 
         // MQTT 토픽 초기화
-        TEMPERATURE_TOPIC = "${userName}/${cageSerialNumber}/temperature"
+        SENSOR_TOPIC = "${userName}/${cageSerialNumber}/sensor"
                 .replace("${userName}", userName)
-                .replace("${cageSerialNumber}", this.cageSerialNumber);
-        HUMIDITY_TOPIC = "${userName}/${cageSerialNumber}/humidity"
-                .replace("${userName}", userName)
-                .replace("${cageSerialNumber}", this.cageSerialNumber);
+                .replace("${cageSerialNumber}", cageSerialNumber);
+
+        if (SENSOR_TOPIC == null || SENSOR_TOPIC.isEmpty()) {
+            Log.e(TAG, "SENSOR_TOPIC이 null 또는 비어 있습니다.");
+            return;
+        }
 
         // MQTTHelper 초기화
         mqttHelper = new MQTTHelper(this, "tcp://medicine.p-e.kr:1884", "myClientId", "GuestMosquitto", "MosquittoGuest1119!");
@@ -84,7 +95,11 @@ public class MainActivity extends AppCompatActivity {
         tabManager.initializeTabs();
 
         // MQTT Topics 구독 및 메시지 처리
-        subscribeToTopics();
+        try {
+            subscribeToTopics();
+        } catch (Exception e) {
+            Log.e(TAG, "MQTT 구독 중 오류: " + e.getMessage());
+        }
 
         // UI 업데이트 루프 시작
         startPeriodicUpdate();
@@ -96,13 +111,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        // 전체 화면 버튼 클릭 이벤트 (필요 시 구현)
-        binding.ivFullScreen.setOnClickListener(view -> {
-            // 전체 화면 기능 구현 필요
-        });
-
         binding.layoutToolbar.tvTitleToolbar.setText(cageName);
-
         applyAnimalStyle();
     }
 
@@ -111,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void connectionLost(Throwable cause) {
                 Log.e(TAG, "MQTT 연결 끊김: " + cause.getMessage());
+                mqttHelper.initialize();
             }
 
             @Override
@@ -118,11 +128,17 @@ public class MainActivity extends AppCompatActivity {
                 String receivedMessage = new String(message.getPayload());
                 Log.d(TAG, "토픽 [" + topic + "]에서 메시지 수신: " + receivedMessage);
 
-                // 최신 값 업데이트
-                if (topic.equals(TEMPERATURE_TOPIC)) {
-                    latestTemperature = receivedMessage + "°C";
-                } else if (topic.equals(HUMIDITY_TOPIC)) {
-                    latestHumidity = receivedMessage + " %";
+                try {
+                    // JSON 파싱
+                    JSONObject jsonObject = new JSONObject(receivedMessage);
+                    if (jsonObject.has("temperature")) {
+                        latestTemperature = jsonObject.getString("temperature") + "°C";
+                    }
+                    if (jsonObject.has("humidity")) {
+                        latestHumidity = jsonObject.getString("humidity") + "%";
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "JSON 파싱 오류: " + e.getMessage());
                 }
             }
 
@@ -132,9 +148,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 각각의 토픽 구독
-        mqttHelper.subscribe(TEMPERATURE_TOPIC);
-        mqttHelper.subscribe(HUMIDITY_TOPIC);
+        // 토픽 구독
+        mqttHelper.subscribe(SENSOR_TOPIC);
     }
 
     private void applyAnimalStyle() {
@@ -142,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         styleManager = new StyleManager(this, animalType);
 
         binding.main.setBackground(AppCompatResources.getDrawable(this, styleManager.getBackgroundMainId()));
-        binding.mainLayoutContainer.setBackground(AppCompatResources.getDrawable(this,styleManager.getCardShapeId()));
+        binding.mainLayoutContainer.setBackground(AppCompatResources.getDrawable(this, styleManager.getCardShapeId()));
         setStatusBar(styleManager);
     }
 

@@ -2,6 +2,7 @@ package com.example.prittercare.model.data;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+import java.util.UUID;
 
 public class ReservationData implements Serializable {
 
@@ -38,6 +39,8 @@ public class ReservationData implements Serializable {
     @SerializedName("reserve_time")
     private String reserveTime;
 
+    private String id; // 고유 ID
+
     public ReservationData(String cageSerialNumber, String reserveName, String reserveDate, String reserveType,
                            String reserveTime, int dayLoop, int timeLoop, int lightLevel,
                            int reserveId, int reserveHour, int reserveMinute) {
@@ -54,7 +57,13 @@ public class ReservationData implements Serializable {
         this.reserveMinute = reserveMinute;
     }
 
-    public ReservationData(String reserveTime, String reserveDate, String reserveName, String reserveType) {
+    // 생성자
+    public ReservationData(String reserveName, String reserveType, String reserveDate, String reserveTime) {
+        this.id = UUID.randomUUID().toString(); // 고유 ID 생성
+        this.reserveName = reserveName;
+        this.reserveType = reserveType;
+        this.reserveDate = reserveDate;
+        this.reserveTime = reserveTime;
     }
 
     // Getters and setters
@@ -147,4 +156,7 @@ public class ReservationData implements Serializable {
         this.reserveTime = reserveTime;
     }
 
+    public String getId() {
+        return id;
+    }
 }

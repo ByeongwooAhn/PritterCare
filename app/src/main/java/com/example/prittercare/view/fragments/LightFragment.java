@@ -99,14 +99,14 @@ public class LightFragment extends Fragment {
     private void turnLightOn() {
         isLightOn = true;
         updateUI();
-        sendCommand("light/topic", String.valueOf(currentLightLevel), "조명 ON");
+        sendCommand(LIGHT_TOPIC, String.valueOf(currentLightLevel), "조명 ON");
     }
 
     // 조명을 끄는 메서드
     private void turnLightOff() {
         isLightOn = false;
         updateUI();
-        sendCommand("light/topic", "0", "조명 OFF");
+        sendCommand(LIGHT_TOPIC, "0", "조명 OFF");
     }
 
     // 조명 단계를 조정하는 메서드
