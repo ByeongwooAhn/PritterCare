@@ -91,8 +91,8 @@ public class TemperatureAndHumidtyFragment extends Fragment {
         animalType = DataManager.getInstance().getCurrentAnimalType();
         styleManager = new StyleManager(getContext(), animalType);
 
-        temperatureContainerLayout.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
-        humidityContainerLayout.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
+        temperatureContainerLayout.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getContainerShapeId()));
+        humidityContainerLayout.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getContainerShapeId()));
 
         // TextView 스타일 변경
         temperatureGetTextView.setTextColor(ContextCompat.getColor(requireContext(), styleManager.getBasicColor03Id()));

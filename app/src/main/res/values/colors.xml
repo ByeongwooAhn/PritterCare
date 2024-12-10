@@ -21,7 +21,6 @@
     <color name="basicColor03_basic">#696969</color>
 
 
-
     <color name="backgroundColor">#dfe0e3</color>
 
     <!-- 기본 텍스트 색상 -->
@@ -34,11 +33,12 @@
     <color name="signupSuccessTextColor">#3c9c43</color>
 
     <!-- 조명 조절 색상 -->
-    <color name="lightLevel5">#ffe13c</color>
-    <color name="lightLevel4">#ecc900</color>
-    <color name="lightLevel3">#bfa300</color>
-    <color name="lightLevel2">#8c7700</color>
-    <color name="lightLevel1">#514500</color>
+    <color name="lightLevel5">#ffffd2</color>
+    <color name="lightLevel4">#f9f9a0</color>
+    <color name="lightLevel3">#efef66</color>
+    <color name="lightLevel2">#dada33</color>
+    <color name="lightLevel1">#aeae00</color>
+    <color name="lightOFF">#242400</color>
 
     <color name="white">#ffffff</color>
     <color name="gray">#666666</color>

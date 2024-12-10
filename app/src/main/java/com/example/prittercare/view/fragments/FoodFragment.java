@@ -84,7 +84,7 @@ public class FoodFragment extends Fragment {
         animalType = DataManager.getInstance().getCurrentAnimalType();
         styleManager = new StyleManager(context, animalType);
 
-        feetWaterContainer.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getButton02ShapeId()));
+        feetWaterContainer.setBackground(AppCompatResources.getDrawable(getContext(), styleManager.getContainerShapeId()));
 
         feedWaterButton.setBackgroundResource(styleManager.getButton01ShapeId());
         feedWaterButtonIcon.setColorFilter(getContext().getColor(styleManager.getBasicColor03Id()), PorterDuff.Mode.SRC_IN);

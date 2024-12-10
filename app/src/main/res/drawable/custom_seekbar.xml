@@ -15,8 +15,8 @@
                 <corners android:radius="10dp" /> <!-- 둥근 모서리 -->
                 <gradient
                     android:angle="0"
-                    android:endColor="#ffe13c"
-                    android:startColor="#514500"
+                    android:endColor="#ffffd2"
+                    android:startColor="#aeae00"
                     android:type="linear" />
             </shape>
         </clip>

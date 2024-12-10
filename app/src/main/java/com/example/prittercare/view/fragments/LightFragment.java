@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -35,13 +34,10 @@ public class LightFragment extends Fragment {
     private ImageView lightLevelIcon;
     private TextView lightLevelText;
 
-    private ImageButton leftButton, rightButton;
+    private ImageButton decreaseButton, increaseButton;
     private SeekBar lightStepSeekBar;
 
     private Button lightSetButton;
-
-    // 조명 상태
-    private int maxLightLevel = 5;
 
     private MQTTHelper mqttHelper;
     private StyleManager styleManager;
@@ -50,8 +46,11 @@ public class LightFragment extends Fragment {
     private String userid;
     private String serialnumber;
     private String animalType;
-    private int currentLightLevel = 1;
 
+    // 조명 상태
+    private final int MAX_LIGHT_LEVEL = 5;
+    private int beforeLightLevel;
+    private int currentLightLevel;
 
     // MQTT 토픽
     private String LIGHT_TOPIC;
@@ -72,6 +71,9 @@ public class LightFragment extends Fragment {
         serialnumber = DataManager.getInstance().getCurrentCageSerialNumber();
         animalType = DataManager.getInstance().getCurrentAnimalType();
 
+        currentLightLevel = 1;
+        beforeLightLevel = currentLightLevel;
+
         // MQTT 토픽 초기화
         LIGHT_TOPIC = "${userid}/${serialnumber}/light".replace("${userid}", userid).replace("${serialnumber}", serialnumber);
 
@@ -79,6 +81,10 @@ public class LightFragment extends Fragment {
         initializeViews(rootView);
         applyAnimalStyle(getContext());
         setupListeners(rootView);
+
+        setLightLevelText();
+        lightStepSeekBar.setProgress(currentLightLevel);
+        manageLightSetButtonEnabled(getContext());
 
         // UI 초기 상태
         return rootView;
@@ -91,8 +97,8 @@ public class LightFragment extends Fragment {
         lightLevelText = rootView.findViewById(R.id.tv_light_level);
         lightLevelIcon = rootView.findViewById(R.id.iv_ic_light_level);
 
-        leftButton = rootView.findViewById(R.id.btn_left);
-        rightButton = rootView.findViewById(R.id.btn_right);
+        decreaseButton = rootView.findViewById(R.id.btn_left);
+        increaseButton = rootView.findViewById(R.id.btn_right);
         lightStepSeekBar = rootView.findViewById(R.id.seekbar_step_light);
 
         lightSetButton = rootView.findViewById(R.id.btn_set_light);
@@ -100,7 +106,7 @@ public class LightFragment extends Fragment {
 
     private void applyAnimalStyle(Context context) {
         styleManager = new StyleManager(context, animalType);
-        lightContainerLayout.setBackground(AppCompatResources.getDrawable(context, styleManager.getButton02ShapeId()));
+        lightContainerLayout.setBackground(AppCompatResources.getDrawable(context, styleManager.getContainerShapeId()));
         lightLevelText.setTextColor(ContextCompat.getColor(context, styleManager.getBasicColor01Id()));
         lightSetButton.setBackground(AppCompatResources.getDrawable(context, styleManager.getButton01ShapeId()));
         lightSetButton.setTextColor(ContextCompat.getColor(context, styleManager.getBasicColor03Id()));
@@ -109,17 +115,89 @@ public class LightFragment extends Fragment {
 
     // 이벤트 리스너 설정
     private void setupListeners(View rootView) {
-        rootView.findViewById(R.id.btn_left).setOnClickListener(view -> adjustLightLevel(-1));
-        rootView.findViewById(R.id.btn_right).setOnClickListener(view -> adjustLightLevel(1));
+        decreaseButton.setOnClickListener(view -> {
+            lightStepSeekBar.setProgress(currentLightLevel - 1);
+        });
+        increaseButton.setOnClickListener(view -> {
+            lightStepSeekBar.setProgress(currentLightLevel + 1);
+        });
+
+        lightSetButton.setOnClickListener(view -> {
+            if (lightSetButton.isEnabled()) {
+                if (currentLightLevel > 0) {
+                    sendCommand(LIGHT_TOPIC, String.valueOf(currentLightLevel), "조명 설정 : " + currentLightLevel + "단계");
+                } else {
+                    sendCommand("light/topic", "0", "조명 설정 : 꺼짐");
+                }
+            } else {
+                showToast("이미 설정된 값입니다.");
+            }
+            beforeLightLevel = currentLightLevel;
+            manageLightSetButtonEnabled(getContext());
+        });
+
+        lightStepSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                currentLightLevel = progress;
+                setLightLevelText();
+                manageLightSetButtonEnabled(getContext());
+                changeLightIconColor();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
-    // 조명 단계를 조정하는 메서드
-    private void adjustLightLevel(int delta) {
-        int newLevel = currentLightLevel + delta;
-        if (newLevel < 1 || newLevel > maxLightLevel) {
-            showToast("조명 단계는 1~5 사이의 값이어야 합니다.");
+    private void changeLightIconColor() {
+        switch (currentLightLevel) {
+            case 0:
+                lightLevelIcon.setColorFilter(getContext().getColor(R.color.lightOFF), PorterDuff.Mode.SRC_IN);
+                break;
+            case 1:
+                lightLevelIcon.setColorFilter(getContext().getColor(R.color.lightLevel1), PorterDuff.Mode.SRC_IN);
+                break;
+            case 2:
+                lightLevelIcon.setColorFilter(getContext().getColor(R.color.lightLevel2), PorterDuff.Mode.SRC_IN);
+                break;
+            case 3:
+                lightLevelIcon.setColorFilter(getContext().getColor(R.color.lightLevel3), PorterDuff.Mode.SRC_IN);
+                break;
+            case 4:
+                lightLevelIcon.setColorFilter(getContext().getColor(R.color.lightLevel4), PorterDuff.Mode.SRC_IN);
+                break;
+            case 5:
+                lightLevelIcon.setColorFilter(getContext().getColor(R.color.lightLevel5), PorterDuff.Mode.SRC_IN);
+                break;
+        }
+    }
+
+    private void manageLightSetButtonEnabled(Context context) {
+        if (beforeLightLevel == currentLightLevel) {
+            lightSetButton.setEnabled(false);
+            lightSetButton.setBackground(AppCompatResources.getDrawable(context, styleManager.getButton01ShapeId()));
+            lightSetButton.setTextColor(ContextCompat.getColor(context, R.color.white));
         } else {
-            currentLightLevel = newLevel;
+            lightSetButton.setEnabled(true);
+            lightSetButton.setBackground(AppCompatResources.getDrawable(context, styleManager.getButton02ShapeId()));
+            lightSetButton.setTextColor(ContextCompat.getColor(context, styleManager.getBasicColor01Id()));
+        }
+    }
+
+    private void setLightLevelText() {
+        if (currentLightLevel > 0) {
+            lightLevelText.setText("조명 : " + currentLightLevel + "단계");
+        } else if (currentLightLevel == 0) {
+            lightLevelText.setText("조명 : 꺼짐");
         }
     }
 
@@ -132,30 +210,8 @@ public class LightFragment extends Fragment {
             showToast("MQTT 연결 실패. 다시 시도해주세요.");
         }
     }
-    // sendCommand(LIGHT_TOPIC, String.valueOf(currentLightLevel), "조명 단계: " + currentLightLevel);
-    // sendCommand("light/topic", "0", "조명 OFF");
 
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    // UI 업데이트: 현재 조명 상태와 단게에 따라
-    private int getColorForLightLevel(int level) {
-        return switch (level) {
-            case 4, 5 -> R.color.black;
-            default -> R.color.white;
-        };
-    }
-
-    // 단계에 따른 배경 리소스 반환
-    private int getContainerColorForLightLevel(int level) {
-        return switch (level) {
-            case 1 -> R.drawable.shape_card_main_light_level1;
-            case 2 -> R.drawable.shape_card_main_light_level2;
-            case 3 -> R.drawable.shape_card_main_light_level3;
-            case 4 -> R.drawable.shape_card_main_light_level4;
-            case 5 -> R.drawable.shape_card_main_light_level5;
-            default -> R.drawable.shape_card_main_light_level1;
-        };
     }
 }

@@ -52,6 +52,11 @@ public class StyleManager {
         return context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
     }
 
+    public int getContainerShapeId() {
+        String resourceName = "shape_container_" + animalType; // 리소스 이름 생성
+        return context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
+    }
+
     // Tab
     public int getSelectedTabId() {
         String resourceName = "shape_tab_selected_" + animalType;
