@@ -8,8 +8,10 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.prittercare.controller.callback.CageRegisterCallback;
 import com.example.prittercare.databinding.ActivityQrcodeScanBinding;
 import com.example.prittercare.model.DataManager;
+import com.example.prittercare.model.DataRepository;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 
@@ -111,7 +113,27 @@ public class QRCodeScanActivity extends AppCompatActivity {
     }
 
     private void checkSerialNumber() {
+        String token = DataManager.getInstance().getUserToken(); // 저장된 JWT 토큰
+        String serialNumber = DataManager.getInstance().getCurrentCageSerialNumber(); // 스캔된 시리얼 넘버
 
+        if (serialNumber == null || token == null) {
+            Toast.makeText(this, "잘못된 요청입니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DataRepository dataRepository = new DataRepository();
+        dataRepository.checkSerialNumber(token, serialNumber, new CageRegisterCallback() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(QRCodeScanActivity.this, "시리얼 넘버 확인 성공: " + message, Toast.LENGTH_SHORT).show();
+                moveToCageAddActivity();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(QRCodeScanActivity.this, "시리얼 넘버 확인 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void resisterNewCage(String newSerialNumber) {

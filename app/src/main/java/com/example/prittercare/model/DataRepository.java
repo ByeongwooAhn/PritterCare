@@ -1,16 +1,15 @@
 package com.example.prittercare.model;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.example.prittercare.controller.callback.CageDeleteCallBack;
 import com.example.prittercare.controller.callback.CageListCallback;
 import com.example.prittercare.controller.LogController;
+import com.example.prittercare.controller.callback.CageRegisterCallback;
 import com.example.prittercare.controller.callback.CageSingleUpdateCallBack;
 import com.example.prittercare.controller.callback.CageUpdateCallback;
 import com.example.prittercare.controller.callback.LoginCallback;
 import com.example.prittercare.model.data.CageData;
-import com.example.prittercare.model.request.DeleteCageRequest;
 import com.example.prittercare.model.request.LoadCageSettingsRequest;
 import com.example.prittercare.model.request.LoginRequest;
 import com.example.prittercare.model.request.UpdateCageNameRequest;
@@ -20,9 +19,7 @@ import com.example.prittercare.model.request.UpdateTemperatureRequest;
 import com.example.prittercare.model.request.UpdateWaterLevelRequest;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,6 +86,64 @@ public class DataRepository {
             }
         });
     }
+
+    public void checkSerialNumber(String token, String serialNumber, CageRegisterCallback callback) {
+        CageData request = new CageData();
+        request.setCageSerialNumber(serialNumber);
+
+        gsonApiService.serialCheck(token, request).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    try {
+                        Log.e("DataRepository", "Failed to check serial number: " + response.code());
+                        if (response.errorBody() != null) {
+                            Log.e("DataRepository", "Error body: " + response.errorBody().string());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    callback.onFailure(new Exception("Serial number check failed"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("DataRepository", "Network error during serial number check", t);
+                callback.onFailure((Exception) t);
+            }
+        });
+    }
+
+    public void addCage(String token, CageData cageData, CageRegisterCallback callback) {
+        gsonApiService.addCage(token, cageData).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    try {
+                        Log.e("DataRepository", "Failed to add cage: " + response.code());
+                        if (response.errorBody() != null) {
+                            Log.e("DataRepository", "Error body: " + response.errorBody().string());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    callback.onFailure(new Exception("Failed to add cage"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("DataRepository", "Network error during adding cage", t);
+                callback.onFailure(new Exception(t));
+            }
+        });
+    }
+
 
     public void loadCageSettings(String token, String cageSerialNumber, CageSingleUpdateCallBack callback) {
         LoadCageSettingsRequest request = new LoadCageSettingsRequest(cageSerialNumber);

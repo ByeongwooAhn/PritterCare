@@ -32,6 +32,12 @@ public interface ApiService {
     @POST("/accounts/signup")
     Call<Void> signUp(@Body SignUpRequest signUpRequest);
 
+    @PATCH("/cages/serial")
+    Call<String> serialCheck(@Header("Authorization") String token, @Body CageData request);
+
+    @PATCH("/cages/add")
+    Call<String> addCage(@Header("Authorization") String token, @Body CageData request);
+
     // 사육장 리스트 가져오기
     @GET("/cages/list")
     Call<List<CageData>> getCageList(@Header("Authorization") String token);
