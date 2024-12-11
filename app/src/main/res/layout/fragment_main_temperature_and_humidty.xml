@@ -22,131 +22,139 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        android:orientation="vertical">
+        android:gravity="center">
 
         <LinearLayout
+            android:id="@+id/layout_container_temperature"
+            android:layout_width="0dp"
+            android:layout_height="144dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button02_fish"
             android:orientation="vertical"
-            android:background="@drawable/shape_card_main_temperature_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:padding="10dp">
 
             <TextView
                 android:id="@+id/tv_get_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="설정된 온도 값 : "
-                android:textColor="#9486e3"
-                android:textSize="12sp"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:text="설정된 온도 값 : -°C"
+                android:textColor="@color/basicColor03_fish"
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_temperature_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="온도 설정 :"
-                    android:textSize="18sp"
-                    android:textColor="#333333" />
+                    android:text="온도 설정 "
+                    android:textColor="@color/basicColor01_fish"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/et_set_temperature"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:hint="온도 값"
-                    android:textColor="@color/etTextColor"
-                    android:textColorHint="@color/etTextHintColor"
-                    android:textCursorDrawable="@color/etCursorColor"
-                    android:textSelectHandle="@color/etHandleColor" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:hint="10"
-                    android:text="°C"
-                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:hint="온도 값"
+                    android:inputType="number"
+                    android:textColor="@color/white"
+                    android:textColorHint="#66FFFFFF"
+                    android:textCursorDrawable="@color/etCursorColor"
+                    android:textSelectHandle="@color/etHandleColor"
                     android:textSize="18sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_set_temperature"
-                    style="@style/ButtonStyle02_fish"
-                    android:layout_width="120dp"
+                <TextView
+                    android:id="@+id/tv_temperature_sign"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="확인" />
+                    android:hint="10"
+                    android:text="°C"
+                    android:textColor="@color/basicColor01_fish"
+                    android:textSize="18sp" />
 
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_set_temperature"
+                style="@style/ButtonStyle01_fish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="설정" />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="5dp"
+            android:id="@+id/layout_container_humidity"
+            android:layout_width="0dp"
+            android:layout_height="144dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button02_fish"
             android:orientation="vertical"
-            android:background="@drawable/shape_card_main_temperature_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:padding="10dp">
 
             <TextView
                 android:id="@+id/tv_get_humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="설정된 습도 값 : "
-                android:textColor="#9486e3"
-                android:textSize="12sp"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:text="설정된 습도 값 : -%"
+                android:textColor="@color/basicColor03_fish"
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_humidity_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="습도 설정 :"
-                    android:textSize="18sp"
-                    android:textColor="#333333" />
+                    android:text="습도 설정 "
+                    android:textColor="@color/basicColor01_fish"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/et_set_humidity"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:hint="습도 값"
-                    android:textColor="@color/etTextColor"
-                    android:textColorHint="@color/etTextHintColor"
-                    android:textCursorDrawable="@color/etCursorColor"
-                    android:textSelectHandle="@color/etHandleColor" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:hint="10"
-                    android:text=" %"
-                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:hint="습도 값"
+                    android:inputType="number"
+                    android:textColor="@color/white"
+                    android:textColorHint="#66FFFFFF"
+                    android:textCursorDrawable="@color/etCursorColor"
+                    android:textSelectHandle="@color/etHandleColor"
                     android:textSize="18sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_set_humidity"
-                    style="@style/ButtonStyle02_fish"
-                    android:layout_width="120dp"
+                <TextView
+                    android:id="@+id/tv_humidity_sign"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="확인" />
+                    android:hint="10"
+                    android:text="%"
+                    android:textColor="@color/basicColor01_fish"
+                    android:textSize="18sp" />
 
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_set_humidity"
+                style="@style/ButtonStyle01_fish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="설정" />
 
 
         </LinearLayout>

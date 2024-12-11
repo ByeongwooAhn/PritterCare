@@ -44,7 +44,7 @@ public class MainTabManager {
     public void initializeTabs() {
         // 탭 초기화
         tabs.add(new MainTabView(activity, "온도 / 습도", R.drawable.ic_control_temperature_and_humidity));
-        tabs.add(new MainTabView(activity, "먹이 / 물", R.drawable.ic_control_food_and_water));
+        tabs.add(new MainTabView(activity, "물", R.drawable.ic_control_food_and_water));
         tabs.add(new MainTabView(activity, "조명", R.drawable.ic_control_light));
         tabs.add(new MainTabView(activity, "예약", R.drawable.ic_control_reservation));
 

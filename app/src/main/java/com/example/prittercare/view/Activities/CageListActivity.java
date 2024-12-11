@@ -3,12 +3,15 @@ package com.example.prittercare.view.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.prittercare.R;
 import com.example.prittercare.controller.CageListCallback;
 import com.example.prittercare.databinding.ActivityCageListBinding;
 import com.example.prittercare.model.DataManager;
@@ -46,6 +49,13 @@ public class CageListActivity extends AppCompatActivity {
         loadCageDataFromServer();
 
         binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view -> moveToNewCageActivity());
+        binding.layoutCageToolbar.btnCageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(CageListActivity.this, R.anim.button_scale));
+                finish(); // 현재 Activity 종료
+            }
+        });
     }
 
     private void loadCageDataFromServer() {
@@ -54,9 +64,7 @@ public class CageListActivity extends AppCompatActivity {
         repository.fetchCageList(token, new CageListCallback<CageData>() {
             @Override
             public void onSuccess(List<CageData> cageListResponse) {
-                if (cageListResponse == null || cageListResponse.isEmpty()) {
-                    moveToNewCageActivity();
-                } else {
+                if (cageListResponse != null && !cageListResponse.isEmpty()) {
                     for (CageData cage : cageListResponse) {
                         Log.d("CageListActivity", "CageData: " + cage.toString());
                     }
@@ -66,9 +74,15 @@ public class CageListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable error) {
-                Log.e("CageListActivity", "Cage 리스트를 가져오는 데 실패했습니다.", error);
+                moveToQRCodeScanActivity();
             }
         });
+    }
+
+    private void moveToQRCodeScanActivity() {
+        Intent intent = new Intent(CageListActivity.this, QRCodeScanActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void updateCageList(List<CageData> cageListResponse) {

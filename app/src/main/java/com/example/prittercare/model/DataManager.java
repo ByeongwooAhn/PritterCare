@@ -93,4 +93,14 @@ public class DataManager {
     public void removeCageData(CageData cage) {
         cageList.remove(cage);
     }
+
+    // 로그아웃 시 데이터 초기화
+    public void clearData() {
+        userToken = null;
+        userName = null;
+        if (cageList != null) {
+            cageList.clear();
+        }
+        currentCageSerialNumber = null;
+    }
 }
