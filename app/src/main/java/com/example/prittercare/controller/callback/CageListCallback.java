@@ -1,6 +1,4 @@
-package com.example.prittercare.controller;
-
-import com.example.prittercare.model.data.CageData;
+package com.example.prittercare.controller.callback;
 
 import java.util.List;
 

@@ -1,5 +1,9 @@
 package com.example.prittercare.model;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
 import com.example.prittercare.model.data.CageData;
 
 import java.util.List;
@@ -57,7 +61,7 @@ public class DataManager {
     }
 
     // 현재 타겟 CageData 가져오기
-    private CageData getCurrentCageData() {
+    public CageData getCurrentCageData() {
         if (cageList == null || currentCageSerialNumber == null) {
             return null;
         }
@@ -102,5 +106,27 @@ public class DataManager {
             cageList.clear();
         }
         currentCageSerialNumber = null;
+    }
+
+    // 모든 데이터를 Log로 출력하는 메서드
+    public void logAllData() {
+        Log.d(TAG, "User Token: " + userToken);
+        Log.d(TAG, "User Name: " + userName);
+        Log.d(TAG, "Current Cage Serial Number: " + currentCageSerialNumber);
+
+        if (cageList != null && !cageList.isEmpty()) {
+            Log.d(TAG, "Cage List:");
+            for (CageData cage : cageList) {
+                Log.d(TAG, " - Serial Number: " + cage.getCageSerialNumber());
+                Log.d(TAG, "   Name: " + cage.getCageName());
+                Log.d(TAG, "   Animal Type: " + cage.getAnimalType());
+                Log.d(TAG, "   Temperature: " + cage.getEnvTemperature());
+                Log.d(TAG, "   Humidity: " + cage.getEnvHumidity());
+                Log.d(TAG, "   Lighting: " + cage.getEnvLighting());
+                Log.d(TAG, "   Water Level: " + cage.getEnvWaterLevel());
+            }
+        } else {
+            Log.d(TAG, "Cage List is empty or null.");
+        }
     }
 }

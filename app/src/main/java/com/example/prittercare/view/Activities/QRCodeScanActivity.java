@@ -87,7 +87,19 @@ public class QRCodeScanActivity extends AppCompatActivity {
         binding.scannerQRcode.pause(); // 스캔 멈춤
         Toast.makeText(this, "스캔 성공. 케이지를 등록합니다.", Toast.LENGTH_SHORT).show();
         Log.d("QR CODE SCAN SUCCESS", "SerialNumber : " + scanResult);
-        binding.btnScanQRcode.setText("QR 코드 스캔");
+        binding.tvQRcodeInfo.setText("시리얼 넘버 등록에 성공했습니다.");
+
+        checkSerialNumber();
+        resisterNewCage(scanResult);
+    }
+
+    private void checkSerialNumber() {
+
+    }
+
+    private void resisterNewCage(String newSerialNumber) {
+        DataManager.getInstance().setCurrentCageSerialNumber(newSerialNumber);
+        moveToCageAddActivity();
     }
 
     private void startQRScan() {
@@ -95,6 +107,7 @@ public class QRCodeScanActivity extends AppCompatActivity {
         binding.btnScanQRcode.setText("QR 스캔 멈추기");
         binding.scannerQRcode.resume(); // 카메라 활성화
         Toast.makeText(this, "QR 코드 스캔을 시작합니다.", Toast.LENGTH_SHORT).show();
+        binding.tvQRcodeInfo.setText("시리얼 넘버 등록에 성공했습니다.");
     }
 
     private void restartQRScan() {
@@ -130,6 +143,12 @@ public class QRCodeScanActivity extends AppCompatActivity {
 
     private void moveToLoginActivity() {
         Intent intent = new Intent(QRCodeScanActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void moveToCageAddActivity() {
+        Intent intent = new Intent(QRCodeScanActivity.this, CageAddActivity.class);
         startActivity(intent);
         finish();
     }

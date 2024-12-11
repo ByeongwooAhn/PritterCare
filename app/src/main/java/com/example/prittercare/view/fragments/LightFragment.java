@@ -24,8 +24,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.prittercare.R;
 import com.example.prittercare.controller.StyleManager;
+import com.example.prittercare.controller.callback.CageUpdateCallback;
 import com.example.prittercare.model.DataManager;
+import com.example.prittercare.model.DataRepository;
 import com.example.prittercare.model.MQTTHelper;
+import com.example.prittercare.model.data.CageData;
 
 public class LightFragment extends Fragment {
 
@@ -72,7 +75,12 @@ public class LightFragment extends Fragment {
         serialnumber = DataManager.getInstance().getCurrentCageSerialNumber();
         animalType = DataManager.getInstance().getCurrentAnimalType();
 
-        currentLightLevel = 1;
+        String loadedLightLevel = DataManager.getInstance().getCurrentCageData().getEnvLighting();
+        if (loadedLightLevel != null) {
+            currentLightLevel = Integer.parseInt(DataManager.getInstance().getCurrentCageData().getEnvLighting());
+        } else {
+            currentLightLevel = 0;
+        }
         beforeLightLevel = currentLightLevel;
 
         // MQTT 토픽 초기화
@@ -133,8 +141,6 @@ public class LightFragment extends Fragment {
             } else {
                 showToast("이미 설정된 값입니다.");
             }
-            beforeLightLevel = currentLightLevel;
-            manageLightSetButtonEnabled(getContext());
         });
 
         lightStepSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -206,10 +212,40 @@ public class LightFragment extends Fragment {
     private void sendCommand(String topic, String message, String successToast) {
         if (mqttHelper != null && mqttHelper.isConnected()) {
             mqttHelper.publish(topic, message, 1);
-            showToast(successToast);
+            updateCageLighting(message);
         } else {
             showToast("MQTT 연결 실패. 다시 시도해주세요.");
         }
+    }
+
+    private void updateCageLighting(String lightingLevel) {
+        String token = DataManager.getInstance().getUserToken();
+
+        DataRepository repository = new DataRepository();
+        repository.updateLighting(token, serialnumber, lightingLevel, new CageUpdateCallback() {
+            @Override
+            public void onSuccess(String message) {
+                CageData currentCage = DataManager.getInstance().getCurrentCageData();
+                if (currentCage != null) {
+                    currentCage.setEnvLighting(lightingLevel);
+                    DataManager.getInstance().updateCageData(currentCage);
+                }
+                Log.d("Lighting Server Update", "서버에 조명값 업데이트 성공: " + message);
+                beforeLightLevel = currentLightLevel;
+                manageLightSetButtonEnabled(getContext());
+                Log.d("Lighting Update", "화면에 조명값 업데이트 성공: " + message);
+                if(lightingLevel == "0") {
+                    Toast.makeText(requireContext(), "조명을 끕니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(requireContext(), "조명을 " + lightingLevel + "단계로 설정합니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+
+            }
+        });
     }
 
     private void showToast(String message) {

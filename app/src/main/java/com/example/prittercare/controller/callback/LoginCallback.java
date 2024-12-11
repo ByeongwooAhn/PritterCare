@@ -1,4 +1,4 @@
-package com.example.prittercare.controller;
+package com.example.prittercare.controller.callback;
 
 public interface LoginCallback {
     void onSuccess(String token);

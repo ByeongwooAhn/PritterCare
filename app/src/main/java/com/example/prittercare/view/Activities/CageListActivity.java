@@ -6,13 +6,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.prittercare.R;
-import com.example.prittercare.controller.CageListCallback;
+import com.example.prittercare.controller.callback.CageDeleteCallBack;
+import com.example.prittercare.controller.callback.CageListCallback;
+import com.example.prittercare.controller.callback.CageUpdateCallback;
 import com.example.prittercare.databinding.ActivityCageListBinding;
 import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.DataRepository;
@@ -61,7 +64,7 @@ public class CageListActivity extends AppCompatActivity {
     private void loadCageDataFromServer() {
         String token = DataManager.getInstance().getUserToken(); // DataManager 에서 토큰 가져오기
 
-        repository.fetchCageList(token, new CageListCallback<CageData>() {
+        repository.loadCageList(token, new CageListCallback<CageData>() {
             @Override
             public void onSuccess(List<CageData> cageListResponse) {
                 if (cageListResponse != null && !cageListResponse.isEmpty()) {
@@ -109,7 +112,6 @@ public class CageListActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new CageListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CageData cage) {
-                // 짧게 클릭 -> MainActivity 로 이동
                 moveToMainActivity(cage);
             }
 
@@ -142,19 +144,59 @@ public class CageListActivity extends AppCompatActivity {
                 .setPositiveButton("저장", (dialog, which) -> {
                     String newName = input.getText().toString().trim();
                     if (!newName.isEmpty()) {
-                        cage.setCageName(newName);
-                        DataManager.getInstance().updateCageData(cage); // DataManager 업데이트
-                        adapter.notifyItemChanged(position); // RecyclerView 갱신
+                        updateCageName(cage, newName, position);
                     }
                 })
                 .setNegativeButton("취소", null)
                 .show();
     }
 
+    private void updateCageName(CageData cage, String newName, int position) {
+        String token = DataManager.getInstance().getUserToken();
+        DataRepository repository = new DataRepository();
+
+        repository.updateCageName(token, cage.getCageSerialNumber(), newName, new CageUpdateCallback() {
+            @Override
+            public void onSuccess(String message) {
+                cage.setCageName(newName); // 데이터 업데이트
+                DataManager.getInstance().updateCageData(cage);
+                adapter.notifyItemChanged(position);
+                runOnUiThread(() -> {
+                    Log.d("CageListActivity", message);
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+                runOnUiThread(() -> {
+                    Log.e("CageListActivity", "Failed to update cages name: " + error.getMessage());
+                    Toast.makeText(getApplicationContext(), "케이지 이름 변경 실패", Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+    }
+
     private void deleteCage(CageData cage, int position) {
-        cageList.remove(position); // 리스트에서 제거
-        DataManager.getInstance().removeCageData(cage); // DataManager에서 제거
-        adapter.notifyItemRemoved(position); // RecyclerView 갱신
+        String token = DataManager.getInstance().getUserToken();
+        String cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
+
+        repository.deleteCage(token, cageSerialNumber, new CageDeleteCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                cageList.remove(position); // 리스트에서 제거
+                DataManager.getInstance().removeCageData(cage); // DataManager에서 제거
+                adapter.notifyItemRemoved(position); // RecyclerView 갱신
+
+                Log.d("CageListActivity", "Delete Successful: " + response);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+                Log.e("CageListActivity", "Failed to delete cage", t);
+            }
+        });
     }
 
     private void moveToNewCageActivity() {

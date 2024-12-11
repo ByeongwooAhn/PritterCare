@@ -18,10 +18,16 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.prittercare.R;
 import com.example.prittercare.controller.StyleManager;
+import com.example.prittercare.controller.callback.CageListCallback;
+import com.example.prittercare.controller.callback.CageSingleUpdateCallBack;
 import com.example.prittercare.databinding.ActivityMainBinding;
 import com.example.prittercare.model.DataManager;
+import com.example.prittercare.model.DataRepository;
 import com.example.prittercare.model.MQTTHelper;
+import com.example.prittercare.model.data.CageData;
 import com.example.prittercare.view.MainTabManager;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
   
     private boolean isFullscreen = false;
 
+    DataRepository repository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,16 +90,14 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl("https://www.google.co.kr/?hl=ko");
 
+        repository = new DataRepository();
+
+        //loadCageSettings();
+
         // serialNumber 받기
         cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
         if (cageSerialNumber != null) {
             Log.d("MainActivity", "Received cageSerialNumber : " + cageSerialNumber);
-        }
-
-        // cageName 받기
-        cageName = DataManager.getInstance().getCurrentCageName();
-        if (cageName != null) {
-            Log.d("MainActivity", "Received cageName : " + cageName);
         }
 
         // userName 받기
@@ -108,10 +114,6 @@ public class MainActivity extends AppCompatActivity {
         // MQTTHelper 초기화
         mqttHelper = new MQTTHelper(this, "tcp://medicine.p-e.kr:1884", "myClientId", "GuestMosquitto", "MosquittoGuest1119!");
         mqttHelper.initialize();
-
-        // MainTabManager 초기화
-        tabManager = new MainTabManager(this, binding, mqttHelper);
-        tabManager.initializeTabs();
 
         // MQTT Topics 구독 및 메시지 처리
         subscribeToTopics();
@@ -131,10 +133,51 @@ public class MainActivity extends AppCompatActivity {
             // 전체 화면 기능 구현 필요
         });
 
+        //testShowStyle("hamster", "햄스터케이지");
+
+        // cageName 받기
+        cageName = DataManager.getInstance().getCurrentCageName();
+        if (cageName != null) {
+            Log.d("MainActivity", "Received cageName : " + cageName);
+        }
+
         binding.layoutToolbar.tvTitleToolbar.setText(cageName);
+
+        // MainTabManager 초기화
+        tabManager = new MainTabManager(this, binding, mqttHelper);
+        tabManager.initializeTabs();
 
         applyAnimalStyle();
         setupFullScreenButton();
+    }
+
+    private void testShowStyle(String type, String name) {
+        DataManager.getInstance().getCurrentCageData().setAnimalType(type);
+        DataManager.getInstance().getCurrentCageData().setCageName(name);
+    }
+
+    private void loadCageSettings() {
+        String token = DataManager.getInstance().getUserToken();
+
+        repository.loadCageSettings(token, cageSerialNumber, new CageSingleUpdateCallBack() {
+            @Override
+            public void onSuccess(CageData data) {
+                String loadedTemperature = data.getEnvTemperature();
+                String loadedHumidity = data.getEnvHumidity();
+                String loadedLighting = data.getEnvLighting();
+
+                DataManager.getInstance().getCurrentCageData().setEnvTemperature(loadedTemperature);
+                DataManager.getInstance().getCurrentCageData().setEnvHumidity(loadedHumidity);
+                DataManager.getInstance().getCurrentCageData().setEnvLighting(loadedLighting);
+
+                DataManager.getInstance().logAllData();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("MainActivity", "Error Loading cage settings", t);
+            }
+        });
     }
 
     @Override

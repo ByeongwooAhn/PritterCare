@@ -13,10 +13,19 @@ public class CageData {
     private String animalType;
 
     // 환경 데이터 및 기타 필드는 서버에서 응답하지 않으면 null로 유지
+    @SerializedName("username")
     private String userName;
+
+    @SerializedName("env_temperature")
     private String envTemperature;
+
+    @SerializedName("env_humidity")
     private String envHumidity;
+
+    @SerializedName("env_lighting")
     private String envLighting;
+
+    @SerializedName("env_water_level")
     private String envWaterLevel;
 
     // Getter and Setter
