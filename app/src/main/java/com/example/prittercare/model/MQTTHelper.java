@@ -50,7 +50,7 @@ public class MQTTHelper implements Serializable {
                 @Override
                 public void connectionLost(Throwable cause) {
                     Log.d(TAG, "MQTT 연결이 끊어졌습니다: " + cause.getMessage());
-                    scheduleReconnect(); // 연결 끊김 시 재연결 시도
+                    //scheduleReconnect(); // 연결 끊김 시 재연결 시도
                 }
 
                 @Override
@@ -72,25 +72,38 @@ public class MQTTHelper implements Serializable {
         }
     }
 
+    private int reconnectAttempt = 0;
+    private static final int MAX_RECONNECT_ATTEMPTS = 1; // 최대 재시도 횟수
     private void scheduleReconnect() {
-        if (isReconnecting) return; // 이미 재연결 중이면 실행하지 않음
+        if (isReconnecting) return;
         isReconnecting = true;
+
+        // 최대 재시도 횟수 초과 시 재시도 중단
+        if (reconnectAttempt >= MAX_RECONNECT_ATTEMPTS) {
+            Log.e(TAG, "MQTT 재연결 시도 횟수 초과: 연결 시도 중단");
+            isReconnecting = false;
+            return;
+        }
+
+        int delay = Math.min((int) Math.pow(2, reconnectAttempt) * 1000, 30000); // 최대 30초
+        reconnectAttempt++;
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             try {
-                //Log.d(TAG, "MQTT 재연결 시도...");
-                if (mqttClient != null) {
+                if (mqttClient != null && !mqttClient.isConnected()) {
                     mqttClient.connect();
-                    isReconnecting = false; // 재연결 성공 시 플래그 해제
+                    reconnectAttempt = 0; // 성공 시 초기화
+                    isReconnecting = false;
                     Log.d(TAG, "MQTT 재연결 성공");
                 }
             } catch (MqttException e) {
                 Log.e(TAG, "MQTT 재연결 실패: " + e.getMessage(), e);
-                isReconnecting = false; // 재연결 실패 시 다시 시도 가능하도록 플래그 초기화
-                scheduleReconnect(); // 재연결 실패 시 다시 재연결 시도
+                isReconnecting = false;
+                scheduleReconnect(); // 실패 시 재시도
             }
-        }, 5000); // 5초 딜레이
+        }, delay);
     }
+
 
     public void subscribe(String topic) {
         try {

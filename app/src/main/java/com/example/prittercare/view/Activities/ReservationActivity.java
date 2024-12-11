@@ -79,7 +79,6 @@ public class ReservationActivity extends AppCompatActivity {
         // MQTTHelper 초기화
         mqttHelper = new MQTTHelper(this, "tcp://medicine.p-e.kr:1884", "myClientId", "GuestMosquitto", "MosquittoGuest1119!");
 
-
         Log.d("MQTT Connection", "MQTT 상태 (초기화 후): " + mqttHelper.isConnected());
 
         if (!mqttHelper.isConnected()) {
@@ -92,7 +91,9 @@ public class ReservationActivity extends AppCompatActivity {
 
         // 뒤로가기 버튼 초기화 및 클릭 리스너 추가
         ImageButton backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> finish()); // 뒤로가기 버튼 클릭 시 현재 액티비티 종료
+        backButton.setOnClickListener(v -> {
+            finish(); // 현재 액티비티 종료
+        });
 
         // 삭제 레이아웃 및 버튼 초기화
         deleteLayout = findViewById(R.id.deleteLayout);
@@ -245,10 +246,6 @@ public class ReservationActivity extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                mqttHelper.initialize();
-                if (mqttHelper != null) {
-                    Log.d("MQTT Connection", "MQTT 상태 (주기 확인): " + mqttHelper.isConnected());
-                }
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd", Locale.getDefault());
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -266,12 +263,18 @@ public class ReservationActivity extends AppCompatActivity {
                     String alarmTime = convertTimeToISO(alarm.getReserveTime());
 
                     if (currentDate.equals(alarmDate) && currentTime.equals(alarmTime)) {
+
+
+                        mqttHelper.initialize();
+                        if (mqttHelper != null) {
+                            Log.d("MQTT Connection", "MQTT 상태 (주기 확인): " + mqttHelper.isConnected());
+                        }
                         handler.post(() -> {
-                            Toast.makeText(
+                            /*Toast.makeText(
                                     ReservationActivity.this,
                                     "예약이 실행되었습니다: " + alarm.getReserveName(),
                                     Toast.LENGTH_SHORT
-                            ).show();
+                            ).show();*/
 
                             String topic;
                             String message;
@@ -296,7 +299,7 @@ public class ReservationActivity extends AppCompatActivity {
                     }
                 }
             }
-        }, 0, 10000);
+        }, 0, 60000);
     }
 
     private void sendMQTTMessage(String topic, String message) {
@@ -308,6 +311,7 @@ public class ReservationActivity extends AppCompatActivity {
             mqttHelper.publish(topic, message, 1);
             Log.d("ReservationActivity", "MQTT 메시지 전송: " + topic + " - " + message);
         } else {
+            reconnectMQTT();
             Toast.makeText(this, "MQTT 연결이 필요합니다.", Toast.LENGTH_SHORT).show();
         }
     }

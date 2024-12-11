@@ -232,9 +232,9 @@ public class AlarmEditActivity extends AppCompatActivity {
 
         if (selectedTypeId == R.id.radioWater) {
             type = "water";
-        } else if (selectedTypeId == R.id.radioFood) {
+        } /*else if (selectedTypeId == R.id.radioFood) {
             type = "food";
-        } else if (selectedTypeId == R.id.radioLight) {
+        }*/ else if (selectedTypeId == R.id.radioLight) {
             type = "light";
         }
 
