@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -48,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     private StyleManager styleManager;
 
+    WebView webView;
+    WebSettings webSettings;
+  
     private boolean isFullscreen = false;
 
     @Override
@@ -55,6 +61,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // WebView 설정
+        webView = findViewById(R.id.webView_video);
+        webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        // WebViewClient를 설정하여 페이지 로딩 완료 후 작업 수행
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+                // 특정 요소만 표시하고 나머지 숨기기 (예: id="targetElement"를 가진 요소)
+                webView.loadUrl("javascript:(function() {" +
+                        "document.body.innerHTML = document.getElementById('targetElement').outerHTML;" +
+                        "})()");
+            }
+        });
+
+        webView.loadUrl("https://www.google.co.kr/?hl=ko");
+
+/*        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // 특정 위치로 스크롤 (예: Y좌표 500px로 이동)
+                webView.loadUrl("javascript:window.scrollTo(0, 500);");
+            }
+        });*/
+
+
+        /*webView.loadData(
+                "<html><head><style type='text/css'>body{margin:auto auto;text-align:center;} " +
+                        "img{width:100%25;} div{overflow: hidden;} </style></head>" +
+                        "<body><div><img src='https://www.google.co.kr/?hl=ko'/></div></body></html>",
+                "text/html", "UTF-8"
+        );*/
 
         // serialNumber 받기
         cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
