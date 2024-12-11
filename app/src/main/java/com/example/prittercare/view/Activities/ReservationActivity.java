@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,10 +71,28 @@ public class ReservationActivity extends AppCompatActivity {
         // 권한 확인 및 요청
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            if (!alarmManager.canScheduleExactAlarms()) {
-                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                startActivity(intent);
+            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+                // AlertDialog를 사용하여 사용자에게 권한 요청
+                new AlertDialog.Builder(this)
+                        .setTitle("알람 권한 요청")
+                        .setMessage("앱에서 정확한 알람을 예약하려면 권한이 필요합니다. 권한을 허용하시겠습니까?")
+                        .setPositiveButton("허용", (dialog, which) -> {
+                            // 권한 설정 화면으로 이동
+                            Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                            startActivity(intent);
+                        })
+                        .setNegativeButton("취소", (dialog, which) -> {
+                            // 권한 요청 취소 처리
+                            Toast.makeText(this, "권한이 없으면 알람 예약 기능을 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
+                            finish(); // 현재 액티비티 종료
+                        })
+                        .setCancelable(false) // 다이얼로그 외부를 눌러 닫을 수 없게 설정
+                        .show();
+            } else {
+                Log.d("Permission Check", "정확한 알람 예약 권한이 이미 허용되었습니다.");
             }
+        } else {
+            Log.d("Permission Check", "정확한 알람 예약 권한이 필요하지 않은 Android 버전입니다.");
         }
 
         // MQTTHelper 초기화

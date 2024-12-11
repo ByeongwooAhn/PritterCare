@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +35,9 @@ public class CageListActivity extends AppCompatActivity {
 
     private DataRepository repository;
 
+    private boolean isBackPressedOnce;
+    private static final int BACK_PRESS_DELAY = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +55,47 @@ public class CageListActivity extends AppCompatActivity {
         // API 호출 및 데이터 초기화
         loadCageDataFromServer();
 
+        isBackPressedOnce = false;
+
         binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view -> moveToNewCageActivity());
-        binding.layoutCageToolbar.btnCageBack.setOnClickListener(new View.OnClickListener() {
+        setupBackButtonListener();
+    }
+
+    private void setupBackButtonListener() {
+        binding.layoutCageToolbar.btnCageBack.setOnClickListener(v -> handleBackAction());
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
-            public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(CageListActivity.this, R.anim.button_scale));
-                finish(); // 현재 Activity 종료
+            public void handleOnBackPressed() {
+                handleBackAction();
             }
         });
+    }
+
+    private void handleBackAction() {
+        if (isBackPressedOnce) {
+            confirmLogout();
+        } else {
+            Toast.makeText(getApplicationContext(), "다시 한번 누르면 로그아웃 됩니다.", Toast.LENGTH_SHORT).show();
+            isBackPressedOnce = true;
+            new android.os.Handler().postDelayed(() -> isBackPressedOnce = false, BACK_PRESS_DELAY);
+        }
+    }
+
+    private void confirmLogout() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("로그아웃 확인")
+                .setMessage("정말 로그아웃 하시겠습니까?")
+                .setPositiveButton("예", (dialog, which) -> {
+                    performLogout();
+                })
+                .setNegativeButton("아니오", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
+                .show();
+    }
+
+    private void performLogout() {
+        DataManager.getInstance().clearData();
+        moveToLoginActivity();
     }
 
     private void loadCageDataFromServer() {
@@ -175,6 +212,17 @@ public class CageListActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void Logout() {
+        DataManager.getInstance().clearData();
+        moveToLoginActivity();
+    }
+
+    private void moveToLoginActivity() {
+        Intent intent = new Intent(CageListActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void deleteCage(CageData cage, int position) {

@@ -21,7 +21,7 @@ public class QRCodeScanActivity extends AppCompatActivity {
     private boolean isScanComplete = false; // 스캔 완료 여부
 
     private boolean isBackPressedOnce = false;
-    private static final int BACK_PRESS_DELAY = 2000;
+    private static final int BACK_PRESS_DELAY = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +64,29 @@ public class QRCodeScanActivity extends AppCompatActivity {
 
     private void handleBackAction() {
         if (isBackPressedOnce) {
-            Logout();
+            confirmLogout();
         } else {
             Toast.makeText(getApplicationContext(), "다시 한번 누르면 로그아웃 됩니다.", Toast.LENGTH_SHORT).show();
             isBackPressedOnce = true;
             new android.os.Handler().postDelayed(() -> isBackPressedOnce = false, BACK_PRESS_DELAY);
         }
+    }
+
+    private void confirmLogout() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("로그아웃 확인")
+                .setMessage("정말 로그아웃 하시겠습니까?")
+                .setPositiveButton("예", (dialog, which) -> {
+                    performLogout();
+                })
+                .setNegativeButton("아니오", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
+                .show();
+    }
+
+    private void performLogout() {
+        DataManager.getInstance().clearData();
+        moveToLoginActivity();
     }
 
     private void handleScanButtonClick() {
@@ -107,7 +124,6 @@ public class QRCodeScanActivity extends AppCompatActivity {
         binding.btnScanQRcode.setText("QR 스캔 멈추기");
         binding.scannerQRcode.resume(); // 카메라 활성화
         Toast.makeText(this, "QR 코드 스캔을 시작합니다.", Toast.LENGTH_SHORT).show();
-        binding.tvQRcodeInfo.setText("시리얼 넘버 등록에 성공했습니다.");
     }
 
     private void restartQRScan() {
