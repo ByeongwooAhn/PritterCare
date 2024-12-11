@@ -82,22 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl("https://www.google.co.kr/?hl=ko");
 
-/*        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                // 특정 위치로 스크롤 (예: Y좌표 500px로 이동)
-                webView.loadUrl("javascript:window.scrollTo(0, 500);");
-            }
-        });*/
-
-
-        /*webView.loadData(
-                "<html><head><style type='text/css'>body{margin:auto auto;text-align:center;} " +
-                        "img{width:100%25;} div{overflow: hidden;} </style></head>" +
-                        "<body><div><img src='https://www.google.co.kr/?hl=ko'/></div></body></html>",
-                "text/html", "UTF-8"
-        );*/
-
         // serialNumber 받기
         cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
         if (cageSerialNumber != null) {

@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -169,7 +169,7 @@
                     android:inputType="number"
                     android:textColor="@color/etTextColor"
                     android:textColorHint="@color/etTextHintColor"
-                    android:textSize="16sp" />
+                    android:textSize="16sp" />-->
 
                 <androidx.appcompat.widget.AppCompatButton
                     style="@style/ButtonStyle02_fish"

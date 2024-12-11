@@ -128,7 +128,7 @@ public class LightFragment extends Fragment {
                 if (currentLightLevel > 0) {
                     sendCommand(LIGHT_TOPIC, String.valueOf(currentLightLevel), "조명 설정 : " + currentLightLevel + "단계");
                 } else {
-                    sendCommand("light/topic", "0", "조명 설정 : 꺼짐");
+                    sendCommand(LIGHT_TOPIC, "0", "조명 설정 : 꺼짐");
                 }
             } else {
                 showToast("이미 설정된 값입니다.");
