@@ -262,64 +262,63 @@ public class ReservationActivity extends AppCompatActivity {
         Timer timer = new Timer();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        timer.schedule(new TimerTask() {
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd", Locale.getDefault());
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                SimpleDateFormat secondsFormat = new SimpleDateFormat("ss", Locale.getDefault());
 
                 dateFormat.setTimeZone(TimeZone.getDefault());
                 timeFormat.setTimeZone(TimeZone.getDefault());
+                secondsFormat.setTimeZone(TimeZone.getDefault());
 
                 String currentDate = dateFormat.format(calendar.getTime());
                 String currentTime = timeFormat.format(calendar.getTime());
+                String currentSecond = secondsFormat.format(calendar.getTime());
 
-                Log.d("ReservationActivity", "Current(현재) Date: " + currentDate + ", Time: " + currentTime);
+                //Log.d("ReservationActivity", "Current(현재) Date: " + currentDate + ", Time: " + currentTime + ", Seconds: " + currentSecond); //현재 시간 확인 로그
 
-                for (ReservationData alarm : alarmList) {
-                    String alarmDate = convertDateToISO(alarm.getReserveDate()).substring(5);
-                    String alarmTime = convertTimeToISO(alarm.getReserveTime());
+                // 초 단위 확인
+                if ("00".equals(currentSecond)) {
+                    for (ReservationData alarm : alarmList) {
+                        String alarmDate = convertDateToISO(alarm.getReserveDate()).substring(5);
+                        String alarmTime = convertTimeToISO(alarm.getReserveTime());
 
-                    if (currentDate.equals(alarmDate) && currentTime.equals(alarmTime)) {
-
-
-                        mqttHelper.initialize();
-                        if (mqttHelper != null) {
-                            Log.d("MQTT Connection", "MQTT 상태 (주기 확인): " + mqttHelper.isConnected());
-                        }
-                        handler.post(() -> {
-                            /*Toast.makeText(
-                                    ReservationActivity.this,
-                                    "예약이 실행되었습니다: " + alarm.getReserveName(),
-                                    Toast.LENGTH_SHORT
-                            ).show();*/
-
-                            String topic;
-                            String message;
-
-                            switch (alarm.getReserveType()) {
-                                case "water":
-                                    topic = String.format("%s/%s/water", DataManager.getInstance().getUserName(), DataManager.getInstance().getCurrentCageSerialNumber());
-                                    message = "1";
-                                    sendMQTTMessage(topic, message);
-                                    break;
-
-                                case "light":
-                                    topic = String.format("%s/%s/light", DataManager.getInstance().getUserName(), DataManager.getInstance().getCurrentCageSerialNumber());
-                                    message = String.valueOf(alarm.getLightLevel());
-                                    sendMQTTMessage(topic, message);
-                                    break;
-
-                                default:
-                                    Log.d("ReservationActivity", "Unknown reserve type: " + alarm.getReserveType());
+                        if (currentDate.equals(alarmDate) && currentTime.equals(alarmTime)) {
+                            mqttHelper.initialize();
+                            if (mqttHelper != null) {
+                                Log.d("MQTT Connection", "MQTT 상태 (주기 확인): " + mqttHelper.isConnected());
                             }
-                        });
+                            handler.post(() -> {
+                                String topic;
+                                String message;
+
+                                switch (alarm.getReserveType()) {
+                                    case "water":
+                                        topic = String.format("%s/%s/water", DataManager.getInstance().getUserName(), DataManager.getInstance().getCurrentCageSerialNumber());
+                                        message = "1";
+                                        sendMQTTMessage(topic, message);
+                                        break;
+
+                                    case "light":
+                                        topic = String.format("%s/%s/light", DataManager.getInstance().getUserName(), DataManager.getInstance().getCurrentCageSerialNumber());
+                                        message = String.valueOf(alarm.getLightLevel());
+                                        sendMQTTMessage(topic, message);
+                                        break;
+
+                                    default:
+                                        Log.d("ReservationActivity", "Unknown reserve type: " + alarm.getReserveType());
+                                }
+                            });
+                        }
                     }
                 }
             }
-        }, 0, 60000);
+        }, 0, 1000); // 1초마다 실행
     }
+
 
     private void sendMQTTMessage(String topic, String message) {
         if (mqttHelper != null) {

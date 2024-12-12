@@ -29,6 +29,8 @@ import com.example.prittercare.view.MainTabManager;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -45,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     // MQTT Topics
     /*private static final String TEMPERATURE_TOPIC = "sensor/temperature";*/
-    private String TEMPERATURE_TOPIC = "test/topic";
+    private String SENSOR_TOPIC;
+    private String TEMPERATURE_TOPIC;
     private String HUMIDITY_TOPIC;
 
     // Variables to store the latest values
@@ -104,20 +107,26 @@ public class MainActivity extends AppCompatActivity {
         userName = DataManager.getInstance().getUserName();
 
         // MQTT 토픽 초기화
-        TEMPERATURE_TOPIC = "${userName}/${cageSerialNumber}/temperature"
+        SENSOR_TOPIC = "${userName}/${cageSerialNumber}/sensor"
                 .replace("${userName}", userName)
-                .replace("${cageSerialNumber}", this.cageSerialNumber);
-        HUMIDITY_TOPIC = "${userName}/${cageSerialNumber}/humidity"
-                .replace("${userName}", userName)
-                .replace("${cageSerialNumber}", this.cageSerialNumber);
+                .replace("${cageSerialNumber}", cageSerialNumber);
+
+        if (SENSOR_TOPIC == null || SENSOR_TOPIC.isEmpty()) {
+            Log.e(TAG, "SENSOR_TOPIC이 null 또는 비어 있습니다.");
+            return;
+        }
 
         // MQTTHelper 초기화
         mqttHelper = new MQTTHelper(this, "tcp://medicine.p-e.kr:1884", "myClientId", "GuestMosquitto", "MosquittoGuest1119!");
         mqttHelper.initialize();
 
-        // MQTT Topics 구독 및 메시지 처리
-        subscribeToTopics();
 
+        // MQTT Topics 구독 및 메시지 처리
+        try {
+            subscribeToTopics();
+        } catch (Exception e) {
+            Log.e(TAG, "MQTT 구독 중 오류: " + e.getMessage());
+        }
         // UI 업데이트 루프 시작
         startPeriodicUpdate();
 
@@ -239,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void connectionLost(Throwable cause) {
                 Log.e(TAG, "MQTT 연결 끊김: " + cause.getMessage());
+                mqttHelper.initialize();
             }
 
             @Override
@@ -246,11 +256,17 @@ public class MainActivity extends AppCompatActivity {
                 String receivedMessage = new String(message.getPayload());
                 Log.d(TAG, "토픽 [" + topic + "]에서 메시지 수신: " + receivedMessage);
 
-                // 최신 값 업데이트
-                if (topic.equals(TEMPERATURE_TOPIC)) {
-                    latestTemperature = receivedMessage + "°C";
-                } else if (topic.equals(HUMIDITY_TOPIC)) {
-                    latestHumidity = receivedMessage + " %";
+                try {
+                    // JSON 파싱
+                    JSONObject jsonObject = new JSONObject(receivedMessage);
+                    if (jsonObject.has("temperature")) {
+                        latestTemperature = jsonObject.getString("temperature") + "°C";
+                    }
+                    if (jsonObject.has("humidity")) {
+                        latestHumidity = jsonObject.getString("humidity") + "%";
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "JSON 파싱 오류: " + e.getMessage());
                 }
             }
 
@@ -260,11 +276,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 각각의 토픽 구독
-        mqttHelper.subscribe(TEMPERATURE_TOPIC);
-        mqttHelper.subscribe(HUMIDITY_TOPIC);
+        // 토픽 구독
+        mqttHelper.subscribe(SENSOR_TOPIC);
     }
-
     private void applyAnimalStyle() {
         animalType = DataManager.getInstance().getCurrentAnimalType();
         styleManager = new StyleManager(this, animalType);
