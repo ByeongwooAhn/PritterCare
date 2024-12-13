@@ -47,8 +47,6 @@ public class CageAddActivity extends AppCompatActivity {
         });
     }
 
-    // CageAddActivity.java
-
     private void addCage() {
         String token = DataManager.getInstance().getUserToken();
         String serialNumber = DataManager.getInstance().getCurrentCageSerialNumber();

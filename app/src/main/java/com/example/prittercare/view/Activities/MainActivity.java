@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -91,17 +92,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        webView.loadUrl("https://www.google.co.kr/?hl=ko");
+        webView.loadUrl("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUSEhIVFRUVFRcVFRcXFRUVFRUVFRUXFxUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDQ0NFQ0PFSsdFRkrLS03KzctLSsrLTctKy0tKysrNzcrKzcrLSsrKysrKysrKysrKysrKysrKysrKysrK//AABEIALEBHAMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQIDB//EABwQAQEBAAIDAQAAAAAAAAAAAAABEQJhMUFRIf/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwDxvpLfSVJPkWtVpKlUES9KkuCF/DEqoEKVJVDPpEXEDEqpggYqYBoAJApQWwSFoLRKAqRUAgFAIEgGLUuLQQ0sAIS900t6B1tSVC1atXDkagLE1NNAD0CAIgFhqAoICpTQAWoCmMxQNKQAAAIAJrVSQA0DQWxKUAgFBFFBtLAgq3EpalBUqpREpqxKAFQF1AwFS01KAuooFSQtXAEACAAGkUEVKAAgNDNWAFpFBNABcBNB0S1UsFJREojVSAC2pE0wF1AgCKgEgAKhhAIABKBoFomlAXUUCmouAaVADViGgqFUADQMNCQG4aTygCKmABoBaioAFIBaaAAFAE1QSxUWgioAAAaqAAQsAKigBoAACkQBUJFlBaFAClABFBDCAAAJgAKIAUFBAABFABKCwRQCwABFADUBQgAAAmqQFCFoAAAhQUTVBAAEUACAIoAAARAgCooIqLAEWAAJQFQAUSgKigJooKaICoAAAEAADABFQFEAFRQQUBAAAgAQKAGgEAA0CAaVUgAqANSM1QVAAAAKUBBUgCiAAACoAtQBUAAAAAAAAACAABAAAFQACUAXQMAKUA0CAAACKCAAKgAFAAAAKAigAAAACLUAqwAAAIAAsQgLTAAgFBAUAQAFqUACgBQACAAAEAAAAAAACAAAABgAAAAC0igIUAEgARqADIAETkoC8UqgIABEUAUAZUABQGYKAVQBKQAIgAsVQGSgD//Z");
 
         repository = new DataRepository();
-
-        //loadCageSettings();
 
         // serialNumber 받기
         cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
         if (cageSerialNumber != null) {
             Log.d("MainActivity", "Received cageSerialNumber : " + cageSerialNumber);
         }
+
+        loadCageSettings();
 
         // userName 받기
         userName = DataManager.getInstance().getUserName();
@@ -167,26 +168,41 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadCageSettings() {
         String token = DataManager.getInstance().getUserToken();
+        Log.d(TAG, "Loading cage settings for SerialNumber: " + cageSerialNumber);
 
         repository.loadCageSettings(token, cageSerialNumber, new CageSingleUpdateCallBack() {
             @Override
             public void onSuccess(CageData data) {
-                String loadedTemperature = data.getEnvTemperature();
-                String loadedHumidity = data.getEnvHumidity();
-                String loadedLighting = data.getEnvLighting();
+                // 받아온 데이터를 DataManager에 저장
+                DataManager.getInstance().getCurrentCageData().setEnvTemperature(data.getEnvTemperature());
+                DataManager.getInstance().getCurrentCageData().setEnvHumidity(data.getEnvHumidity());
+                DataManager.getInstance().getCurrentCageData().setEnvLighting(data.getEnvLighting());
 
-                DataManager.getInstance().getCurrentCageData().setEnvTemperature(loadedTemperature);
-                DataManager.getInstance().getCurrentCageData().setEnvHumidity(loadedHumidity);
-                DataManager.getInstance().getCurrentCageData().setEnvLighting(loadedLighting);
+                // UI 업데이트
+                updateUIWithCageData(data);
 
-                DataManager.getInstance().logAllData();
+                Log.d(TAG, "Cage settings loaded successfully.");
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e("MainActivity", "Error Loading cage settings", t);
+                // 에러 처리 및 로그 기록
+                Log.e(TAG, "Error loading cage settings", t);
+                showErrorToast("Failed to load cage settings. Please try again.");
             }
         });
+    }
+
+    private void updateUIWithCageData(CageData data) {
+        binding.tvTemperature.setText(data.getEnvTemperature() + "°C");
+        Log.d("Main : Setting Update UI data", "온도 : " + data.getEnvTemperature());
+        binding.tvHumidity.setText(data.getEnvHumidity() + "%");
+        Log.d("Main : Setting Update UI data", "습도 : " + data.getEnvHumidity());
+        // Lighting 정보를 사용할 경우 UI에 추가
+    }
+
+    private void showErrorToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

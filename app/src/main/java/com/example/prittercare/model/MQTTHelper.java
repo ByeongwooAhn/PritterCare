@@ -73,7 +73,7 @@ public class MQTTHelper implements Serializable {
     }
 
     private int reconnectAttempt = 0;
-    private static final int MAX_RECONNECT_ATTEMPTS = 1; // 최대 재시도 횟수
+    private static final int MAX_RECONNECT_ATTEMPTS = 10; // 최대 재시도 횟수
     private void scheduleReconnect() {
         if (isReconnecting) return;
         isReconnecting = true;

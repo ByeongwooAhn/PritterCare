@@ -91,6 +91,7 @@ public class TemperatureAndHumidtyFragment extends Fragment {
 
         CageData currentCage = DataManager.getInstance().getCurrentCageData();
         String temperatureValue = currentCage.getEnvTemperature();
+
         String humidityValue = currentCage.getEnvHumidity();
 
         if(temperatureValue != null) {

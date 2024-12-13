@@ -21,6 +21,7 @@ import com.example.prittercare.model.request.UpdateWaterLevelRequest;
 import java.io.IOException;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -124,13 +125,14 @@ public class DataRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
-                    try {
-                        Log.e("DataRepository", "Failed to add cage: " + response.code());
-                        if (response.errorBody() != null) {
+                    // 서버 응답이 2xx가 아니거나 body가 비어있는 경우
+                    Log.e("DataRepository", "Failed to add cage: " + response.code());
+                    if (response.errorBody() != null) {
+                        try {
                             Log.e("DataRepository", "Error body: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
                     callback.onFailure(new Exception("Failed to add cage"));
                 }
@@ -138,6 +140,7 @@ public class DataRepository {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                // 네트워크 오류나 기타 통신 오류 발생
                 Log.e("DataRepository", "Network error during adding cage", t);
                 callback.onFailure(new Exception(t));
             }
@@ -145,28 +148,34 @@ public class DataRepository {
     }
 
 
-    public void loadCageSettings(String token, String cageSerialNumber, CageSingleUpdateCallBack callback) {
-        LoadCageSettingsRequest request = new LoadCageSettingsRequest(cageSerialNumber);
 
-        gsonApiService.getCageSettings(token, request).enqueue(new Callback<CageData>() {
+    public void loadCageSettings(String token, String cageSerialNumber, CageSingleUpdateCallBack callback) {
+        gsonApiService.getCageSettings(token, cageSerialNumber).enqueue(new Callback<List<CageData>>() {
             @Override
-            public void onResponse(Call<CageData> call, Response<CageData> response) {
+            public void onResponse(Call<List<CageData>> call, Response<List<CageData>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
-                    Log.d("DataRepository", "Last cage settings loaded successfully: " + response.body());
+                    List<CageData> cageList = response.body();
+                    if (!cageList.isEmpty()) {
+                        callback.onSuccess(cageList.get(0)); // 첫 번째 데이터를 전달
+                        Log.d("DataRepository", "Loaded cage settings: " + cageList);
+                    } else {
+                        callback.onFailure(new Exception("No cage settings found for the given serial number."));
+                    }
                 } else {
                     Log.e("DataRepository", "Failed to load cage settings: " + response.code());
                     try {
-                        Log.e("DataRepository", "Error body: " + response.errorBody().string());
+                        if (response.errorBody() != null) {
+                            Log.e("DataRepository", "Error body: " + response.errorBody().string());
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    callback.onFailure(new Exception("Failed to load cage settings"));
+                    callback.onFailure(new Exception("Failed to load cage settings."));
                 }
             }
 
             @Override
-            public void onFailure(Call<CageData> call, Throwable t) {
+            public void onFailure(Call<List<CageData>> call, Throwable t) {
                 Log.e("DataRepository", "Network error while loading cage settings", t);
                 callback.onFailure(t);
             }
@@ -193,12 +202,19 @@ public class DataRepository {
     }
 
     public void deleteCage(String token, String cageSerialNumber, CageDeleteCallBack callback) {
-        gsonApiService.deleteCage(token, cageSerialNumber).enqueue(new Callback<String>() {
+        // 토큰에 Bearer 접두사 붙이기
+        String bearerToken = token;
+
+        // 수정된 ApiService 메서드 사용
+        scalarApiService.deleteCage(bearerToken, cageSerialNumber).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
+                if (response.isSuccessful()) {
+                    // 성공적으로 DELETE 처리된 경우
+                    String successMessage = response.body(); // 예: "Delete Cage Successful!"
+                    callback.onSuccess(successMessage);
                 } else {
+                    // 실패한 경우
                     try {
                         Log.e("DataRepository", "Failed to delete cage: " + response.code());
                         if (response.errorBody() != null) {
@@ -213,11 +229,14 @@ public class DataRepository {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                // 네트워크 에러 등의 이유로 요청 자체가 실패한 경우
                 Log.e("DataRepository", "Error deleting cage", t);
                 callback.onFailure(t);
             }
         });
     }
+
+
 
 
     public void updateTemperature(String token, String cageSerialNumber, String envTemperature, CageUpdateCallback callback) {

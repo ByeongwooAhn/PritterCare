@@ -13,6 +13,7 @@ import com.example.prittercare.model.request.UpdateWaterLevelRequest;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -35,26 +36,34 @@ public interface ApiService {
     @PATCH("/cages/serial")
     Call<String> serialCheck(@Header("Authorization") String token, @Body CageData request);
 
-    @PATCH("/cages/add")
-    Call<String> addCage(@Header("Authorization") String token, @Body CageData request);
+    @PATCH("cages/add")
+    Call<String> addCage(
+            @Header("Authorization") String token,
+            @Body CageData request
+    );
 
     // 사육장 리스트 가져오기
     @GET("/cages/list")
     Call<List<CageData>> getCageList(@Header("Authorization") String token);
 
     @GET("/cages/lastdata")
-    Call<CageData> getCageSettings(@Header("Authorization") String token, @Body LoadCageSettingsRequest request);
-
-    @DELETE("/cages")
-    Call<String> deleteCage(
+    Call<List<CageData>> getCageSettings(
             @Header("Authorization") String token,
             @Query("cage_serial_number") String cageSerialNumber
     );
 
+
+    @DELETE("cages")
+    Call<String> deleteCage(
+            @Header("Authorization") String authorization,
+            @Query("cage_serial_number") String cageSerialNumber
+    );
+
+
     /**
      * 케이지 업데이트
      */
-    // 사육장 이름 수정
+// 사육장 이름 수정
     @PATCH("/cages/set/name")
     Call<Void> updateCageName(@Header("Authorization") String token, @Body UpdateCageNameRequest request);
 

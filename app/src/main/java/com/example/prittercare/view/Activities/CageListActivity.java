@@ -227,7 +227,7 @@ public class CageListActivity extends AppCompatActivity {
 
     private void deleteCage(CageData cage, int position) {
         String token = DataManager.getInstance().getUserToken();
-        String cageSerialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
+        String cageSerialNumber = cage.getCageSerialNumber();
 
         repository.deleteCage(token, cageSerialNumber, new CageDeleteCallBack() {
             @Override
