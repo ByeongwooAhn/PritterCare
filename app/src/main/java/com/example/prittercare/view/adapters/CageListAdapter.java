@@ -51,6 +51,7 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
 
         // 데이터를 UI에 바인딩
         holder.tvCageName.setText(cage.getCageName());
+        holder.tvCageSerialNumber.setText("S/N : " + cage.getCageSerialNumber());
         holder.ivAnimalImage.setImageResource(getAnimalImageResource(cage.getAnimalType()));
 
 
@@ -91,13 +92,14 @@ public class CageListAdapter extends RecyclerView.Adapter<CageListAdapter.CageVi
 
     // ViewHolder 클래스 : UI 요소와 연결
     public static class CageViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCageName;
+        TextView tvCageName, tvCageSerialNumber;
         ImageView ivAnimalImage;
 
         public CageViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCageName = itemView.findViewById(R.id.tvCageName);
             ivAnimalImage = itemView.findViewById(R.id.ivAnimalImage);
+            tvCageSerialNumber = itemView.findViewById(R.id.tvCageSerialNumber);
         }
     }
 }

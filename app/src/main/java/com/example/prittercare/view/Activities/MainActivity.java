@@ -47,10 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private String userName; // 사용자 ID
 
     // MQTT Topics
-    /*private static final String TEMPERATURE_TOPIC = "sensor/temperature";*/
     private String SENSOR_TOPIC;
-    private String TEMPERATURE_TOPIC;
-    private String HUMIDITY_TOPIC;
 
     // Variables to store the latest values
     private String latestTemperature = "0°C";
