@@ -4,12 +4,6 @@
         <domain includeSubdomains="true">medicine.p-e.kr</domain>
     </domain-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.1.1</domain>
-    </domain-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">esp32.local</domain>
-    </domain-config>
-    <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">192.168.188.46</domain>
     </domain-config>
 </network-security-config>

@@ -10,4 +10,7 @@
     <string name="password_check_hint">비밀번호 재입력</string>
     <string name="email_hint">이메일 주소</string>
     <string name="btn_add">케이지 추가\n</string>
+
+    <string name="camera_protocol">http</string>
+    <string name="base_url_camera">192.168.188.46</string>
 </resources>

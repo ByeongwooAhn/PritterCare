@@ -30,6 +30,9 @@ import com.example.prittercare.view.fragments.TemperatureAndHumidtyFragment;
 
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         applyAnimalStyle(); // 스타일 적용
         initializeTabs();
         loadCageSettings(); // 설정값 로드
+        startPeriodicSensorUpdate(); // 센서 데이터 주기적 업데이트
     }
 
     /**
@@ -94,21 +98,29 @@ public class MainActivity extends AppCompatActivity {
      * 카메라 스트리밍 초기화
      */
     private void initializeCameraStreaming() {
+        String baseUrl = getString(R.string.base_url_camera);
+        String streamUrl = baseUrl + "/"; // 스트리밍 URL
+
         webView = findViewById(R.id.webView_video);
         webSettings = webView.getSettings();
+
+        // JavaScript 활성화
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setLoadWithOverviewMode(true); // 콘텐츠를 화면 크기에 맞춤
+        webSettings.setUseWideViewPort(true); // ViewPort 활성화로 화면 맞춤
+        webSettings.setBuiltInZoomControls(false); // 확대/축소 비활성화
+        webSettings.setDisplayZoomControls(false); // 확대/축소 컨트롤 숨김
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                webView.loadUrl("javascript:(function() {" +
-                        "document.body.innerHTML = '<img id=\"stream\" src=\"http://192.168.27.46:81/stream\" crossorigin=\"\">';" +
-                        "document.getElementById('stream').click();" +
-                        "})()");
+                Log.d(TAG, "카메라 스트리밍 페이지 로드 완료: " + url);
             }
         });
 
-        webView.loadUrl("http://192.168.27.46");
+        // 스트리밍 페이지 로드
+        webView.loadUrl(streamUrl);
+        Log.d(TAG, "카메라 스트리밍 URL 로드: " + streamUrl);
     }
 
     /**
@@ -122,31 +134,41 @@ public class MainActivity extends AppCompatActivity {
 
         SENSOR_TOPIC = String.format("%s/%s/sensor", userName, cageSerialNumber);
         mqttHelper = new MQTTHelper(this, "tcp://medicine.p-e.kr:1884", "myClientId", "GuestMosquitto", "MosquittoGuest1119!");
-        mqttHelper.initialize();
 
-        try {
-            mqttHelper.getMqttClient().setCallback(new org.eclipse.paho.client.mqttv3.MqttCallback() {
-                @Override
-                public void connectionLost(Throwable cause) {
-                    Log.e(TAG, "MQTT 연결 끊김: " + cause.getMessage());
-                }
+        if (mqttHelper != null) {
+            mqttHelper.initialize();
+            Log.d(TAG, "MQTT 초기화 완료.");
 
-                @Override
-                public void messageArrived(String topic, org.eclipse.paho.client.mqttv3.MqttMessage message) {
-                    processMQTTMessage(topic, new String(message.getPayload()));
-                }
+            try {
+                mqttHelper.getMqttClient().setCallback(new org.eclipse.paho.client.mqttv3.MqttCallback() {
+                    @Override
+                    public void connectionLost(Throwable cause) {
+                        Log.e(TAG, "MQTT 연결 끊김: " + cause.getMessage());
+                    }
 
-                @Override
-                public void deliveryComplete(org.eclipse.paho.client.mqttv3.IMqttDeliveryToken token) {
-                    Log.d(TAG, "MQTT 메시지 전송 완료");
-                }
-            });
-            mqttHelper.subscribe(SENSOR_TOPIC);
-        } catch (Exception e) {
-            Log.e(TAG, "MQTT 초기화 중 오류: " + e.getMessage());
+                    @Override
+                    public void messageArrived(String topic, org.eclipse.paho.client.mqttv3.MqttMessage message) {
+                        Log.d(TAG, "MQTT 메시지 도착: " + topic + " - " + message.toString());
+                        processSensorData(topic, new String(message.getPayload()));
+                    }
+
+                    @Override
+                    public void deliveryComplete(org.eclipse.paho.client.mqttv3.IMqttDeliveryToken token) {
+                        Log.d(TAG, "MQTT 메시지 전송 완료");
+                    }
+                });
+
+                mqttHelper.subscribe(SENSOR_TOPIC);
+                Log.d(TAG, "MQTT 토픽 구독 완료: " + SENSOR_TOPIC);
+
+            } catch (Exception e) {
+                Log.e(TAG, "MQTT 초기화 중 오류: " + e.getMessage());
+            }
+
+            startPeriodicUpdate();
+        } else {
+            Log.e(TAG, "MQTT 헬퍼가 null입니다.");
         }
-
-        startPeriodicUpdate();
     }
 
     private void processMQTTMessage(String topic, String payload) {
@@ -240,6 +262,49 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "UI에 설정값을 업데이트했습니다.");
     }
 
+    private void startPeriodicSensorUpdate() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mqttHelper != null) {
+                    boolean isConnected = mqttHelper.isConnected();
+                    Log.d(TAG, "MQTT 연결 상태: " + (isConnected ? "연결됨" : "끊김"));
+
+                    if (!isConnected) {
+                        Log.e(TAG, "MQTT 연결이 끊어졌습니다. 재연결 시도 중...");
+                        mqttHelper.initialize(); // 재연결 시도
+                    }
+                } else {
+                    Log.e(TAG, "MQTT 헬퍼가 null입니다.");
+                }
+
+                handler.postDelayed(this, UPDATE_INTERVAL);
+            }
+        }, UPDATE_INTERVAL);
+    }
+
+    private void processSensorData(String topic, String message) {
+        try {
+            Log.d(TAG, "수신된 MQTT 메시지: " + message);
+
+            JSONObject jsonObject = new JSONObject(message);
+
+            String temperature = jsonObject.optString("temperature", "0") + "°C";
+            String humidity = jsonObject.optString("humidity", "0") + "%";
+
+            runOnUiThread(() -> {
+                binding.tvTemperature.setText(temperature);
+                binding.tvHumidity.setText(humidity);
+            });
+
+            Log.d(TAG, "센서값 업데이트 - 온도: " + temperature + ", 습도: " + humidity);
+
+        } catch (Exception e) {
+            Log.e(TAG, "센서 데이터 처리 오류: " + e.getMessage());
+        }
+    }
+
+
     private void showErrorToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -282,9 +347,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        // MQTT 연결 해제
         if (mqttHelper != null) {
             mqttHelper.disconnect();
         }
-        handler.removeCallbacksAndMessages(null);
+
+        // WebView 리소스 해제
+        if (webView != null) {
+            webView.stopLoading(); // 로딩 중단
+            webView.loadUrl("about:blank"); // 빈 페이지 로드
+            webView.clearHistory(); // 기록 삭제
+            webView.removeAllViews(); // 뷰 제거
+            webView.destroy(); // WebView 완전 해제
+            webView = null; // 참조 제거
+        }
     }
+
 }
