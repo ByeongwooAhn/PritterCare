@@ -92,7 +92,7 @@ public class DataRepository {
         CageData request = new CageData();
         request.setCageSerialNumber(serialNumber);
 
-        gsonApiService.serialCheck(token, request).enqueue(new Callback<String>() {
+        scalarApiService.serialCheck(token, request).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -119,7 +119,7 @@ public class DataRepository {
     }
 
     public void addCage(String token, CageData cageData, CageRegisterCallback callback) {
-        gsonApiService.addCage(token, cageData).enqueue(new Callback<String>() {
+        scalarApiService.addCage(token, cageData).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful() && response.body() != null) {

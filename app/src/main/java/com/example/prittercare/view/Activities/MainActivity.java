@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     WebView webView;
     WebSettings webSettings;
-  
+
     private boolean isFullscreen = false;
 
     DataRepository repository;
@@ -74,25 +74,27 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // WebView 설정
+// WebView 설정
         webView = findViewById(R.id.webView_video);
         webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        // WebViewClient를 설정하여 페이지 로딩 완료 후 작업 수행
+// WebViewClient를 설정하여 페이지 로딩 완료 후 작업 수행
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                // 특정 요소만 표시하고 나머지 숨기기 (예: id="targetElement"를 가진 요소)
+                // 특정 요소만 표시하고 나머지 숨기기 및 스트리밍 자동 시작
                 webView.loadUrl("javascript:(function() {" +
-                        "document.body.innerHTML = document.getElementById('targetElement').outerHTML;" +
+                        "document.body.innerHTML = '<img id=\"stream\" src=\"http://192.168.27.46:81/stream\" crossorigin=\"\">';" +
+                        "document.getElementById('stream').click();" + // 스트림 강제 시작
                         "})()");
             }
         });
 
-        webView.loadUrl("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUSEhIVFRUVFRcVFRcXFRUVFRUVFRUXFxUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDQ0NFQ0PFSsdFRkrLS03KzctLSsrLTctKy0tKysrNzcrKzcrLSsrKysrKysrKysrKysrKysrKysrKysrK//AABEIALEBHAMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQIDB//EABwQAQEBAAIDAQAAAAAAAAAAAAABEQJhMUFRIf/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwDxvpLfSVJPkWtVpKlUES9KkuCF/DEqoEKVJVDPpEXEDEqpggYqYBoAJApQWwSFoLRKAqRUAgFAIEgGLUuLQQ0sAIS900t6B1tSVC1atXDkagLE1NNAD0CAIgFhqAoICpTQAWoCmMxQNKQAAAIAJrVSQA0DQWxKUAgFBFFBtLAgq3EpalBUqpREpqxKAFQF1AwFS01KAuooFSQtXAEACAAGkUEVKAAgNDNWAFpFBNABcBNB0S1UsFJREojVSAC2pE0wF1AgCKgEgAKhhAIABKBoFomlAXUUCmouAaVADViGgqFUADQMNCQG4aTygCKmABoBaioAFIBaaAAFAE1QSxUWgioAAAaqAAQsAKigBoAACkQBUJFlBaFAClABFBDCAAAJgAKIAUFBAABFABKCwRQCwABFADUBQgAAAmqQFCFoAAAhQUTVBAAEUACAIoAAARAgCooIqLAEWAAJQFQAUSgKigJooKaICoAAAEAADABFQFEAFRQQUBAAAgAQKAGgEAA0CAaVUgAqANSM1QVAAAAKUBBUgCiAAACoAtQBUAAAAAAAAACAABAAAFQACUAXQMAKUA0CAAACKCAAKgAFAAAAKAigAAAACLUAqwAAAIAAsQgLTAAgFBAUAQAFqUACgBQACAAAEAAAAAAACAAAABgAAAAC0igIUAEgARqADIAETkoC8UqgIABEUAUAZUABQGYKAVQBKQAIgAsVQGSgD//Z");
+// 스트리밍 페이지 URL 불러오기
+        webView.loadUrl("http://192.168.27.46");
 
         repository = new DataRepository();
 
@@ -108,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
         userName = DataManager.getInstance().getUserName();
 
         // MQTT 토픽 초기화
-        SENSOR_TOPIC = "${userName}/${cageSerialNumber}/sensor"
-                .replace("${userName}", userName)
-                .replace("${cageSerialNumber}", cageSerialNumber);
+        SENSOR_TOPIC = "${userName}/${cageSerialNumber}/sensor".replace("${userName}", userName).replace("${cageSerialNumber}", cageSerialNumber);
 
         if (SENSOR_TOPIC == null || SENSOR_TOPIC.isEmpty()) {
             Log.e(TAG, "SENSOR_TOPIC이 null 또는 비어 있습니다.");
@@ -295,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
         // 토픽 구독
         mqttHelper.subscribe(SENSOR_TOPIC);
     }
+
     private void applyAnimalStyle() {
         animalType = DataManager.getInstance().getCurrentAnimalType();
         styleManager = new StyleManager(this, animalType);

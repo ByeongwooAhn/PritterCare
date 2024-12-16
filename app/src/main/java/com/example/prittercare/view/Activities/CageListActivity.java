@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.prittercare.R;
 import com.example.prittercare.controller.callback.CageDeleteCallBack;
 import com.example.prittercare.controller.callback.CageListCallback;
 import com.example.prittercare.controller.callback.CageUpdateCallback;
@@ -57,12 +55,19 @@ public class CageListActivity extends AppCompatActivity {
 
         isBackPressedOnce = false;
 
-        binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view -> moveToNewCageActivity());
+        binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view ->
+                resisterFirstCage());
         setupBackButtonListener();
     }
 
     private void setupBackButtonListener() {
-        binding.layoutCageToolbar.btnCageBack.setOnClickListener(v -> handleBackAction());
+        binding.layoutCageToolbar.btnCageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmLogout();
+            }
+        });
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -114,15 +119,15 @@ public class CageListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable error) {
-                moveToQRCodeScanActivity();
+                resisterFirstCage();
             }
         });
     }
 
-    private void moveToQRCodeScanActivity() {
+    private void resisterFirstCage() {
         Intent intent = new Intent(CageListActivity.this, QRCodeScanActivity.class);
+        intent.putExtra("isFirstResister", true);
         startActivity(intent);
-        finish();
     }
 
     private void updateCageList(List<CageData> cageListResponse) {
@@ -214,11 +219,6 @@ public class CageListActivity extends AppCompatActivity {
         });
     }
 
-    private void Logout() {
-        DataManager.getInstance().clearData();
-        moveToLoginActivity();
-    }
-
     private void moveToLoginActivity() {
         Intent intent = new Intent(CageListActivity.this, LoginActivity.class);
         startActivity(intent);
@@ -245,12 +245,6 @@ public class CageListActivity extends AppCompatActivity {
                 Log.e("CageListActivity", "Failed to delete cage", t);
             }
         });
-    }
-
-    private void moveToNewCageActivity() {
-        Intent intent = new Intent(CageListActivity.this, CageAddActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     private void moveToMainActivity(CageData cage) {

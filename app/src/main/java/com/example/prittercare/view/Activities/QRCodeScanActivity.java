@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -33,11 +34,17 @@ public class QRCodeScanActivity extends AppCompatActivity {
     private boolean isBackPressedOnce = false;
     private static final int BACK_PRESS_DELAY = 3000;
 
+    private boolean isFirstResister;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityQrcodeScanBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+        isFirstResister = intent.getBooleanExtra("isFirstResister", false);
+        Log.d("QRCodeScanActivity", "(getIntent) isFristResister : " + isFirstResister);
 
         // 카메라 권한 체크
         if (checkCameraPermission()) {
@@ -48,6 +55,8 @@ public class QRCodeScanActivity extends AppCompatActivity {
             // 권한이 없으면 요청
             requestCameraPermission();
         }
+
+        startQRScan();
     }
 
     // 카메라 권한 체크 메서드
@@ -100,13 +109,25 @@ public class QRCodeScanActivity extends AppCompatActivity {
     }
 
     private void setupBackButtonListener() {
-        binding.toolbarQrcodeScan.btnBack.setOnClickListener(v -> handleBackAction());
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                handleBackAction();
-            }
-        });
+        if (isFirstResister) {
+            Log.d("QRCodeScanActivity", "setupBackButton : 뒤로가기 방식으로 설정");
+            binding.toolbarQrcodeScan.btnBack.setOnClickListener(view -> finish());
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    finish();
+                }
+            });
+        } else {
+            Log.d("QRCodeScanActivity", "setupBackButton : 로그아웃 방식으로 설정");
+            binding.toolbarQrcodeScan.btnBack.setOnClickListener(view -> confirmLogout());
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    handleBackAction();
+                }
+            });
+        }
     }
 
     private void handleBackAction() {
@@ -164,7 +185,8 @@ public class QRCodeScanActivity extends AppCompatActivity {
 
         if (serialNumber == null || token == null) {
             binding.tvQRcodeInfo.setText("QR 코드를 다시 스캔해주세요.");
-            Toast.makeText(this, "확인 실패, QR 코드를 다시 스캔해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "확인 실패, 다시 스캔해주세요.", Toast.LENGTH_SHORT).show();
+            binding.btnScanQRcode.setText("QR 스캔 재개");
             return;
         }
 
@@ -172,14 +194,15 @@ public class QRCodeScanActivity extends AppCompatActivity {
         dataRepository.checkSerialNumber(token, serialNumber, new CageRegisterCallback() {
             @Override
             public void onSuccess(String message) {
-                Toast.makeText(QRCodeScanActivity.this, "시리얼 넘버 확인, 케이지를 등록합니다." + message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(QRCodeScanActivity.this, "시리얼 넘버 확인, 케이지를 등록합니다.", Toast.LENGTH_SHORT).show();
                 resisterNewCage(serialNumber);
             }
 
             @Override
             public void onFailure(Exception e) {
                 binding.tvQRcodeInfo.setText("QR 코드를 다시 스캔해주세요.");
-                Toast.makeText(QRCodeScanActivity.this, "확인 실패, QR 코드를 다시 스캔해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QRCodeScanActivity.this, "확인 실패, 다시 스캔해주세요.", Toast.LENGTH_SHORT).show();
+                binding.btnScanQRcode.setText("QR 스캔 재개");
             }
         });
     }
@@ -191,21 +214,22 @@ public class QRCodeScanActivity extends AppCompatActivity {
 
     private void startQRScan() {
         isScanning = true;
-        binding.btnScanQRcode.setText("QR 스캔 멈추기");
+        binding.btnScanQRcode.setText("QR 스캔 중지");
         binding.scannerQRcode.resume(); // 카메라 활성화
-        Toast.makeText(this, "QR 코드 스캔을 시작합니다.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "스캔을 시작합니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void restartQRScan() {
         binding.scannerQRcode.resume(); // 카메라 재개
-        Toast.makeText(this, "QR 코드를 다시 스캔합니다.", Toast.LENGTH_SHORT).show();
+        binding.tvQRcodeInfo.setText("QR 코드를 스캔합니다.");
+        Toast.makeText(this, "다시 스캔합니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void stopQRScan() {
         isScanning = false;
-        binding.btnScanQRcode.setText("QR 스캔 재시작");
+        binding.btnScanQRcode.setText("QR 스캔 재개");
         binding.scannerQRcode.pause(); // 스캔 멈춤
-        Toast.makeText(this, "QR 코드 스캔이 중지되었습니다.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "스캔이 중지되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -235,6 +259,12 @@ public class QRCodeScanActivity extends AppCompatActivity {
 
     private void moveToCageAddActivity() {
         Intent intent = new Intent(QRCodeScanActivity.this, CageAddActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void moveToCageListActivity() {
+        Intent intent = new Intent(QRCodeScanActivity.this, CageListActivity.class);
         startActivity(intent);
         finish();
     }
