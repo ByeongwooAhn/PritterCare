@@ -63,6 +63,7 @@ public class MainTabManager {
         }
 
         // 초기 탭 선택
+        selectedTab = -1; // ensure the initial selection triggers
         selectTab(TAB_TEMPERATURE);
     }
 

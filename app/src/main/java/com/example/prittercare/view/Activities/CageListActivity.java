@@ -56,7 +56,7 @@ public class CageListActivity extends AppCompatActivity {
         isBackPressedOnce = false;
 
         binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view ->
-                resisterFirstCage());
+                moveToAddNewCage());
         setupBackButtonListener();
     }
 
@@ -205,7 +205,7 @@ public class CageListActivity extends AppCompatActivity {
                 adapter.notifyItemChanged(position);
                 runOnUiThread(() -> {
                     Log.d("CageListActivity", message);
-                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "이름을 수정 했습니다.", Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -250,6 +250,11 @@ public class CageListActivity extends AppCompatActivity {
     private void moveToMainActivity(CageData cage) {
         Intent intent = new Intent(this, MainActivity.class);
         DataManager.getInstance().setCurrentCageSerialNumber(cage.getCageSerialNumber());
+        startActivity(intent);
+    }
+
+    private void moveToAddNewCage() {
+        Intent intent = new Intent(CageListActivity.this, QRCodeScanActivity.class);
         startActivity(intent);
     }
 

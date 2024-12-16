@@ -110,21 +110,21 @@ public class QRCodeScanActivity extends AppCompatActivity {
 
     private void setupBackButtonListener() {
         if (isFirstResister) {
-            Log.d("QRCodeScanActivity", "setupBackButton : 뒤로가기 방식으로 설정");
-            binding.toolbarQrcodeScan.btnBack.setOnClickListener(view -> finish());
-            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-                @Override
-                public void handleOnBackPressed() {
-                    finish();
-                }
-            });
-        } else {
             Log.d("QRCodeScanActivity", "setupBackButton : 로그아웃 방식으로 설정");
             binding.toolbarQrcodeScan.btnBack.setOnClickListener(view -> confirmLogout());
             getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
                     handleBackAction();
+                }
+            });
+        } else {
+            Log.d("QRCodeScanActivity", "setupBackButton : 뒤로가기 방식으로 설정");
+            binding.toolbarQrcodeScan.btnBack.setOnClickListener(view -> finish());
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    finish();
                 }
             });
         }
@@ -134,7 +134,7 @@ public class QRCodeScanActivity extends AppCompatActivity {
         if (isBackPressedOnce) {
             confirmLogout();
         } else {
-            Toast.makeText(getApplicationContext(), "다시 한번 누르면 로그아웃 됩니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "다시 한번 누르면 홈 화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show();
             isBackPressedOnce = true;
             new android.os.Handler().postDelayed(() -> isBackPressedOnce = false, BACK_PRESS_DELAY);
         }
@@ -142,8 +142,8 @@ public class QRCodeScanActivity extends AppCompatActivity {
 
     private void confirmLogout() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("로그아웃 확인")
-                .setMessage("정말 로그아웃 하시겠습니까?")
+                .setTitle("로그아웃")
+                .setMessage("홈 화면으로 돌아 가시겠습니까?")
                 .setPositiveButton("예", (dialog, which) -> {
                     performLogout();
                 })
@@ -259,12 +259,9 @@ public class QRCodeScanActivity extends AppCompatActivity {
 
     private void moveToCageAddActivity() {
         Intent intent = new Intent(QRCodeScanActivity.this, CageAddActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void moveToCageListActivity() {
-        Intent intent = new Intent(QRCodeScanActivity.this, CageListActivity.class);
+        if(isFirstResister) {
+            intent.putExtra("isFirstRegister", true);
+        }
         startActivity(intent);
         finish();
     }

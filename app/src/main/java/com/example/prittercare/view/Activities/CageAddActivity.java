@@ -2,20 +2,15 @@ package com.example.prittercare.view.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.prittercare.R;
 import com.example.prittercare.controller.callback.CageRegisterCallback;
-import com.example.prittercare.controller.callback.CageUpdateCallback;
 import com.example.prittercare.databinding.ActivityCageAddBinding;
 import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.DataRepository;
@@ -28,25 +23,28 @@ public class CageAddActivity extends AppCompatActivity {
     private String serialNumber;
     private String animalType;
 
+    // 처음 등록 여부 확인 변수
+    private boolean isFirstRegister;
+
+    private boolean isBackPressedOnce = false;
+    private static final int BACK_PRESS_DELAY = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        serialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
+        // Intent로 전달된 "isFirstRegister" 값 확인
+        isFirstRegister = getIntent().getBooleanExtra("isFirstRegister", false);
 
         // View Binding 초기화
         binding = ActivityCageAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        serialNumber = DataManager.getInstance().getCurrentCageSerialNumber();
 
-        binding.layoutCageToolbar.btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CageAddActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish(); // 현재 Activity 종료
-            }
-        });
+        // Back 버튼 리스너
+        binding.layoutCageToolbar.btnBack.setOnClickListener(view -> handleBackAction());
+
         binding.rgAnimalType.check(R.id.rbFish);
 
         binding.btnCageResister.setOnClickListener(v -> {
@@ -67,7 +65,6 @@ public class CageAddActivity extends AppCompatActivity {
                 binding.rgAnimalType.check(R.id.rbTurtle);
                 break;
         }
-
     }
 
     private void addCage() {
@@ -102,11 +99,6 @@ public class CageAddActivity extends AppCompatActivity {
         });
     }
 
-    private void moveListPage() {
-        Intent intent = new Intent(CageAddActivity.this, CageListActivity.class);
-        startActivity(intent);
-    }
-
     private String getAnimalTypeAutomatically(String serialNumber) {
         char type = serialNumber.charAt(0); // 첫 글자 추출
 
@@ -122,4 +114,35 @@ public class CageAddActivity extends AppCompatActivity {
         }
     }
 
+    private void handleBackAction() {
+        if (isBackPressedOnce) {
+            confirmLogout();
+        } else {
+            Toast.makeText(getApplicationContext(), "다시 한번 누르면 홈 화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show();
+            isBackPressedOnce = true;
+            new Handler().postDelayed(() -> isBackPressedOnce = false, BACK_PRESS_DELAY);
+        }
+    }
+
+    private void confirmLogout() {
+        new AlertDialog.Builder(this)
+                .setTitle("로그아웃")
+                .setMessage("홈 화면으로 돌아 가시겠습니까?")
+                .setPositiveButton("예", (dialog, which) -> moveToLoginActivity())
+                .setNegativeButton("아니오", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
+                .show();
+    }
+
+    private void moveToLoginActivity() {
+        Intent intent = new Intent(CageAddActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        handleBackAction();
+    }
 }
