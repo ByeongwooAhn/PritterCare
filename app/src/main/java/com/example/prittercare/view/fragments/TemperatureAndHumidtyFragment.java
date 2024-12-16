@@ -200,4 +200,13 @@ public class TemperatureAndHumidtyFragment extends Fragment {
             }
         });
     }
+
+    public void updateTemperatureAndHumidity(String temperature, String humidity) {
+        if (temperature != null) {
+            temperatureGetTextView.setText("설정된 온도 값 : " + temperature + "°C");
+        }
+        if (humidity != null) {
+            humidityGetTextView.setText("설정된 습도 값 : " + humidity + "%");
+        }
+    }
 }

@@ -30,10 +30,10 @@ public class MainTabManager {
     private final List<MainTabView> tabs = new ArrayList<>();
     private final Map<Integer, Fragment> tabFragments = new HashMap<>();
 
-    private static final int TAB_TEMPERATURE = 0;
-    private static final int TAB_FOOD = 1;
-    private static final int TAB_LIGHT = 2;
-    private static final int TAB_RESERVATION = 3;
+    public static final int TAB_TEMPERATURE = 0;
+    public static final int TAB_FOOD = 1;
+    public static final int TAB_LIGHT = 2;
+    public static final int TAB_RESERVATION = 3;
 
     public MainTabManager(MainActivity activity, ActivityMainBinding binding, MQTTHelper mqttHelper) {
         this.activity = activity;
@@ -101,5 +101,9 @@ public class MainTabManager {
                 tabs.get(i).unSelectTab(activity);
             }
         }
+    }
+
+    public Fragment getFragment(int tabIndex) {
+        return tabFragments.get(tabIndex);
     }
 }
