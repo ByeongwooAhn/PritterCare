@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl(streamUrl);
         Log.d(TAG, "카메라 스트리밍 URL 로드: " + streamUrl);
 
+        webView.setScaleY(-1f);
+        webView.setScaleX(-1f);
+
         repository = new DataRepository();
 
         // MQTT 토픽 초기화

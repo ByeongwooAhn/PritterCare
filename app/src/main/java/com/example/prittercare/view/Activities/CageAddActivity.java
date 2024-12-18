@@ -16,6 +16,9 @@ import com.example.prittercare.model.DataManager;
 import com.example.prittercare.model.DataRepository;
 import com.example.prittercare.model.data.CageData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CageAddActivity extends AppCompatActivity {
 
     private ActivityCageAddBinding binding;
@@ -88,8 +91,29 @@ public class CageAddActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String message) {
                 Log.d("CageAddActivity", "Add Cage -> On Success : " + message);
-                finish(); // 성공 시 Activity 종료
+
+                // 새 케이지 데이터를 생성하여 DataManager에 추가
+                CageData newCage = new CageData();
+                newCage.setCageSerialNumber(serialNumber);
+                newCage.setCageName(binding.etCageName.getText().toString());
+                newCage.setAnimalType(animalType);
+                newCage.setEnvTemperature(binding.etTemperature.getText().toString());
+                newCage.setEnvHumidity(binding.etHumidity.getText().toString());
+                newCage.setEnvLighting(binding.etLighting.getText().toString());
+
+                // DataManager에 추가
+                List<CageData> cageList = DataManager.getInstance().getCageList();
+                if (cageList != null) {
+                    cageList.add(newCage);
+                } else {
+                    cageList = new ArrayList<>();
+                    cageList.add(newCage);
+                    DataManager.getInstance().setCageList(cageList);
+                }
+
+                finish(); // 액티비티 종료
             }
+
 
             @Override
             public void onFailure(Exception e) {

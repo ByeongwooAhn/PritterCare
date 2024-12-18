@@ -4,6 +4,6 @@
         <domain includeSubdomains="true">medicine.p-e.kr</domain>
     </domain-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.188.46</domain>
+        <domain includeSubdomains="true">192.168.188.8</domain>
     </domain-config>
 </network-security-config>

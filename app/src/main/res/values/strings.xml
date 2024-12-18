@@ -12,5 +12,5 @@
     <string name="btn_add">케이지 추가\n</string>
 
     <string name="camera_protocol">http</string>
-    <string name="base_url_camera">192.168.188.46</string>
+    <string name="base_url_camera">192.168.188.8</string>
 </resources>

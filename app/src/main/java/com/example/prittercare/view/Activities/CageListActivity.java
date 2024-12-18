@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +37,8 @@ public class CageListActivity extends AppCompatActivity {
     private boolean isBackPressedOnce;
     private static final int BACK_PRESS_DELAY = 3000;
 
+    private static final int REQUEST_CODE_ADD_CAGE = 100; // 추가
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,18 @@ public class CageListActivity extends AppCompatActivity {
         binding.layoutCageToolbar.btnCageAdd.setOnClickListener(view ->
                 moveToAddNewCage());
         setupBackButtonListener();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_ADD_CAGE && resultCode == RESULT_OK && data != null) {
+            boolean reload = data.getBooleanExtra("reload", false);
+            if (reload) {
+                loadCageDataFromServer(); // 서버에서 최신 데이터 가져오기
+            }
+        }
     }
 
     private void setupBackButtonListener() {
@@ -139,7 +154,13 @@ public class CageListActivity extends AppCompatActivity {
             cageList.addAll(cageListResponse);
         }
         DataManager.getInstance().setCageList(cageList);
-        adapter.notifyDataSetChanged();
+
+        // RecyclerView 어댑터에 데이터 갱신 알림
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        } else {
+            Log.e("CageListActivity", "Adapter is null!");
+        }
     }
 
     private void setupRecyclerView() {
@@ -254,13 +275,25 @@ public class CageListActivity extends AppCompatActivity {
     }
 
     private void moveToAddNewCage() {
-        Intent intent = new Intent(CageListActivity.this, QRCodeScanActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(CageListActivity.this, CageAddActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_ADD_CAGE); // 수정된 코드
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         binding = null; // 메모리 누수 방지
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // DataManager의 최신 데이터를 가져와 RecyclerView 갱신
+        List<CageData> updatedCageList = DataManager.getInstance().getCageList();
+        if (updatedCageList != null) {
+            cageList.clear();
+            cageList.addAll(updatedCageList);
+            adapter.notifyDataSetChanged();
+        }
     }
 }
